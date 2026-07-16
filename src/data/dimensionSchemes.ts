@@ -24,7 +24,7 @@ const BASE = import.meta.env.BASE_URL;
 
 /** Default scheme — matches the existing manufacturing / consumer-goods / grid-264 grids. */
 export const DEFAULT_DIMENSION_LEVELS: DimensionLevelDef[] = [
-  { id: 'account', name: 'Accounts', hierarchy: 'Account Hierarchy' },
+  { id: 'account', name: 'Account', hierarchy: 'Account Hierarchy' },
   { id: 'category', name: 'Category', hierarchy: 'Product Hierarchy' },
   { id: 'product', name: 'Product', hierarchy: 'Product Hierarchy' },
 ];

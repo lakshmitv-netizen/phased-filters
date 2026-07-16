@@ -261,7 +261,7 @@ const BasicFilterMultiSelect: React.FC<BasicFilterMultiSelectProps> = ({
                 onChange={toggleAllFiltered}
                 disabled={filteredOptions.length === 0}
               />
-              <span className="filters-basic-ms-option-label">All</span>
+              <span className="filters-basic-ms-option-label">{query.trim() ? 'All matches' : 'All'}</span>
             </label>
           </div>
           <div className="filters-basic-ms-list">
@@ -1125,9 +1125,57 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
     };
   }, [data, selectedMeasureSubgroup]);
 
+  // Cascading (dependent) options: each dimension level only lists members that are children
+  // of the members currently selected in its ancestor levels — a deduped union across selected
+  // parents (a child shared by multiple selected parents appears once). Levels whose ancestors
+  // have no selection ("All") are unconstrained. Built off the full (unfiltered) `data` tree so
+  // narrowing a parent immediately narrows every child level below it.
+  const cascadedOptionsByType = useMemo(() => {
+    const rowTypeToIdx = new Map<string, number>();
+    dimFields.forEach((d, i) => rowTypeToIdx.set(d.rowType, i));
+
+    const selectedByRowType = new Map<string, Set<string>>();
+    dimFields.forEach((df) => {
+      const f = filters.find((fi) => fi.type === df.type);
+      const val = f?.value;
+      if (!val || val === 'Equals All' || val === 'All') return;
+      if (df.type === 'measures' && val.includes('|')) return;
+      const sel = new Set(val.split(',').map((v) => v.trim()).filter(Boolean));
+      if (sel.size > 0) selectedByRowType.set(df.rowType, sel);
+    });
+
+    const result: Record<string, string[]> = {};
+    dimFields.forEach((df, targetIdx) => {
+      const out = new Set<string>();
+      const recurse = (node: GridRow) => {
+        const idx = rowTypeToIdx.get(node.type);
+        if (idx === undefined) {
+          // Non-dimension node (measure root, filter summary): keep descending.
+          node.children?.forEach(recurse);
+          return;
+        }
+        if (idx < targetIdx) {
+          // Ancestor level: only descend through members selected at this level (or all if "All").
+          const sel = selectedByRowType.get(node.type);
+          if (sel && !sel.has(node.name)) return;
+          node.children?.forEach(recurse);
+          return;
+        }
+        if (idx === targetIdx) {
+          if (node.name) out.add(node.name);
+        }
+        // idx > targetIdx: nothing to collect here.
+      };
+      data.forEach((m) => (m.children ?? []).forEach(recurse));
+      result[df.rowType] = Array.from(out).sort();
+    });
+    return result;
+  }, [data, dimFields, filters]);
+
   const optionsForDimField = useCallback(
-    (field: DimensionFilterField): string[] => optionsByType[field.rowType] ?? [],
-    [optionsByType],
+    (field: DimensionFilterField): string[] =>
+      cascadedOptionsByType[field.rowType] ?? optionsByType[field.rowType] ?? [],
+    [cascadedOptionsByType, optionsByType],
   );
 
   // Basic filter: get selected values for a given type from filters state
@@ -1875,6 +1923,30 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
                   </select>
                 </div>
               </div>
+            </div>
+
+            <div className="filters-basic-group" style={{ marginTop: '6px' }}>
+              <button
+                type="button"
+                onClick={() => clearAllImplRef.current()}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  background: 'transparent',
+                  border: 'none',
+                  padding: '4px 0',
+                  color: 'var(--color-accent-blue, #0176d3)',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Clear all filters
+              </button>
             </div>
 
           </div>

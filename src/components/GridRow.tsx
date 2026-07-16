@@ -1094,6 +1094,85 @@ const LEVEL_COLOR_MAP: Record<string, { color: string; bg: string; icon: React.R
   },
 };
 
+/**
+ * Small blue info icon with an SLDS-style tooltip, used to explain that a parent row's
+ * total may not equal the sum of its visible children when some children are filtered out.
+ * The tooltip renders via a portal so it isn't clipped by the frozen cell's overflow.
+ */
+const HiddenChildrenInfo: React.FC<{ text: string }> = ({ text }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+  const show = () => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    setPos({ top: r.bottom + 8, left: r.left + r.width / 2 });
+  };
+  const hide = () => setPos(null);
+  return (
+    <span
+      ref={ref}
+      onMouseEnter={show}
+      onMouseLeave={hide}
+      onFocus={show}
+      onBlur={hide}
+      tabIndex={0}
+      role="img"
+      aria-label={text}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        verticalAlign: 'middle',
+        color: 'var(--slds-g-color-brand-base-30, #0176d3)',
+        outline: 'none',
+      }}
+    >
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 4.4a1.35 1.35 0 110 2.7 1.35 1.35 0 010-2.7zM13.5 17.4h-3v-1.25h.75v-3.3h-.75V11.6h2.25v4.55h.75v1.25z" />
+      </svg>
+      {pos &&
+        createPortal(
+          <div
+            role="tooltip"
+            style={{
+              position: 'fixed',
+              top: pos.top,
+              left: pos.left,
+              transform: 'translateX(-50%)',
+              background: 'var(--slds-g-color-brand-base-30, #0176d3)',
+              color: '#ffffff',
+              fontSize: '12px',
+              fontWeight: 400,
+              lineHeight: 1.35,
+              padding: '8px 10px',
+              borderRadius: '6px',
+              maxWidth: '240px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+              zIndex: 10001,
+              whiteSpace: 'normal',
+              pointerEvents: 'none',
+            }}
+          >
+            {text}
+            <span
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                top: '-5px',
+                left: '50%',
+                transform: 'translateX(-50%) rotate(45deg)',
+                width: '10px',
+                height: '10px',
+                background: 'inherit',
+              }}
+            />
+          </div>,
+          document.body,
+        )}
+    </span>
+  );
+};
+
 const renderFrozenCell = (colId: string, value: string, row?: GridRowType): React.ReactNode => {
   if (colId === 'annotatedLevel') {
     if (!value) return null;
@@ -1342,6 +1421,38 @@ const GridRowComponent: React.FC<GridRowProps> = ({
     if (fullChildren.some((c) => !visibleChildIds.has(c.id))) return true;
     return fullChildren.length > visible.length;
   }, [data, parentTotalsRollupMode, rollupValueSourceData, row.children, row.id, row.type]);
+
+  /**
+   * How many of this row's *immediate* children are currently hidden by filters, compared
+   * to the full rollup structure. Works for every dimension level (account/category/product
+   * and the deep / Acme levels). Used to annotate the level name with "N children filtered out".
+   */
+  const hiddenImmediateChildCount = React.useMemo(() => {
+    if (parentTotalsRollupMode === 'columnFilterBuckets') return 0;
+    // Measure rows: compare the full (unfiltered) top-level child count against what's visible.
+    if (row.type === 'measure') {
+      if (typeof fullMeasureChildCount !== 'number') return 0;
+      const visible = (row.children ?? []).filter((c) => c.type !== 'filterSummary').length;
+      return Math.max(fullMeasureChildCount - visible, 0);
+    }
+    const isDimRow =
+      row.type === 'account' ||
+      row.type === 'category' ||
+      row.type === 'product' ||
+      isDeepDimensionType(row.type);
+    if (!isDimRow) return 0;
+    const structureSource =
+      rollupValueSourceData && rollupValueSourceData.length > 0 ? rollupValueSourceData : data;
+    if (!structureSource?.length) return 0;
+    const full = findRowById(row.id, structureSource);
+    if (!full?.children?.length) return 0;
+    const fullChildren = full.children.filter((c) => c.type !== 'filterSummary');
+    if (fullChildren.length === 0) return 0;
+    const visible = (row.children ?? []).filter((c) => c.type !== 'filterSummary');
+    const visibleChildIds = new Set(visible.map((c) => c.id));
+    const hiddenById = fullChildren.filter((c) => !visibleChildIds.has(c.id)).length;
+    return Math.max(hiddenById, fullChildren.length - visible.length, 0);
+  }, [data, parentTotalsRollupMode, rollupValueSourceData, row.children, row.id, row.type, fullMeasureChildCount]);
 
   const noMatchBranchScratchedOut = React.useMemo(() => {
     if (parentTotalsRollupMode !== 'columnFilterBuckets' || propagateIntoNoMatchRows !== false) {
@@ -3875,11 +3986,12 @@ const GridRowComponent: React.FC<GridRowProps> = ({
         />,
       );
     }
+    // Categories use the same Product icon — only two dimension icon types (account / product).
     if (dimForIcon === 'category') {
       return wrapMutedDimensionIcon(
         <img
-          src={CategoryIcon}
-          alt="Category"
+          src={ProductIcon}
+          alt="Product"
           style={iconStyle}
           decoding="async"
         />,
@@ -3889,29 +4001,22 @@ const GridRowComponent: React.FC<GridRowProps> = ({
       return wrapMutedDimensionIcon(<img src={ProductIcon} alt="Product" style={iconStyle} />);
     }
 
-    // Deep-hierarchy grid levels (5 account + 5 product) render a colored acronym glyph.
+    // Deep / Acme grid levels collapse to the same two icon types: account-hierarchy
+    // levels use the Account icon, product-hierarchy levels use the Product icon.
     if (isDeepDimensionType(row.type)) {
-      const glyph = getDimensionGlyph(row.type);
-      if (!glyph) return null;
+      const accountSide =
+        row.type.startsWith('acct-') ||
+        row.type === 'acme-global' ||
+        row.type === 'acme-region' ||
+        row.type === 'acme-division' ||
+        row.type === 'acme-plant';
       return wrapMutedDimensionIcon(
-        <span
-          aria-hidden
-          style={{
-            ...iconStyle,
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: glyph.bg,
-            color: '#fff',
-            borderRadius: '50%',
-            fontSize: '9px',
-            fontWeight: 700,
-            letterSpacing: '0.3px',
-            lineHeight: 1,
-          }}
-        >
-          {glyph.letters}
-        </span>,
+        <img
+          src={accountSide ? AccountIcon : ProductIcon}
+          alt={accountSide ? 'Account' : 'Product'}
+          style={iconStyle}
+          decoding="async"
+        />,
       );
     }
 
@@ -3960,16 +4065,18 @@ const GridRowComponent: React.FC<GridRowProps> = ({
       ? `${row.name || ''} (${row.children?.length ?? 0})`
       : row.name || '';
 
-  // Level name shown as a small subscript beneath each dimension row's label in the
-  // frozen first column (e.g. "Account", "Region", "SKU"), so each row's level is
-  // identifiable without a separate icon/column. Measures and helper rows are excluded.
+  // Level name shown as a small subscript beneath each row's label in the frozen first
+  // column (e.g. "Measure", "Account", "Region", "SKU"), so each row's level is identifiable
+  // without a separate icon/column. Helper/summary rows are excluded.
   const dimensionLevelSubscript =
-    row.type === 'account' ||
-    row.type === 'category' ||
-    row.type === 'product' ||
-    isDeepDimensionType(row.type)
-      ? getDimensionLevelName(row.type)
-      : undefined;
+    row.type === 'measure'
+      ? 'Measure'
+      : row.type === 'account' ||
+          row.type === 'category' ||
+          row.type === 'product' ||
+          isDeepDimensionType(row.type)
+        ? getDimensionLevelName(row.type)
+        : undefined;
 
   return (
     <>
@@ -4015,7 +4122,6 @@ const GridRowComponent: React.FC<GridRowProps> = ({
               </button>
             )}
             {!hasExpandChevron && <span style={{ width: '16px', display: 'inline-block' }}></span>}
-            {renderTypeIconWithFilterDot()}
             <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0, flex: '1 1 0' }}>
               <span className="cell-name">
                 {searchTerm && searchTerm.trim() ? (
@@ -4030,17 +4136,27 @@ const GridRowComponent: React.FC<GridRowProps> = ({
               {dimensionLevelSubscript && (
                 <span
                   style={{
-                    fontSize: '10px',
+                    fontSize: '13px',
                     color: 'var(--slds-g-color-neutral-base-50, #747474)',
                     marginTop: '1px',
                     fontWeight: 400,
-                    lineHeight: 1.1,
+                    lineHeight: 1.2,
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
+                    minWidth: 0,
                   }}
                 >
                   {dimensionLevelSubscript}
+                  {hiddenImmediateChildCount > 0 && (
+                    <>
+                      {' \u2022 '}
+                      {hiddenImmediateChildCount}{' '}
+                      {hiddenImmediateChildCount === 1 ? 'child' : 'children'} filtered out
+                      {' '}
+                      <HiddenChildrenInfo text="Total still includes filtered-out children." />
+                    </>
+                  )}
                 </span>
               )}
               {/* Show measure group name for measures with groupContext */}
@@ -4467,9 +4583,6 @@ const GridRowComponent: React.FC<GridRowProps> = ({
                           e.currentTarget.style.backgroundColor = 'white';
                         }}
                       >
-                        <svg width="14" height="14" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }} aria-hidden>
-                          <path fillRule="evenodd" clipRule="evenodd" d="M17 3.05V15h11.95A12 12 0 0 0 17 3.05zM15 4.06A12 12 0 1 0 27.94 17H15V4.06z" fill="var(--color-accent-blue)" />
-                        </svg>
                         <span>Show Charts</span>
                       </button>
                     )}
@@ -4519,28 +4632,6 @@ const GridRowComponent: React.FC<GridRowProps> = ({
                     <circle cx="8" cy="8" r="1.5" fill="var(--slds-g-color-neutral-base-50)"/>
                     <circle cx="8" cy="13" r="1.5" fill="var(--slds-g-color-neutral-base-50)"/>
                   </svg>
-                  {quickFilter && quickFilter.filterColumn && quickFilter.selectedValues.length > 0 && (
-                    <span 
-                      style={{
-                        position: 'absolute',
-                        top: '-4px',
-                        right: '-4px',
-                        width: '14px',
-                        height: '14px',
-                        borderRadius: '2px',
-                        backgroundColor: 'var(--color-accent-blue)',
-                        border: '1.5px solid white',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: '1px'
-                      }}
-                    >
-                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 6h18M7 12h10M11 18h2" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-                      </svg>
-                    </span>
-            )}
           </div>
                 {/* Dropdown menu rendered via portal */}
                 {showDimensionMenu && dimensionMenuPosition && createPortal(
@@ -4734,9 +4825,6 @@ const GridRowComponent: React.FC<GridRowProps> = ({
                           e.currentTarget.style.backgroundColor = 'white';
                         }}
                       >
-                        <svg width="14" height="14" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }} aria-hidden>
-                          <path fillRule="evenodd" clipRule="evenodd" d="M17 3.05V15h11.95A12 12 0 0 0 17 3.05zM15 4.06A12 12 0 1 0 27.94 17H15V4.06z" fill="var(--color-accent-blue)" />
-                        </svg>
                         <span>Show Charts</span>
                       </button>
                     )}

@@ -69,7 +69,9 @@ function App() {
             <Route path="/setup/dimensions-and-hierarchies" element={<DimensionsAndHierarchiesPage />} />
             <Route path="/grid" element={<GridPage />} />
             <Route path="/presentation" element={<PresentationPage />} />
-            <Route path="/" element={<Navigate to="/presentation" replace />} />
+            {/* Land straight on the grid (skip the presentation shell). The
+                presentation view is still reachable at /presentation. */}
+            <Route path="/" element={<Navigate to={homeRoute} replace />} />
           </Routes>
         </Router>
         </AgentforceProvider>

@@ -2013,7 +2013,8 @@ button.chevron-icon {
 
 .cell-name {
   color: var(--color-dark-text) !important;
-  font-size: var(--font-size-base) !important;
+  font-size: 13.5px !important;
+  font-weight: var(--font-weight-semibold) !important;
   line-height: var(--line-height-base) !important;
   white-space: nowrap !important;
   overflow: hidden !important;
@@ -2031,9 +2032,9 @@ button.chevron-icon {
   letter-spacing: 0.2px !important;
 }
 
-/* Dimension rows (hierarchical + dimensions/time grids): copy neutral-40 — not measure/time rows, not filtered-out summary */
+/* Dimension rows (hierarchical + dimensions/time grids): darker neutral-30 for prominence — not measure/time rows, not filtered-out summary */
 .grid-row:not(.measure-row):not(.time-row):not(.grid-row-filtered-out-dimension) .cell-name {
-  color: var(--slds-g-color-neutral-base-40) !important;
+  color: var(--slds-g-color-neutral-base-30) !important;
 }
 
 /* Default value text only — edited / saved / impacted keep their state colors */

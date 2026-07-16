@@ -348,14 +348,14 @@
 }
 
 .add-remove-child-nodes-button-confirm {
-  background-color: var(--slds-g-color-accent-1);
-  color: var(--color-surface-white);
-  border-color: var(--slds-g-color-accent-1);
+  background-color: var(--color-accent-blue, #0176d3);
+  color: #ffffff;
+  border-color: var(--color-accent-blue, #0176d3);
 }
 
 .add-remove-child-nodes-button-confirm:hover:not(:disabled) {
-  background-color: var(--slds-g-color-accent-2);
-  border-color: var(--slds-g-color-accent-2);
+  background-color: #014486;
+  border-color: #014486;
 }
 
 .add-remove-child-nodes-button-confirm:disabled {
