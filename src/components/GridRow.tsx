@@ -1321,6 +1321,28 @@ const GridRowComponent: React.FC<GridRowProps> = ({
     return full.children.length > visible.length;
   }, [data, parentTotalsRollupMode, rollupValueSourceData, row.children, row.id, row.type]);
 
+  /**
+   * Multi-level (deep / Acme) dimension rows — e.g. acme-region, acme-division, acct-segment.
+   * These use dynamic level types (not account/category/product), so the account/category
+   * checks above don't apply. Show the orange dot when this row has fewer visible children
+   * than the full structure (i.e. a filter hid some descendants).
+   */
+  const deepDimHasHiddenChildrenVsStructure = React.useMemo(() => {
+    if (!isDeepDimensionType(row.type)) return false;
+    if (parentTotalsRollupMode === 'columnFilterBuckets') return false;
+    const structureSource =
+      rollupValueSourceData && rollupValueSourceData.length > 0 ? rollupValueSourceData : data;
+    if (!structureSource?.length) return false;
+    const full = findRowById(row.id, structureSource);
+    if (!full?.children?.length) return false;
+    const visible = (row.children ?? []).filter((c) => c.type !== 'filterSummary');
+    const fullChildren = full.children.filter((c) => c.type !== 'filterSummary');
+    if (fullChildren.length === 0) return false;
+    const visibleChildIds = new Set(visible.map((c) => c.id));
+    if (fullChildren.some((c) => !visibleChildIds.has(c.id))) return true;
+    return fullChildren.length > visible.length;
+  }, [data, parentTotalsRollupMode, rollupValueSourceData, row.children, row.id, row.type]);
+
   const noMatchBranchScratchedOut = React.useMemo(() => {
     if (parentTotalsRollupMode !== 'columnFilterBuckets' || propagateIntoNoMatchRows !== false) {
       return false;
@@ -3789,7 +3811,8 @@ const GridRowComponent: React.FC<GridRowProps> = ({
     hasDescendantColumnFilterBadge ||
     accountUsesFilteredDescendantsAsset ||
     categoryUsesFilteredDescendantsAsset ||
-    measureUsesFilteredDescendantsAsset;
+    measureUsesFilteredDescendantsAsset ||
+    deepDimHasHiddenChildrenVsStructure;
 
   // Helper function to render type icon
   const renderTypeIcon = () => {
