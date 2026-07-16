@@ -9,7 +9,7 @@ import { getMockData } from '../data/mockData';
 import { adjustmentMeasuresData } from '../data/adjustmentMeasuresData';
 import { useIndustry } from '../contexts/IndustryContext';
 import type { IndustryType } from '../contexts/IndustryContext';
-import { getDimensionScheme } from '../data/dimensionSchemes';
+import { getDimensionScheme, getDimensionGlyph, getDimensionIcon } from '../data/dimensionSchemes';
 import { isConfigIndustry, getConfigMeasureCategories } from '../data/planConfigGridData';
 import '../styles/components/FiltersPanel.css';
 
@@ -1853,9 +1853,48 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
             </div>
 
             {/* One multiselect per dimension level in this grid's scheme */}
-            {dimFields.map((df) => (
+            {dimFields.map((df) => {
+              const dfGlyph = getDimensionGlyph(df.rowType);
+              return (
               <div className="filters-basic-group" key={df.type}>
-                <span className="filters-basic-label" id={`basic-${df.type}-label`}>{df.name}</span>
+                <span
+                  className="filters-basic-label"
+                  id={`basic-${df.type}-label`}
+                  style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+                >
+                  {dfGlyph ? (
+                    <span
+                      aria-hidden
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: 18,
+                        height: 18,
+                        borderRadius: '50%',
+                        backgroundColor: dfGlyph.bg,
+                        color: '#fff',
+                        fontSize: 8.5,
+                        fontWeight: 700,
+                        letterSpacing: '0.3px',
+                        lineHeight: 1,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {dfGlyph.letters}
+                    </span>
+                  ) : (
+                    <img
+                      src={getDimensionIcon(df.rowType)}
+                      alt=""
+                      aria-hidden
+                      width={18}
+                      height={18}
+                      style={{ flexShrink: 0 }}
+                    />
+                  )}
+                  {df.name}
+                </span>
                 <BasicFilterMultiSelect
                   id={`basic-${df.type}`}
                   labelId={`basic-${df.type}-label`}
@@ -1864,7 +1903,8 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
                   onChange={vals => updateBasicMultiFilter(df.type, `basic-${df.type}`, vals)}
                 />
               </div>
-            ))}
+              );
+            })}
 
             {/* Time Range */}
             <div className="filters-basic-group">
