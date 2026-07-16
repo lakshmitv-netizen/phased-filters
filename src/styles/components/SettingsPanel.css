@@ -1,0 +1,1034 @@
+/* Settings Panel */
+.settings-panel {
+  width: 420px;
+  height: 100%;
+  max-height: 100%;
+  background-color: var(--color-surface-white) !important;
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0; /* Don't shrink when grid needs space */
+  overflow: hidden;
+  min-width: 420px; /* Ensure panel maintains its width */
+  max-width: 420px; /* Prevent panel from growing */
+  box-shadow: 0px 0px 4.4px 0px rgba(0, 0, 0, 0.09), -4px 0px 4.4px 0px rgba(0, 0, 0, 0.09), -1px 0px 1.44px 0px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 3%, transparent);
+  align-self: stretch;
+  position: relative;
+  z-index: 2005;
+  isolation: isolate;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Panel Header */
+.settings-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2);
+  min-height: 50px;
+  padding: var(--spacing-3);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.settings-panel-title-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  flex: 1;
+  min-width: 0;
+}
+
+.settings-panel-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--slds-g-color-accent-1);
+  flex-shrink: 0;
+}
+
+.settings-panel-title {
+  font-family: var(--font-family-base);
+  font-size: 18px;
+  font-weight: var(--font-weight-regular);
+  line-height: 24px;
+  color: var(--color-on-surface-3);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.settings-panel-info-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-accent-blue);
+  border-radius: var(--border-radius-circle);
+  flex-shrink: 0;
+}
+
+.settings-panel-info-icon svg {
+  width: 12px;
+  height: 12px;
+  color: var(--color-on-accent);
+}
+
+.settings-panel-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-1);
+  flex-shrink: 0;
+}
+
+.settings-panel-close {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  border-radius: var(--border-radius-circle);
+  color: var(--color-on-surface-3);
+  transition: background-color 0.2s;
+}
+
+.settings-panel-close:hover {
+  background-color: var(--color-surface-gray);
+}
+
+.settings-panel-close svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Panel Body */
+.settings-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--spacing-3);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-height: 0; /* Important for flex children to scroll */
+}
+
+/* Tabs */
+.settings-tabs {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0 !important;
+  border-bottom: 1px solid var(--color-border) !important;
+  margin-bottom: var(--spacing-2) !important;
+  flex-shrink: 0 !important;
+  background-color: var(--color-surface-white) !important;
+}
+
+.settings-tab {
+  flex: 1 !important;
+  padding: var(--spacing-2) var(--spacing-3) !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 19px !important;
+  color: var(--slds-g-color-neutral-base-40) !important;
+  background: none !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  transition: all 0.2s !important;
+  margin-bottom: -1px !important;
+}
+
+.settings-tab:hover {
+  color: var(--slds-g-color-on-surface-3) !important;
+  background-color: var(--color-surface-gray) !important;
+}
+
+.settings-tab.active {
+  color: var(--slds-g-color-accent-1) !important;
+  border-bottom-color: var(--slds-g-color-accent-1) !important;
+  font-weight: 600 !important;
+  line-height: 19px !important;
+  background-color: transparent !important;
+}
+
+.settings-tab-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Settings Section */
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.settings-section-header {
+  background-color: var(--color-surface-gray);
+  padding: 0 var(--spacing-2);
+  height: 32px;
+  display: flex;
+  align-items: center;
+  border-radius: var(--border-radius-1);
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.settings-section + .settings-section > .settings-section-header {
+  margin-top: 20px;
+}
+
+/* Explicit spacing for visually reordered layout sections */
+.settings-section-header-layout {
+  margin-top: 4px !important;
+}
+
+.settings-section-header-mdt {
+  margin-top: 24px !important;
+}
+
+.settings-section-title {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-2);
+  font-weight: var(--font-weight-regular);
+  line-height: 22px;
+  color: var(--color-on-surface-2);
+  margin: 0;
+}
+
+/* Settings Field */
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  margin-top: 0;
+  padding-left: var(--spacing-3);
+}
+
+.settings-section > .settings-field:first-of-type {
+  margin-top: 12px;
+}
+
+.settings-section > .settings-field:not(:first-of-type) {
+  margin-top: 4px;
+}
+
+.settings-field-spacing {
+  margin-bottom: 4px;
+}
+
+.settings-field-compact {
+  margin-top: 3px;
+  margin-bottom: 0;
+}
+
+.settings-field-spaced {
+  margin-top: 1px;
+}
+
+.settings-field-label {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-base);
+  color: var(--color-on-surface-2);
+  margin: 0;
+}
+
+/* Inline header row: label on left, action link on right */
+.settings-field-inline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Checkbox row: checkbox+label on left, configure link on right */
+.settings-checkbox-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.settings-checkbox-row .settings-standalone-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+}
+
+.settings-checkbox-text {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-on-surface-3);
+  white-space: nowrap;
+}
+
+/* Input Wrapper */
+.settings-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.settings-input {
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-6) var(--spacing-2) var(--spacing-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-1);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-on-surface-2);
+  background-color: var(--color-surface-white);
+  cursor: pointer;
+}
+
+.settings-input:focus {
+  outline: none;
+  border-color: var(--color-accent-blue);
+}
+
+.settings-date-input {
+  cursor: pointer;
+  padding-right: var(--spacing-2) !important;
+}
+
+.settings-date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  color: var(--color-on-surface-2);
+  opacity: 0.7;
+}
+
+.settings-date-input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+.settings-input-icon {
+  position: absolute;
+  right: var(--spacing-2);
+  width: 16px;
+  height: 16px;
+  color: var(--color-on-surface-2);
+  pointer-events: none;
+}
+
+.settings-field-helper-text {
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  font-weight: var(--font-weight-regular);
+  line-height: 16px;
+  color: var(--color-neutral-text);
+  margin-top: 4px;
+  margin-bottom: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.settings-field-helper-text-with-icon {
+  color: var(--slds-g-color-neutral-base-10);
+}
+
+.settings-shortcuts-intro {
+  font-family: var(--slds-g-font-family-base, var(--font-family-base));
+  font-size: 13px !important;
+  line-height: 18px !important;
+  font-weight: 500;
+  color: var(--slds-g-color-neutral-base-20) !important;
+  margin-top: 2px;
+}
+
+.settings-helper-warning-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--slds-g-color-warning-2);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Dropdown Wrapper */
+.settings-dropdown-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.settings-dropdown-trigger {
+  width: 100%;
+  min-height: 32px;
+  padding: 5px var(--spacing-6) 5px var(--spacing-2);
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background-color: var(--color-surface-white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  box-shadow: 0px 0px 0px 2px var(--color-surface-white), 0px 0px 0px 3.5px var(--slds-g-color-brand-base-40);
+}
+
+.settings-dropdown-trigger:not(.open) {
+  box-shadow: none;
+  border-color: var(--color-border);
+}
+
+.settings-dropdown-value {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--slds-g-color-neutral-base-10);
+  flex: 1;
+}
+
+.settings-dropdown-placeholder {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--slds-g-color-border-base-4);
+  flex: 1;
+}
+
+.settings-dropdown-trigger .settings-input-icon {
+  position: absolute;
+  right: var(--spacing-2);
+  width: 16px;
+  height: 16px;
+  color: var(--slds-g-color-border-base-4);
+  flex-shrink: 0;
+}
+
+.settings-dropdown-list {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  background-color: var(--color-surface-white);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.16);
+  z-index: 100;
+  overflow: hidden;
+  padding: 4px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.settings-dropdown-option {
+  min-height: 44px;
+  padding: 8px 12px;
+  margin: 0 4px;
+  cursor: pointer;
+  background-color: var(--color-surface-white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: background-color 0.15s;
+  border-radius: 2px;
+}
+
+.settings-dropdown-option:hover {
+  background-color: var(--color-surface-gray);
+}
+
+.settings-dropdown-option.selected {
+  background-color: var(--color-surface-gray);
+}
+
+.settings-dropdown-option-title {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--slds-g-color-neutral-base-10);
+  margin-bottom: 2px;
+}
+
+.settings-dropdown-option-subtitle {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--slds-g-color-neutral-base-30);
+}
+
+/* Dimension Levels Dropdown with Checkboxes */
+.settings-dimension-dropdown {
+  padding: 0;
+}
+
+.settings-dropdown-header {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 20px;
+  color: var(--slds-g-color-neutral-base-10);
+  padding: 8px 12px 4px 12px;
+  background-color: var(--color-surface-white);
+}
+
+.settings-dropdown-checkbox-option {
+  min-height: 32px;
+  padding: 6px 12px;
+  margin: 0 4px;
+  cursor: pointer;
+  background-color: var(--color-surface-white);
+  display: flex;
+  align-items: center;
+  gap: 0; /* Remove default gap, use specific margins instead */
+  transition: background-color 0.15s;
+  border-radius: 2px;
+}
+
+.settings-dropdown-checkbox-option:hover {
+  background-color: var(--color-surface-gray);
+}
+
+.settings-checkbox-wrapper {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1.5px solid var(--slds-g-color-border-base-4);
+  border-radius: 2px;
+  background-color: var(--color-surface-white);
+  transition: all 0.15s;
+  margin-right: 8px;
+}
+
+.settings-checkbox-wrapper.checked {
+  border-color: var(--color-accent-blue);
+  background-color: var(--color-accent-blue);
+}
+
+.settings-checkbox-icon {
+  width: 12px;
+  height: 12px;
+  color: var(--color-on-accent);
+  stroke-width: 2.5;
+}
+
+.settings-standalone-checkbox-label {
+  position: relative;
+  user-select: none;
+}
+
+.settings-checkbox-wrapper-standalone {
+  margin-right: 0;
+}
+
+.settings-link-button {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 13px !important;
+  line-height: 20px !important;
+  color: var(--color-accent-blue) !important;
+  cursor: pointer !important;
+  text-decoration: underline !important;
+  white-space: nowrap !important;
+  transition: color 0.15s, text-decoration 0.15s !important;
+}
+
+.settings-link-button:hover:not(:disabled) {
+  text-decoration: none !important;
+}
+
+.settings-link-button:focus:not(:disabled) {
+  outline: 2px solid var(--color-accent-blue) !important;
+  outline-offset: 2px !important;
+  border-radius: 2px !important;
+}
+
+.settings-link-button:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  color: var(--color-accent-blue) !important;
+}
+
+.settings-dropdown-checkbox-label {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--slds-g-color-neutral-base-10);
+  flex: 1;
+}
+
+/* Selected Levels Pills */
+.settings-selected-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  align-items: center;
+}
+
+.settings-pill {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-surface-white);
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 16px;
+  padding: 4px 8px 4px 4px;
+  gap: 6px;
+  height: 28px;
+}
+
+.settings-pill-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.settings-pill-icon-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.settings-pill-label {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  color: var(--slds-g-color-brand-base-50);
+  font-weight: 400;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.settings-pill-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--slds-g-color-brand-base-50);
+  border-radius: 50%;
+  background-color: var(--color-surface-white);
+  cursor: pointer;
+  padding: 0;
+  margin-left: 2px;
+  flex-shrink: 0;
+  transition: background-color 0.15s;
+}
+
+.settings-pill-close:hover {
+  background-color: var(--slds-g-color-surface-container-1);
+}
+
+.settings-pill-close svg {
+  width: 10px;
+  height: 10px;
+}
+
+.settings-pill-more {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  color: var(--slds-g-color-brand-base-50);
+  font-weight: 400;
+  line-height: 20px;
+  margin-left: 4px;
+}
+
+.settings-readonly-badge {
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--slds-g-color-neutral-base-40);
+  background-color: var(--slds-g-color-surface-container-1);
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+.settings-editable-badge {
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--slds-g-color-accent-1);
+  background-color: var(--slds-g-color-accent-container-1);
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+.settings-dropdown-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 12px;
+  margin: 4px;
+  background-color: var(--slds-g-color-warning-container-1);
+  border-radius: 2px;
+}
+
+.settings-warning-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--slds-g-color-warning-2);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.settings-warning-text {
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--slds-g-color-neutral-base-10);
+  flex: 1;
+}
+
+.settings-warning-link {
+  color: var(--slds-g-color-accent-1);
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.settings-warning-link:hover {
+  color: var(--slds-g-color-accent-1);
+  text-decoration: none;
+}
+
+/* Settings Link */
+.settings-link {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-regular);
+  line-height: 18px;
+  color: var(--color-accent-blue);
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 3px;
+  margin-bottom: 0;
+}
+
+.settings-link:hover {
+  text-decoration: none;
+}
+
+/* Toggle Switch */
+.settings-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.settings-toggle-track {
+  width: 52px;
+  height: 28px;
+  background-color: var(--slds-g-color-neutral-base-90);
+  border-radius: 14px;
+  position: relative;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  padding: 0 2px;
+}
+
+.settings-toggle.active .settings-toggle-track {
+  background-color: var(--slds-g-color-accent-1);
+}
+
+.settings-toggle-thumb {
+  width: 24px;
+  height: 24px;
+  background-color: var(--color-surface-white);
+  border-radius: 50%;
+  position: absolute;
+  left: 2px;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 20%, transparent);
+}
+
+.settings-toggle.active .settings-toggle-thumb {
+  transform: translateX(24px);
+}
+
+.settings-toggle-check {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: 6px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Button Group */
+.settings-button-group {
+  display: flex !important;
+  gap: 0 !important;
+  border-radius: 9999px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--slds-g-color-neutral-base-40) !important;
+}
+
+.settings-button {
+  flex: 1 !important;
+  padding: var(--spacing-2) !important;
+  border: none !important;
+  background-color: var(--color-surface-white) !important;
+  font-family: var(--font-family-base) !important;
+  font-size: var(--font-size-1) !important;
+  font-weight: var(--font-weight-regular) !important;
+  line-height: var(--line-height-1) !important;
+  color: var(--slds-g-color-accent-1) !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: var(--spacing-1) !important;
+  transition: background-color 0.15s !important;
+  position: relative !important;
+}
+
+.settings-button:not(:last-child)::after {
+  content: '' !important;
+  position: absolute !important;
+  right: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 1px !important;
+  background-color: var(--slds-g-color-neutral-base-40) !important;
+}
+
+.settings-button-right {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  padding: 0 !important;
+}
+
+.settings-button-text {
+  flex: 1 !important;
+  text-align: center !important;
+  padding: var(--spacing-2) !important;
+}
+
+.settings-button-separator {
+  width: 1px !important;
+  height: 20px !important;
+  background-color: var(--slds-g-color-neutral-base-40) !important;
+  flex-shrink: 0 !important;
+  align-self: center !important;
+}
+
+.settings-button:hover {
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+.settings-button-icon {
+  width: 16px !important;
+  height: 16px !important;
+  flex-shrink: 0 !important;
+  padding: var(--spacing-2) !important;
+  display: block !important;
+  color: var(--slds-g-color-accent-1) !important;
+}
+
+.settings-button-icon path {
+  stroke: var(--slds-g-color-accent-1) !important;
+  fill: none !important;
+}
+
+/* Slider */
+.settings-slider-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: 4px 0;
+}
+
+.settings-slider-label,
+.settings-slider-value {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-base);
+  color: var(--color-on-surface-2);
+  white-space: nowrap;
+}
+
+.settings-slider-label {
+  min-width: 36px;
+}
+
+.settings-slider-value {
+  min-width: 24px;
+  text-align: right;
+}
+
+.settings-slider-container {
+  flex: 1;
+  position: relative;
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.settings-slider-track {
+  width: 100%;
+  height: 4px;
+  background-color: var(--color-surface-gray);
+  border-radius: 2px;
+  position: relative;
+  cursor: pointer;
+}
+
+.settings-slider-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: var(--color-accent-blue);
+  border-radius: 2px;
+}
+
+.settings-slider-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  background-color: var(--color-accent-blue);
+  border-radius: var(--border-radius-circle);
+  cursor: grab;
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 20%, transparent);
+}
+
+.settings-slider-thumb:active {
+  cursor: grabbing;
+}
+
+.settings-slider-track {
+  cursor: pointer;
+}
+
+.settings-slider-thumb {
+  cursor: grab;
+}
+
+.settings-slider-thumb:active {
+  cursor: grabbing;
+}
+
+
+/* ── Settings Panel filter cards ─────────────────────────────────────────── */
+.sp-filter-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  margin: 0 var(--spacing-3);
+  background: var(--color-surface-white);
+  border: 1px solid var(--color-border, var(--slds-g-color-neutral-base-90));
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  user-select: none;
+}
+
+.sp-filter-card:hover { border-color: var(--slds-g-color-accent-1); }
+
+.sp-filter-card-active {
+  border-color: var(--slds-g-color-accent-1);
+  box-shadow: 0 0 0 2px rgba(6, 106, 254, 0.12);
+}
+
+.sp-filter-card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+.sp-filter-card-label {
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-on-surface-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sp-filter-card-value {
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  color: var(--slds-g-color-accent-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sp-filter-card-placeholder {
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  color: var(--slds-g-color-neutral-base-60);
+}
+
+.sp-filter-card-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.sp-filter-card-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 3px;
+  border-radius: 50%;
+  color: var(--slds-g-color-neutral-base-60);
+  line-height: 1;
+}
+
+.sp-filter-card-clear:hover { background: var(--slds-g-color-surface-container-1); color: var(--slds-g-color-neutral-base-50); }

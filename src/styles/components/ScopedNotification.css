@@ -1,0 +1,336 @@
+/* ScopedNotification — dependency-free SLDS "info" banner.
+   Every design token carries a hardcoded fallback so the component renders
+   correctly even without a design-token file loaded. */
+
+.scoped-notification {
+  background-color: var(--slds-g-color-info-container-1, #eef4ff) !important;
+  border-radius: var(--slds-g-radius-border-2, 8px);
+  padding: var(--slds-g-spacing-3, 12px);
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  max-width: calc(100vw - 32px);
+  min-height: 42px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 96px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10020;
+  border: none !important;
+  box-shadow: none;
+  color: var(--slds-g-color-brand-base-40, #0176d3) !important;
+}
+
+.scoped-notification-content {
+  display: flex;
+  align-items: center;
+  gap: var(--slds-g-spacing-3, 12px);
+  width: 100%;
+}
+
+.scoped-notification-icon {
+  flex-shrink: 0;
+  display: block;
+  vertical-align: middle;
+  color: var(--slds-g-color-info-1, #0176d3);
+}
+
+.scoped-notification-text {
+  font-family: var(--font-family-base, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: var(--slds-g-font-size-base, 13px);
+  font-weight: 590;
+  color: var(--slds-g-color-brand-base-40, #0176d3) !important;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.scoped-notification-separator {
+  color: var(--slds-g-color-neutral-base-20, #444444);
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 4px;
+}
+
+.scoped-notification-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.scoped-notification-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--slds-g-color-accent-1, #0176d3);
+}
+
+.scoped-notification-checkbox-text {
+  font-family: var(--font-family-base, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--slds-g-color-neutral-base-20, #444444);
+  line-height: 20px;
+  user-select: none;
+}
+
+.scoped-notification-cta-btn {
+  margin-left: 4px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  background: transparent !important;
+  color: var(--slds-g-color-info-1, #0176d3) !important;
+  font-family: var(--font-family-base, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 13px !important;
+  font-weight: 590;
+  line-height: 18px;
+  text-decoration: underline !important;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.scoped-notification-cta-btn:hover {
+  opacity: 0.9;
+}
+
+.scoped-notification .scoped-notification-cta-btn,
+.scoped-notification .scoped-notification-close-btn {
+  color: var(--slds-g-color-info-1, #0176d3) !important;
+}
+
+.scoped-notification-close-btn {
+  margin-left: 8px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--slds-g-color-info-1, #0176d3);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.scoped-notification-close-btn--labeled {
+  width: auto;
+  height: auto;
+  border-radius: 4px;
+  padding: 0 8px;
+  font-family: var(--font-family-base, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 13px !important;
+  font-weight: 590;
+  line-height: 18px;
+  white-space: nowrap;
+  text-decoration: underline !important;
+}
+
+.scoped-notification-close-btn--labeled:hover {
+  opacity: 0.9;
+}
+
+.scoped-notification--inline {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  width: 100%;
+  max-width: 100%;
+  z-index: 1;
+  box-shadow: none;
+}
+
+/* Full-width hint above hierarchical grid: wrap text, link pinned to the right */
+.scoped-notification--grid-totals-hint.scoped-notification--inline {
+  box-sizing: border-box;
+}
+
+.scoped-notification--grid-totals-hint .scoped-notification-content {
+  align-items: flex-start;
+  gap: var(--slds-g-spacing-3, 12px);
+}
+
+.scoped-notification--grid-totals-hint .scoped-notification-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: normal;
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+.scoped-notification--grid-totals-hint .scoped-notification-cta-btn {
+  margin-left: auto;
+  flex-shrink: 0;
+  align-self: flex-start;
+  padding-top: 1px;
+  font-weight: 400;
+}
+
+/* Inline totals-scope toggle: sits right after the banner text (left side); the
+   Clear filters link is pushed to the far-right corner so it isn't clicked by mistake. */
+.scoped-notification-totals-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.scoped-notification--grid-totals-hint .scoped-notification-text {
+  flex: 0 1 auto;
+}
+
+.scoped-notification--grid-totals-hint .scoped-notification-close-btn--labeled {
+  margin-left: auto;
+}
+
+.scoped-notification-totals-toggle-label {
+  font-family: var(--font-family-base, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 13px;
+  font-weight: 590;
+  color: var(--slds-g-color-brand-base-40, #0176d3);
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.scoped-notification--grid-totals-hint .scoped-notification-close-btn--labeled {
+  flex-shrink: 0;
+  align-self: center;
+}
+
+/* Body = children only (e.g. single toggle row in cell editor) */
+.scoped-notification--children-only {
+  box-sizing: border-box;
+}
+
+.scoped-notification--stack {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.scoped-notification--stack .scoped-notification-content {
+  align-items: flex-start;
+}
+
+.scoped-notification-slot {
+  width: 100%;
+  margin-top: var(--slds-g-spacing-2, 8px);
+  padding-top: var(--slds-g-spacing-2, 8px);
+  border-top: 1px solid rgba(1, 118, 211, 0.12);
+  box-sizing: border-box;
+}
+
+/* Inline switch (cell edit popover, etc.) */
+.scoped-notification-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--slds-g-spacing-3, 12px);
+  width: 100%;
+}
+
+.scoped-notification-toggle-label {
+  font-family: var(--font-family-base, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: var(--slds-g-font-size-3, 12px);
+  font-weight: 600;
+  color: var(--slds-g-color-neutral-base-20, #444444);
+  line-height: 1.25;
+  flex: 1;
+  min-width: 0;
+}
+
+.scoped-notification-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.scoped-notification-toggle:focus-visible {
+  outline: 2px solid var(--slds-g-color-accent-1, #0176d3);
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+
+.scoped-notification-toggle-track {
+  display: block;
+  width: 32px;
+  height: 18px;
+  background: var(--slds-g-color-neutral-base-80, #c9c9c9);
+  border-radius: 999px;
+  position: relative;
+  transition: background-color 0.2s ease;
+}
+
+.scoped-notification-toggle--on .scoped-notification-toggle-track {
+  background: var(--slds-g-color-accent-1, #0176d3);
+}
+
+.scoped-notification-toggle-thumb {
+  display: block;
+  width: 14px;
+  height: 14px;
+  background: var(--color-surface-white, #ffffff);
+  border-radius: 50%;
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--slds-g-color-neutral-base-10, #1b1b1b) 25%, transparent);
+}
+
+.scoped-notification-toggle--on .scoped-notification-toggle-thumb {
+  transform: translateX(14px);
+}
+
+.scoped-notification--inline .scoped-notification-text {
+  white-space: normal;
+}
+
+/* Plan-submitted tone — message color per spec */
+.scoped-notification--plan-submitted .scoped-notification-text {
+  color: var(--slds-g-color-brand-base-40, #0176d3) !important;
+}
+
+.scoped-notification--plan-submitted.scoped-notification--inline .scoped-notification-icon {
+  color: var(--slds-g-color-brand-base-40, #0176d3);
+}
+
+/* Success — approval submitted (green tone) */
+.scoped-notification--approval-success {
+  background-color: var(--slds-g-color-success-container-1, #ebf7ed) !important;
+  color: var(--slds-g-color-success-base-40, #2e844a) !important;
+  border: 1px solid var(--slds-g-color-success-2, #3ba755) !important;
+  box-shadow: 0 2px 8px rgba(57, 101, 71, 0.12);
+}
+
+.scoped-notification--approval-success .scoped-notification-text {
+  color: var(--slds-g-color-success-base-30, var(--slds-g-color-success-1, #396547)) !important;
+}
+
+.scoped-notification--approval-success .scoped-notification-icon {
+  color: var(--slds-g-color-success-2, #3ba755) !important;
+}
+
+.scoped-notification--approval-success .scoped-notification-cta-btn,
+.scoped-notification--approval-success .scoped-notification-close-btn {
+  color: var(--slds-g-color-success-base-30, var(--slds-g-color-success-1, #396547)) !important;
+}
+
+.scoped-notification--approval-success .scoped-notification-cta-btn:hover,
+.scoped-notification--approval-success .scoped-notification-close-btn:hover {
+  opacity: 0.88;
+}
+
+/* Allow line breaks in toast / banner message */
+.scoped-notification--multiline {
+  max-width: min(420px, calc(100vw - 32px));
+}
+
+.scoped-notification--multiline .scoped-notification-text {
+  white-space: pre-line;
+  text-align: center;
+}

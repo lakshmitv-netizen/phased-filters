@@ -1,0 +1,383 @@
+.header-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--color-surface-white);
+  box-shadow: var(--shadow-2);
+}
+
+/* Top Row */
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  padding: 0 16px;
+  background-color: var(--color-surface-white);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header-top-left {
+  display: flex;
+  align-items: center;
+}
+
+.salesforce-cloud-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.salesforce-cloud-logo svg {
+  width: 50px;
+  height: 35px;
+}
+
+.header-top-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.search-bar {
+  width: 100%;
+  max-width: 350px;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 12px 8px 36px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--color-dark-text);
+  background-color: var(--color-surface-white);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--color-primary-blue);
+}
+
+.search-input::placeholder {
+  color: var(--color-neutral-text);
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--color-neutral-text);
+}
+
+.header-top-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-icon-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--color-neutral-text);
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.header-icon:hover {
+  background-color: var(--color-surface-gray);
+}
+
+.header-agentforce-icon {
+  display: block;
+  object-fit: contain;
+}
+
+.header-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+button.header-bell-trigger {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
+
+button.header-bell-trigger.header-bell-trigger--open {
+  color: var(--slds-g-color-accent-1, var(--color-accent-blue));
+  background-color: var(--slds-g-color-accent-container-1);
+}
+
+button.header-setup-trigger {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
+
+button.header-setup-trigger.header-setup-trigger--open {
+  color: var(--slds-g-color-accent-1, var(--color-accent-blue));
+  background-color: var(--slds-g-color-accent-container-1);
+}
+
+.header-icon.header-icon--with-badge {
+  position: relative;
+}
+
+.header-notification-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background-color: var(--slds-g-color-error-2);
+  color: var(--slds-g-color-on-error-1, var(--color-surface-white));
+  font-size: 11px !important;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: center;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: visible;
+  cursor: pointer;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* App.css sets `button { background: none !important }` — color lives on inner span */
+.user-avatar-trigger {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-family: inherit;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+.user-avatar-initials-face {
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--slds-g-color-neutral-base-30);
+}
+
+.user-avatar-trigger:focus-visible {
+  outline: 2px solid var(--color-primary-blue);
+  outline-offset: 2px;
+}
+
+.header-user-switch-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  appearance: none;
+  box-sizing: border-box;
+}
+
+.header-user-switch-row:focus-visible {
+  outline: 2px solid var(--color-primary-blue);
+  outline-offset: -2px;
+}
+
+.header-user-switch-initials {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--slds-g-color-neutral-base-30);
+}
+
+/* Bottom Row - Navigation */
+.header-bottom {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 8px;
+  background-color: var(--color-surface-white);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header-bottom-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.app-launcher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.app-launcher:hover {
+  background-color: var(--color-surface-gray);
+}
+
+.app-launcher-icon {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.app-launcher-icon span {
+  width: 4px;
+  height: 4px;
+  background-color: var(--slds-g-color-neutral-base-50);
+  border-radius: 1px;
+}
+
+.app-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-dark-text);
+  padding-right: 16px;
+  margin-right: 8px;
+  border-right: 1px solid var(--color-border);
+}
+
+/* Navigation Tabs */
+.header-nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 100%;
+  flex: 1;
+  overflow-x: auto;
+}
+
+.header-nav-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.header-nav-tab {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 12px;
+  height: 40px;
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-dark-text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  transition: background-color 0.15s;
+}
+
+.header-nav-tab:hover {
+  background-color: color-mix(in srgb, var(--slds-g-color-neutral-base-10) 4%, transparent);
+}
+
+.header-nav-tab.active {
+  color: var(--slds-g-color-accent-1);
+  font-weight: 600;
+}
+
+.header-nav-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--slds-g-color-accent-1);
+}
+
+.tab-dropdown-arrow {
+  width: 12px;
+  height: 12px;
+  color: var(--color-neutral-text);
+}
+
+.header-bottom-right {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.pencil-button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--color-neutral-text);
+}
+
+.pencil-button:hover {
+  background-color: var(--color-surface-gray);
+}
+
+.pencil-button svg {
+  width: 16px;
+  height: 16px;
+}

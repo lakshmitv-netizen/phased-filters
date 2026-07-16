@@ -1,0 +1,66 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Prevent any plugin or browser defaults from overriding our styles */
+
+/*
+ * Strip default button chrome. Use :where() so specificity stays 0 — otherwise
+ * `button:not(.fill-handle)` beats `.col-filter-icon-btn` / `.col-sort-icon-btn`
+ * and `color: inherit !important` overrides their electric-blue icon colors.
+ * Fill handle stays excluded so it can keep its own fill/border.
+ */
+:where(button:not(.fill-handle)) {
+  background: none !important;
+  border: none !important;
+  font: inherit !important;
+  color: inherit !important;
+  cursor: pointer !important;
+}
+
+input {
+  font: inherit !important;
+  color: inherit !important;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden !important;
+}
+
+body {
+  font-family: var(--font-family-base) !important;
+  font-size: var(--font-size-base) !important;
+  line-height: var(--line-height-base) !important;
+  color: var(--color-dark-text) !important;
+  background: var(--slds-g-color-neutral-base-95) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--slds-g-color-neutral-base-95);
+  overflow: hidden;
+  min-height: 0; /* Important for flex children to shrink */
+}
+

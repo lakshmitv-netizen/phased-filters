@@ -1,0 +1,125 @@
+.tg-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+}
+
+.tg-modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-end;
+  width: 699px;
+}
+
+.tg-close {
+  background: #ffffff;
+  border: none;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #747474;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.tg-close:hover {
+  background-color: #f3f3f3;
+  color: #181818;
+}
+
+.tg-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 4px;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.16);
+  overflow: hidden;
+}
+
+.tg-header {
+  background: #ffffff;
+  border-bottom: 1px solid #c9c9c9;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tg-title {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 30px;
+  color: #181818;
+  text-align: center;
+}
+
+.tg-body {
+  background: #ffffff;
+  padding: 16px 30px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 80px;
+}
+
+.tg-field-label {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 13px;
+  font-weight: 590;
+  line-height: 18px;
+  color: #2e2e2e;
+}
+
+.tg-field-value {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #2e2e2e;
+}
+
+.tg-footer {
+  background: #f3f3f3;
+  box-shadow: 0px -1px 0px #c9c9c9;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 12px;
+  gap: 12px;
+  border-radius: 0 0 4px 4px;
+}
+
+/* background/border/color use !important to beat the global
+   `:where(button:not(.fill-handle)) { … !important }` reset in App.css */
+.tg-ok-btn {
+  background-color: #0176d3 !important;
+  color: #ffffff !important;
+  border: 1px solid #0176d3 !important;
+  border-radius: 4px;
+  height: 32px;
+  padding: 0 16px;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  cursor: pointer;
+}
+.tg-ok-btn:hover {
+  background-color: #014486 !important;
+  border-color: #014486 !important;
+}

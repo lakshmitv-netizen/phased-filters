@@ -1,0 +1,2330 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Commercial Planning for Manufacturing — feature setup page
+   Faithful reproduction of the Figma "Feature" setup screen (SLDS / SFGo).
+   All visuals are scoped under .cpm-feature-page.
+   ────────────────────────────────────────────────────────────────────────── */
+
+.cpm-feature-page {
+  --cpm-text: #181818;
+  --cpm-text-weak: #444444;
+  --cpm-link: #0b5cab;
+  --cpm-brand: #0176d3;
+  --cpm-error: #ba0517;
+  --cpm-border: #e5e5e5;
+  --cpm-border-strong: #c9c9c9;
+  --cpm-surface: #f3f3f3;
+  --cpm-disabled-text: #c9c9c9;
+
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  color: var(--cpm-text);
+  font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  overflow: hidden;
+}
+
+.cpm-feature-page * {
+  box-sizing: border-box;
+}
+
+/* ── Global header ───────────────────────────────────────────────────────── */
+.cpm-gh {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.cpm-gh-top {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 24px;
+  background: #ffffff;
+  position: relative;
+}
+
+.cpm-gh-logo {
+  width: 40px;
+  height: 28px;
+  flex: 0 0 auto;
+}
+
+.cpm-gh-search {
+  position: absolute;
+  left: 50%;
+  top: 9px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: stretch;
+}
+
+.cpm-gh-search .cpm-gh-search-all {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 8px 6px;
+  border: 1px solid var(--cpm-border);
+  border-radius: 4px 0 0 4px;
+  font-size: 12px;
+  color: #3e3e3c;
+  background: #fff;
+}
+
+.cpm-gh-search .cpm-gh-search-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 350px;
+  padding: 8px 8px 6px;
+  border: 1px solid var(--cpm-border);
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+  background: #fff;
+}
+
+.cpm-gh-search .cpm-gh-search-field span {
+  font-size: 13px;
+  color: #706e6b;
+}
+
+.cpm-gh-icons {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cpm-gh-icons > svg {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.cpm-gh-icons .cpm-gh-avatar {
+  display: inline-block;
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 38%, #1a8cff 0%, #0070d2 70%);
+}
+
+.cpm-gh-logo {
+  display: inline-flex;
+  align-items: center;
+}
+
+.cpm-gh-bottom {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 40px;
+  padding: 0 24px;
+  background: #fff;
+  box-shadow: inset 0 -3px 0 0 #1589ee;
+}
+
+.cpm-gh-setup {
+  font-size: 18px;
+  letter-spacing: 0.3px;
+  color: #000;
+}
+
+.cpm-gh-tab {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 37px;
+  padding: 8px 12px;
+  background: #eef4ff;
+  box-shadow: inset 0 3px 0 0 #1589ee;
+  font-size: 13px;
+  color: var(--cpm-text);
+}
+
+.cpm-gh-progress {
+  display: flex;
+  align-items: center;
+  height: 37px;
+  width: 154px;
+  padding: 10px 14px;
+  justify-content: space-between;
+  border-left: 1px solid #d4dbe6;
+}
+
+.cpm-gh-progress .bar {
+  width: 88px;
+  height: 8px;
+  border-radius: 20px;
+  background: #d4dbe6;
+}
+
+.cpm-chevron {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+}
+
+/* ── Body split (sidenav + main) ─────────────────────────────────────────── */
+.cpm-body {
+  flex: 1 1 auto;
+  display: flex;
+  min-height: 0;
+}
+
+/* ── Side nav ────────────────────────────────────────────────────────────── */
+.cpm-sidenav {
+  flex: 0 0 326px;
+  width: 326px;
+  background: #fff;
+  border-right: 1px solid #aeaeae;
+  overflow-y: auto;
+}
+
+.cpm-sidenav-search {
+  padding: 16px;
+}
+
+.cpm-sidenav-search-field {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid #e1e4ea;
+  border-radius: 4px;
+}
+
+.cpm-sidenav-search-field img {
+  width: 20px;
+  height: 20px;
+}
+
+.cpm-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  padding: 10px 14px;
+  background: #fff;
+  font-size: 13px;
+  letter-spacing: 0.22px;
+  color: var(--cpm-text);
+  cursor: pointer;
+}
+
+.cpm-nav-item:hover {
+  background: #f5f7fa;
+}
+
+.cpm-nav-item--selected {
+  background: #edf1f5;
+  box-shadow: inset 4px 0 0 0 #8595ad;
+}
+
+.cpm-nav-item--section {
+  letter-spacing: 1.26px;
+  cursor: default;
+}
+
+.cpm-nav-item--section:hover {
+  background: #fff;
+}
+
+.cpm-nav-chevron {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+}
+
+/* ── Main content ────────────────────────────────────────────────────────── */
+.cpm-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: var(--cpm-surface);
+  overflow-y: auto;
+}
+
+/* Hero */
+.cpm-hero-container {
+  background: #fff;
+}
+
+.cpm-colorbar {
+  height: 12px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    #022ac0 41%,
+    #3a49da 70%,
+    #9602c7 92%
+  );
+}
+
+.cpm-breadcrumb-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 32px;
+  background: #fff;
+}
+
+.cpm-breadcrumb {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 32px 8px 0;
+}
+
+.cpm-breadcrumb .crumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.cpm-breadcrumb .crumb-link {
+  color: var(--cpm-link);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.cpm-breadcrumb .crumb-link:hover {
+  text-decoration: underline;
+}
+
+.cpm-breadcrumb .crumb-current {
+  color: var(--cpm-text);
+}
+
+.cpm-breadcrumb .crumb-sep {
+  color: var(--cpm-link);
+}
+
+.cpm-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+
+.cpm-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.cpm-icon-btn:hover {
+  background: #f3f3f3;
+}
+
+.cpm-icon-btn img {
+  width: 16px;
+  height: 16px;
+}
+
+.cpm-hero {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 16px 32px 32px;
+  background: #fff;
+}
+
+.cpm-hero-content {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cpm-cloud-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 24px;
+}
+
+.cpm-cloud-row img {
+  width: 24px;
+  height: 24px;
+}
+
+.cpm-cloud-row span {
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--cpm-text);
+}
+
+.cpm-hero-title {
+  margin: 0;
+  font-size: 42px;
+  line-height: 42px;
+  font-weight: 400;
+  color: var(--cpm-text);
+}
+
+.cpm-hero-desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--cpm-text);
+  text-align: justify;
+}
+
+.cpm-badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 2px 8px;
+  border: 1px solid var(--cpm-border-strong);
+  border-radius: 23px;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--cpm-text);
+}
+
+/* Media asset (video card) */
+.cpm-media {
+  flex: 0 0 auto;
+  width: 500px;
+  max-width: 42%;
+  align-self: stretch;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cpm-media-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(207, 233, 254, 0.5),
+    rgba(144, 208, 254, 0.5)
+  );
+}
+
+.cpm-media-bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5;
+}
+
+.cpm-media-play {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.cpm-media-play img {
+  width: 48px;
+  height: 48px;
+}
+
+/* ── Sections ────────────────────────────────────────────────────────────── */
+/* Two-column layout: step sections on the left, info rail on the right. */
+.cpm-content-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 24px 25px;
+}
+
+.cpm-sections {
+  /* Middle column grows to fill wide screens. On resize it only starts shrinking
+     once the right rail has bottomed out at its 50% floor: its shrink weight is
+     tiny compared to the aside, so the aside absorbs nearly all shrinkage first,
+     then the middle column takes over down to its own min-width. */
+  flex: 1 1 600px;
+  min-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cpm-section {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 16px 16px 24px;
+  background: #fff;
+  border: 1px solid var(--cpm-border);
+  border-radius: 8px;
+  width: 100%;
+}
+
+/* Right rail */
+.cpm-aside {
+  /* Right rail shrinks first when the window narrows. Its high shrink weight
+     makes it absorb nearly all the shrinkage until it hits 237px — exactly 50%
+     of its 473px basis — after which the middle column starts to shrink. */
+  flex: 0 100 473px;
+  width: auto;
+  min-width: 237px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cpm-aside-card {
+  background: #fff;
+  border: 1px solid var(--cpm-border);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.cpm-aside-video {
+  height: 150px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #f0f0f0 0%, #e6e6e6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #706e6b;
+  font-style: italic;
+  font-size: 15px;
+  margin-bottom: 16px;
+}
+
+.cpm-aside-title {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--cpm-text);
+}
+
+.cpm-aside-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #0176d3;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cpm-aside-link:hover {
+  text-decoration: underline;
+}
+
+.cpm-aside-link--lg {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.cpm-aside-text {
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--cpm-text-weak);
+}
+
+.cpm-section-chevron {
+  flex: 0 0 24px;
+  width: 24px;
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.cpm-section-chevron img {
+  width: 16px;
+  height: 16px;
+}
+
+.cpm-section-body {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.cpm-section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cpm-section-title {
+  margin: 0;
+  font-size: 18px;
+  line-height: 32px;
+  font-weight: 600;
+  color: var(--cpm-text);
+}
+
+.cpm-section-title--toggle {
+  cursor: pointer;
+  user-select: none;
+}
+
+.cpm-section-desc {
+  margin: 0;
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--cpm-text-weak);
+}
+
+/* Steps / accordion */
+.cpm-steps {
+  display: flex;
+  flex-direction: column;
+}
+
+.cpm-step {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  background: #fff;
+}
+
+.cpm-step-rail {
+  flex: 0 0 24px;
+  width: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cpm-step-marker {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+}
+
+.cpm-step-line {
+  flex: 1 1 auto;
+  width: 1px;
+  background: #e5e5e5;
+}
+
+.cpm-step-content {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 32px;
+}
+
+.cpm-step-main {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.cpm-step-text {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cpm-step-title {
+  margin: 4px 0 0;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--cpm-text-weak);
+}
+
+.cpm-step-desc {
+  margin: 0;
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--cpm-text-weak);
+}
+
+.cpm-link {
+  color: var(--cpm-link);
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cpm-link:hover {
+  text-decoration: underline;
+}
+
+.cpm-link-inline {
+  color: #0469c1;
+  cursor: pointer;
+}
+
+.cpm-link-inline:hover {
+  text-decoration: underline;
+}
+
+.cpm-learn-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cpm-learn-more img {
+  width: 14px;
+  height: 14px;
+}
+
+.cpm-step-controls {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Buttons */
+.cpm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  background: #fff;
+}
+
+.cpm-btn img {
+  width: 14px;
+  height: 14px;
+}
+
+/*
+ * App.css applies a global `:where(button:not(.fill-handle))` reset that forces
+ * background/border/color with !important. Per the codebase convention, button
+ * skins must restate those properties with !important to win against the reset.
+ * Colors follow SLDS button hierarchy: brand-outline (Cancel) + brand (Save).
+ */
+.cpm-btn {
+  background: #fff !important;
+  border: 1px solid transparent !important;
+  color: var(--cpm-text) !important;
+  font: 400 13px/20px 'Segoe UI', 'SF Pro Display', -apple-system, sans-serif !important;
+  cursor: pointer !important;
+}
+
+.cpm-btn--outline {
+  border: 1px solid var(--cpm-brand) !important;
+  color: var(--cpm-brand) !important;
+  background: #fff !important;
+}
+
+.cpm-btn--outline:hover {
+  background: #f3faff !important;
+}
+
+.cpm-btn--neutral {
+  border: 1px solid var(--cpm-border-strong) !important;
+  color: var(--cpm-text) !important;
+  background: #fff !important;
+}
+
+.cpm-btn--neutral:hover {
+  background: #f3f3f3 !important;
+}
+
+.cpm-btn--brand {
+  border: 1px solid var(--cpm-brand) !important;
+  background: var(--cpm-brand) !important;
+  color: #fff !important;
+}
+
+.cpm-btn--brand:hover {
+  background: #0167bd !important;
+  border-color: #0167bd !important;
+}
+
+.cpm-btn--secondary {
+  border: 1px solid var(--cpm-border-strong) !important;
+  background: #fff !important;
+  color: var(--cpm-text) !important;
+}
+
+.cpm-btn--secondary:hover {
+  background: #f3f3f3 !important;
+}
+
+.cpm-btn--disabled {
+  border: 1px solid var(--cpm-border-strong) !important;
+  color: var(--cpm-disabled-text) !important;
+  background: #fff !important;
+  cursor: not-allowed !important;
+}
+
+.cpm-btn--turn-on {
+  background: #a0a0a0 !important;
+  color: #fff !important;
+  border: 1px solid #a0a0a0 !important;
+  cursor: not-allowed !important;
+}
+
+/* Embedded content (data space) */
+.cpm-embedded {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.cpm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 384px;
+  max-width: 100%;
+}
+
+.cpm-field-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #444;
+}
+
+.cpm-field-label .cpm-info {
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+  color: var(--cpm-brand);
+}
+
+.cpm-select {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 32px 0 12px;
+  border: 1px solid var(--cpm-border-strong);
+  border-radius: 4px;
+  background: #fff;
+  font-size: 13px;
+  color: #706e6b;
+}
+
+.cpm-select::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid #747474;
+  border-bottom: 1.5px solid #747474;
+  transform: translateY(-65%) rotate(45deg);
+}
+
+.cpm-save-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  width: 100%;
+}
+
+.cpm-save-warning {
+  font-size: 14px;
+  line-height: 19px;
+  font-weight: 700;
+  color: var(--cpm-error);
+  white-space: nowrap;
+}
+
+.cpm-save-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Turn-on section variant (collapsed: title row + action on the right) */
+.cpm-section--turnon .cpm-section-body {
+  gap: 12px;
+}
+
+.cpm-turnon-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+}
+
+.cpm-turnon-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cpm-turnon-title .cpm-section-title {
+  display: inline;
+}
+
+.cpm-warning-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+}
+
+/* ── Turn On — loading / automation progress state ──────────────────────── */
+.cpm-spinner {
+  animation: cpm-spin 0.7s linear infinite;
+}
+
+@keyframes cpm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cpm-turnon-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.cpm-turnon-progress-text {
+  font-size: 12px;
+  line-height: 18px;
+  color: #747474;
+  white-space: nowrap;
+}
+
+.cpm-automation-steps {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.cpm-auto-step {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+  width: 100%;
+}
+
+.cpm-auto-step .cpm-step-rail {
+  flex: 0 0 24px;
+  width: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cpm-auto-step .cpm-step-line {
+  flex: 1 1 auto;
+  width: 1px;
+  min-height: 16px;
+  background: #e5e5e5;
+  margin: 2px 0;
+}
+
+.cpm-auto-step-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0 16px;
+}
+
+.cpm-auto-step-link {
+  font-family: 'SF Pro Display', 'Segoe UI', -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: #0b5cab;
+  white-space: nowrap;
+}
+
+/* ── Turn On — "On" badge ───────────────────────────────────────────────── */
+.cpm-on-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 12px;
+  border-radius: 12px;
+  background: #2e844a;
+  color: #ffffff;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  flex: 0 0 auto;
+}
+
+/* ── Complete the Required Steps ────────────────────────────────────────── */
+.cpm-req {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.cpm-req-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cpm-req-lead {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cpm-req-ind {
+  flex: 0 0 20px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.cpm-req-ind--check {
+  margin-top: 2px;
+}
+
+.cpm-req-ind--btn {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  align-items: flex-start;
+}
+
+.cpm-req-lead-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.cpm-req-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cpm-req-title {
+  margin: 0;
+  font-family: 'SF Pro Display', 'Segoe UI', -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 700;
+  color: var(--cpm-text);
+}
+
+.cpm-req-desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--cpm-text-weak);
+}
+
+.cpm-optional-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 8px;
+  border-radius: 4px;
+  background: #ecebea;
+  color: #514f4d;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+}
+
+.cpm-req-subs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-left: 32px;
+}
+
+.cpm-req-sub,
+.cpm-req-single {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+}
+
+.cpm-req-single {
+  align-items: flex-start;
+}
+
+.cpm-req-sub-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.cpm-req-sub-title {
+  margin: 0;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 700;
+  color: var(--cpm-text);
+}
+
+.cpm-req-sub-desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--cpm-text-weak);
+}
+
+.cpm-req-meta {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: #2e844a;
+}
+
+.cpm-req-sub .cpm-btn,
+.cpm-req-single .cpm-btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* ── Setup Hierarchies modal ────────────────────────────────────────────── */
+.cpm-hier-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(8, 7, 7, 0.6);
+}
+
+.cpm-hier-modal {
+  display: flex;
+  flex-direction: column;
+  width: 1180px;
+  max-width: 96vw;
+  /* Fixed height so the modal never resizes as content (rows/panels) changes. */
+  height: 760px;
+  max-height: 90vh;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+}
+
+.cpm-hier-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--cpm-border);
+}
+
+.cpm-hier-title {
+  margin: 0;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+  color: var(--cpm-text);
+}
+
+.cpm-hier-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+.cpm-hier-close:hover {
+  background: #f3f3f3 !important;
+}
+
+/* Tabs live at the top of the right section, next to the DIMENSIONS panel. */
+.cpm-hier-tabs {
+  display: flex;
+  gap: 24px;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0 12px;
+  border-bottom: 2px solid #dddbda;
+}
+
+.cpm-hier-tab {
+  position: relative;
+  padding: 4px 0 12px;
+  background: transparent !important;
+  border: none !important;
+  color: var(--cpm-text-weak) !important;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  cursor: pointer !important;
+}
+
+.cpm-hier-tab.is-active {
+  color: var(--cpm-link) !important;
+}
+
+.cpm-hier-tab.is-active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: var(--cpm-brand);
+}
+
+.cpm-hier-notice {
+  flex: 0 0 auto;
+  margin: 16px 20px;
+  padding: 10px 16px;
+  border-radius: 4px;
+  background: #d8edff;
+  border: 1px solid #91c9f7;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--cpm-text);
+}
+
+/* Body is a vertical stack: tabs, notice, then the flexible content row. */
+.cpm-hier-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 16px 0 0;
+  overflow: hidden;
+}
+
+/* The horizontal content area (left dims + table + optional edit panel). */
+.cpm-hier-content {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0 20px 16px;
+  border: 1px solid var(--cpm-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cpm-hier-side {
+  flex: 0 0 160px;
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--cpm-border);
+  background: #fff;
+  overflow: auto;
+}
+
+.cpm-hier-side-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: #fafafa;
+}
+
+.cpm-hier-side-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--cpm-text-weak);
+}
+
+.cpm-hier-side-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--cpm-border-strong) !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  cursor: pointer !important;
+}
+
+.cpm-hier-dims {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cpm-hier-dim {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border: none !important;
+  border-left: 4px solid transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--cpm-text) !important;
+  font-size: 13px;
+  line-height: 18px;
+  cursor: pointer !important;
+}
+
+.cpm-hier-dim:hover {
+  background: #e8e8e8 !important;
+}
+
+.cpm-hier-dim.is-active {
+  background: #d9edff !important;
+  border-left: 4px solid var(--cpm-brand) !important;
+  color: var(--cpm-link) !important;
+  font-weight: 600;
+}
+
+/* Right section (next to DIMENSIONS): holds the tabs + the content below them. */
+.cpm-hier-main {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Row below the tabs: table (+ optional 3rd edit panel). */
+.cpm-hier-inner {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+}
+
+/* Middle column: the hierarchies table (scrolls internally). */
+.cpm-hier-table-wrap {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.cpm-hier-toolbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 8px;
+  border-bottom: 1px solid var(--cpm-border);
+}
+
+.cpm-hier-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 0;
+  max-width: 360px;
+  padding: 6px 12px;
+  border: 1px solid var(--cpm-border-strong);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.cpm-hier-search input {
+  flex: 1 1 0;
+  min-width: 0;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  color: var(--cpm-text);
+  background: transparent;
+}
+
+.cpm-hier-sync {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent !important;
+  border: none !important;
+  color: var(--cpm-link) !important;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer !important;
+  white-space: nowrap;
+}
+
+.cpm-hier-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  color: var(--cpm-text);
+}
+
+.cpm-hier-table-scroll {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.cpm-hier-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cpm-text-weak);
+  background: #fafafa;
+  border-bottom: 1px solid var(--cpm-border);
+  white-space: nowrap;
+}
+
+.cpm-hier-table tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--cpm-border);
+  vertical-align: middle;
+}
+
+.cpm-hier-table tbody tr:hover {
+  background: #f8f8f8;
+}
+
+.cpm-hier-cb-col {
+  width: 40px;
+}
+
+.cpm-hier-caret-col {
+  width: 36px;
+  text-align: right;
+}
+
+.cpm-hier-cb {
+  display: inline-flex;
+  align-items: center;
+}
+
+.cpm-hier-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cpm-hier-active {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 8px;
+  border-radius: 10px;
+  background: #2e844a;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.cpm-hier-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.cpm-hier-sync-time {
+  color: var(--cpm-text-weak);
+  white-space: nowrap;
+}
+
+.cpm-hier-row-kebab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 24px;
+  border: 1px solid var(--cpm-border-strong) !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5c5c5c !important;
+  cursor: pointer !important;
+}
+
+.cpm-hier-row-kebab:hover {
+  background: #f3f3f3 !important;
+}
+
+.cpm-hier-lvl-menu-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.cpm-hier-lvl-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 20;
+  min-width: 140px;
+  padding: 4px;
+  background: #fff;
+  border: 1px solid var(--cpm-border-strong);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+  display: flex;
+  flex-direction: column;
+}
+
+.cpm-hier-lvl-menu--up {
+  top: auto;
+  bottom: calc(100% + 4px);
+}
+
+.cpm-hier-lvl-menu-item {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-size: 13px;
+  color: #1a1a1a;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cpm-hier-lvl-menu-item:hover {
+  background: #f3f3f3;
+}
+
+.cpm-hier-lvl-menu-item:disabled {
+  color: #b0b0b0;
+  cursor: not-allowed;
+  background: transparent;
+}
+
+.cpm-hier-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 12px 20px;
+  background: #f3f3f3;
+  border-top: 1px solid var(--cpm-border);
+}
+
+.cpm-hier-footer-save {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cpm-hier-save-warn {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cpm-hier-save-warn-icon {
+  display: inline-flex;
+  align-items: center;
+  cursor: default;
+}
+
+.cpm-hier-save-warn-pop {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: -8px;
+  width: 220px;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid var(--cpm-border);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+  color: var(--cpm-text);
+  font-size: 13px;
+  line-height: 1.4;
+  z-index: 20;
+}
+
+.cpm-hier-save-warn-pop::after,
+.cpm-hier-save-warn-pop::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 12px;
+  border: 7px solid transparent;
+}
+
+.cpm-hier-save-warn-pop::before {
+  border-top-color: var(--cpm-border);
+}
+
+.cpm-hier-save-warn-pop::after {
+  border-top-color: #fff;
+  margin-top: -1px;
+}
+
+.cpm-hier-empty {
+  padding: 24px 12px;
+  text-align: center;
+  color: var(--cpm-text-weak);
+}
+
+.cpm-hier-table tbody tr.is-selected {
+  background: #eef4ff;
+}
+
+/* Widen the modal when the 3rd (edit) panel is open. Height stays fixed. */
+.cpm-hier-modal--wide {
+  width: 1440px;
+}
+
+/* ── 3rd panel: edit/clone (opens beside the table) ─────────────────────── */
+.cpm-hier-edit {
+  flex: 0 0 424px;
+  width: 424px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: #fff;
+  border-left: 1px solid var(--cpm-border);
+}
+
+.cpm-hier-edit-head {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  border-bottom: 1px solid #d9d9d9;
+}
+.cpm-hier-edit-close {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #706e6b;
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cpm-hier-edit-close:hover {
+  background-color: #f3f3f3;
+  color: #080707;
+}
+
+.cpm-hier-edit-title {
+  margin: 0;
+  flex: 1 1 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--cpm-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cpm-hier-edit-actions {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.cpm-hier-edit-cancel,
+.cpm-hier-edit-save {
+  height: 32px;
+  min-width: 70px;
+  padding: 0 16px;
+  border-radius: 4px !important;
+  font-size: 13px;
+  cursor: pointer !important;
+}
+
+.cpm-hier-edit-cancel {
+  border: none !important;
+  background: #fff !important;
+  color: var(--cpm-text) !important;
+  font-weight: 400;
+}
+
+.cpm-hier-edit-cancel:hover {
+  background: #f3f3f3 !important;
+}
+
+.cpm-hier-edit-save {
+  margin-left: 8px;
+  border: 1px solid var(--cpm-brand) !important;
+  background: var(--cpm-brand) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+/* Edit / Clone segmented button-group toggle in hierarchy panel header */
+.cpm-hier-mode-toggle {
+  display: inline-flex;
+  flex-shrink: 0;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cpm-hier-mode-btn {
+  padding: 4px 14px;
+  font-size: 12px;
+  font-weight: 400;
+  background: #fff !important;
+  border: none !important;
+  border-right: 1px solid #c9c9c9 !important;
+  color: #5c5c5c !important;
+  cursor: pointer !important;
+  line-height: 1.5;
+}
+
+.cpm-hier-mode-btn:last-child {
+  border-right: none !important;
+}
+
+.cpm-hier-mode-btn.is-active {
+  background: var(--cpm-brand) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.cpm-hier-mode-btn:not(.is-active):hover {
+  background: #f3f3f3 !important;
+  color: var(--cpm-link) !important;
+}
+
+.cpm-hier-edit-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.cpm-hier-edit-note {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px;
+  border-radius: 4px;
+  background: #e8f4f8;
+  border: 1px solid #1b96c9;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--cpm-text);
+}
+
+.cpm-hier-edit-note p {
+  margin: 0;
+}
+
+.cpm-hier-edit-note-icon,
+.cpm-hier-cf-info {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--cpm-link) !important;
+  background: transparent !important;
+  color: var(--cpm-link) !important;
+  font-size: 11px;
+  font-style: italic;
+  font-weight: 700;
+  font-family: Georgia, 'Times New Roman', serif;
+  cursor: default;
+}
+
+.cpm-hier-cf-info {
+  cursor: pointer !important;
+}
+
+/* Edit tab — level tree */
+.cpm-hier-tree {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--cpm-border-strong);
+  border-radius: 4px;
+  overflow-y: auto;
+}
+
+.cpm-hier-tree-head {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: var(--cpm-level-col-w, 1fr) 1fr;
+  background: #f3f3f3;
+  border-bottom: 1px solid var(--cpm-border-strong);
+  font-size: 12px;
+  font-weight: 600;
+  color: #5c5c5c;
+}
+
+.cpm-hier-tree-head span {
+  padding: 8px 12px;
+}
+
+.cpm-hier-tree-row {
+  display: grid;
+  grid-template-columns: var(--cpm-level-col-w, 1fr) 1fr;
+  min-height: 40px;
+  border-bottom: 1px solid var(--cpm-border);
+}
+
+.cpm-hier-tree-row:last-child {
+  border-bottom: none;
+}
+
+.cpm-hier-tree-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 6px 12px;
+}
+
+.cpm-hier-tree-row .cpm-hier-tree-cell:first-child {
+  padding-left: calc(12px + var(--cpm-lvl, 0) * 12px);
+}
+
+.cpm-hier-tree-chev {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none !important;
+  background: none !important;
+  color: #5c5c5c !important;
+  cursor: pointer !important;
+}
+
+.cpm-hier-tree-chev.is-empty {
+  visibility: hidden;
+}
+
+.cpm-hier-tree-link {
+  flex: 0 1 auto;
+  min-width: 0;
+  color: var(--cpm-link);
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cpm-hier-tree-input,
+.cpm-hier-cf-name {
+  width: 100%;
+  height: 28px;
+  padding: 4px 8px;
+  border: 1px solid var(--cpm-border-strong);
+  border-radius: 4px;
+  background: #fff;
+  font-size: 13px;
+  color: var(--cpm-text);
+  outline: none;
+}
+
+.cpm-hier-tree-input:focus,
+.cpm-hier-cf-name:focus,
+.cpm-hier-cf-input:focus {
+  border-color: var(--cpm-brand);
+  box-shadow: 0 0 0 1px var(--cpm-brand);
+}
+
+/* Create (New Hierarchy) + Clone form */
+.cpm-hier-create {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.cpm-hier-ct-footer {
+  flex: 0 0 auto;
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px;
+  background: #fff;
+  border-top: 1px solid var(--cpm-border-strong);
+}
+
+/* SLDS 2 (Cosmos, light theme) neutral button — values resolved from
+   @salesforce-ux/design-system-2 button blueprint + cosmos design tokens:
+   bg surface-container-1 #fff, border border-2 #5c5c5c, text accent-2
+   (brand-40) #0250d9, font-weight 600, pill radius, hover surface-container-2
+   #f3f3f3 / accent-3 (brand-30) #022ac0. */
+.cpm-btn--neutral-slds {
+  background-color: #fff !important;
+  border: 1px solid #5c5c5c !important;
+  color: #0250d9 !important;
+  font-weight: 600 !important;
+  border-radius: 15rem !important;
+  padding: 0 16px !important;
+}
+
+.cpm-btn--neutral-slds:hover {
+  background-color: #f3f3f3 !important;
+  border-color: #5c5c5c !important;
+  color: #022ac0 !important;
+}
+
+.cpm-btn--neutral-slds:active {
+  background-color: #f3f3f3 !important;
+  color: #022ac0 !important;
+}
+
+.cpm-hier-cf-row {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.cpm-hier-cf-row--v {
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cpm-hier-cf-sec {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cpm-hier-cf-row--v .cpm-hier-cf-sec {
+  width: 100%;
+}
+
+.cpm-hier-cf-label {
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 590;
+  color: #5c5c5c;
+}
+
+.cpm-hier-cf-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 18px;
+  margin-bottom: 8px;
+}
+
+.cpm-hier-cf-label-row .cpm-hier-cf-label {
+  margin-bottom: 0;
+}
+
+.cpm-hier-cf-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--cpm-border-strong);
+  border-radius: 4px;
+  background: #fff;
+  font-size: 13px;
+  color: var(--cpm-text);
+  outline: none;
+}
+
+.cpm-hier-cf-input--error,
+.cpm-hier-cf-input--error:focus {
+  border-color: #ba0517;
+  box-shadow: 0 0 0 1px #ba0517;
+}
+
+.cpm-hier-cf-error {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #ba0517;
+}
+
+.cpm-hier-cf-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='14' height='14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 9 3 5h8L7 9z' fill='%23747474'/%3E%3C/svg%3E");
+  background-position: right 8px center;
+  background-repeat: no-repeat;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+.cpm-hier-cf-stepper {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  border: 1px solid var(--cpm-border-strong);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cpm-hier-cf-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  padding: 8px 16px;
+  border: none !important;
+  background: #fff !important;
+  color: var(--cpm-link) !important;
+  font-size: 18px;
+  cursor: pointer !important;
+}
+
+.cpm-hier-cf-step:first-child {
+  border-right: 1px solid var(--cpm-border-strong) !important;
+}
+
+.cpm-hier-cf-step:last-child {
+  border-left: 1px solid var(--cpm-border-strong) !important;
+}
+
+.cpm-hier-cf-step:hover {
+  background: #f3f3f3 !important;
+}
+
+.cpm-hier-cf-step-val {
+  min-width: 50px;
+  padding: 8px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--cpm-text);
+}
+
+.cpm-hier-ct {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--cpm-border-strong);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cpm-hier-ct-head {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: var(--cpm-level-col-w, 1fr) 1fr 50px;
+  background: #f3f3f3;
+  border-bottom: 1px solid var(--cpm-border-strong);
+  font-size: 12px;
+  font-weight: 590;
+  color: #5c5c5c;
+}
+
+.cpm-hier-ct-head span {
+  padding: 8px;
+}
+
+.cpm-hier-ct-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.cpm-hier-ct-row {
+  display: grid;
+  grid-template-columns: var(--cpm-level-col-w, 1fr) 1fr 50px;
+  min-height: 40px;
+  border-bottom: 1px solid var(--cpm-border-strong);
+}
+
+.cpm-hier-col-th {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cpm-hier-col-resizer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  transform: translateX(50%);
+  cursor: col-resize;
+  z-index: 3;
+  touch-action: none;
+  user-select: none;
+}
+
+.cpm-hier-col-resizer::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  border-radius: 1px;
+  background: var(--cpm-border-strong);
+}
+
+.cpm-hier-col-resizer:hover::after,
+.cpm-hier-col-resizer:active::after {
+  background: var(--cpm-accent, #0073e6);
+  width: 3px;
+}
+
+.cpm-hier-ct-row:last-child {
+  border-bottom: none;
+}
+
+.cpm-hier-ct-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px;
+}
+
+.cpm-hier-ct-cell--act {
+  justify-content: center;
+  padding: 4px;
+}
+
+.cpm-hier-ct-row .cpm-hier-ct-cell:first-child {
+  padding-left: calc(12px + var(--cpm-lvl, 0) * 12px);
+}
+
+/* ── Tooltip (SLDS) ──────────────────────────────────────────────────────── */
+.cpm-tooltip-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  outline: none;
+}
+
+.cpm-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 200px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: #032d60;
+  color: #ffffff;
+  font-family: 'Segoe UI', 'SF Pro Display', -apple-system, sans-serif;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: left;
+  filter: drop-shadow(0 2px 1.5px rgba(0, 0, 0, 0.16));
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.1s ease;
+  z-index: 100;
+}
+
+/* Downward nubbin */
+.cpm-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #032d60;
+}
+
+.cpm-tooltip-wrap:hover .cpm-tooltip,
+.cpm-tooltip-wrap:focus .cpm-tooltip,
+.cpm-tooltip-wrap:focus-visible .cpm-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ── Configure Data Selection modal ──────────────────────────────────────── */
+.cpm-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(8, 7, 7, 0.6);
+}
+
+.cpm-modal-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  width: 800px;
+  max-width: 90vw;
+}
+
+.cpm-modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px !important;
+  background: #ffffff !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+.cpm-modal-close:hover {
+  background: #f3f3f3 !important;
+}
+
+.cpm-modal {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+.cpm-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  background: #fff;
+  box-shadow: 0 1px 0 #c9c9c9;
+}
+
+.cpm-modal-title {
+  flex: 1 1 0;
+  margin: 0;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 400;
+  text-align: center;
+  color: #03234d;
+}
+
+.cpm-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+}
+
+.cpm-modal-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 19px;
+  color: var(--cpm-text);
+}
+
+.cpm-modal-disclaimers {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cpm-modal-disc-title {
+  margin: 0;
+  font-size: 16px;
+  line-height: 21px;
+  font-weight: 700;
+  color: var(--cpm-text);
+}
+
+.cpm-modal-disc-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  border-radius: 4px;
+  background: #f3f3f3;
+}
+
+.cpm-modal-disc-head {
+  margin: 0;
+  font-size: 12px;
+  line-height: 17px;
+  font-weight: 700;
+  color: #000;
+}
+
+.cpm-modal-disc-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 19px;
+  color: var(--cpm-text);
+}
+
+.cpm-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  height: 56px;
+  padding: 0 12px;
+  background: #f3f3f3;
+  box-shadow: 0 -1px 0 #c9c9c9;
+}

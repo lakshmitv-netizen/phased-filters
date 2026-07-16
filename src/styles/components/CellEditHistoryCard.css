@@ -1,0 +1,543 @@
+/* Salesforce Timeline Item */
+.sf-timeline-item {
+  display: flex;
+  gap: 12px;
+  position: relative;
+}
+
+/* Left Side: Arrow + Avatar + Line */
+.sf-timeline-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 56px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.sf-timeline-left-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sf-timeline-expand-btn {
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: none;
+  color: var(--slds-g-color-neutral-base-40);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+}
+
+.sf-timeline-expand-btn:hover {
+  color: var(--slds-g-color-neutral-base-10);
+}
+
+.sf-timeline-item.expanded .sf-timeline-expand-btn {
+  color: var(--slds-g-color-neutral-base-10);
+}
+
+/* Spacer when no expand button needed */
+.sf-timeline-expand-spacer {
+  width: 20px;
+  height: 20px;
+}
+
+.sf-timeline-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--slds-g-color-accent-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sf-timeline-avatar-initials {
+  color: var(--slds-g-color-surface-1);
+  font-size: 12px !important;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.sf-timeline-line {
+  width: 3px;
+  flex: 1;
+  margin-top: 6px;
+  margin-bottom: -16px;
+  align-self: flex-start;
+  margin-left: 39px;
+  border-radius: 1.5px;
+  background-color: var(--slds-g-color-accent-1);
+  opacity: 0.4;
+  min-height: 24px;
+}
+
+/* Right Side: Content */
+.sf-timeline-content {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 20px;
+}
+
+.sf-timeline-header {
+  padding-top: 0;
+}
+
+.sf-timeline-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sf-timeline-cell-context {
+  font-size: 12px !important;
+  font-weight: 600;
+  color: var(--slds-g-color-accent-1);
+  background-color: var(--slds-g-color-accent-container-1);
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+  display: inline-block;
+}
+
+/* Multi-cell mode: Cell context as primary header */
+.sf-timeline-cell-context-header-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sf-timeline-cell-context-header {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--slds-g-color-neutral-base-10);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: calc(100% - 30px); /* Reserve space for info icon */
+}
+
+.sf-timeline-hierarchy-info-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.sf-timeline-hierarchy-info-btn {
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  color: var(--slds-g-color-border-base-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.sf-timeline-hierarchy-info-btn:hover {
+  color: var(--slds-g-color-accent-1);
+  background-color: var(--slds-g-color-accent-container-1);
+}
+
+.sf-timeline-hierarchy-tooltip {
+  position: fixed;
+  background-color: var(--slds-g-color-brand-base-20);
+  color: var(--color-surface-white);
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  z-index: 10002;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 20%, transparent);
+  min-width: 280px;
+  max-width: 400px;
+  white-space: normal;
+}
+
+.sf-timeline-hierarchy-tooltip-nubbin {
+  position: absolute;
+  top: -6px;
+  right: 16px;
+  transform: rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background-color: var(--slds-g-color-brand-base-20);
+  z-index: 10003;
+}
+
+.sf-timeline-avatar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-surface-white);
+}
+
+.sf-timeline-user-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.sf-timeline-username-secondary {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--slds-g-color-neutral-base-40);
+  line-height: 1.4;
+}
+
+/* View all changes button */
+.sf-timeline-view-all-btn {
+  background: none;
+  border: none;
+  color: var(--slds-g-color-accent-1);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-family-base);
+  cursor: pointer;
+  padding: 4px 0;
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.15s ease;
+}
+
+.sf-timeline-view-all-btn:hover {
+  color: var(--slds-g-color-brand-base-30);
+  text-decoration: underline;
+}
+
+.sf-timeline-username {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--slds-g-color-neutral-base-10);
+  line-height: 1.4;
+}
+
+.sf-timeline-draft-badge {
+  font-size: 12px !important;
+  font-weight: 600;
+  color: var(--slds-g-color-warning-2);
+  background-color: var(--slds-g-color-warning-container-1);
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sf-timeline-timestamp {
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  margin-left: auto;
+}
+
+.sf-timeline-subtitle {
+  font-size: 13px;
+  color: var(--slds-g-color-neutral-base-20);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+.sf-timeline-subtitle strong {
+  font-weight: 600;
+  color: var(--slds-g-color-neutral-base-10);
+}
+
+.sf-timeline-delta {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* Orange for increase, Blue for decrease */
+.sf-timeline-delta.increase {
+  color: var(--slds-g-color-palette-hot-orange-60);
+}
+
+.sf-timeline-delta.decrease {
+  color: var(--slds-g-color-accent-1);
+}
+
+/* Note Preview for note-only entries */
+.sf-timeline-note-preview {
+  display: block;
+  color: var(--slds-g-color-neutral-base-20);
+}
+
+.sf-timeline-note-text {
+  font-style: italic;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  display: block;
+  line-height: 1.5;
+}
+
+/* Approval Status Change Display */
+.sf-timeline-approval-status-change {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sf-timeline-approval-badge {
+  display: inline-block;
+  font-size: 12px !important;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
+.sf-timeline-approval-badge--notsubmitted {
+  background-color: var(--slds-g-color-neutral-base-90);
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+.sf-timeline-approval-badge--pending {
+  background-color: var(--slds-g-color-warning-container-1);
+  color: var(--slds-g-color-warning-1);
+}
+
+/* Legacy statuses - map to notSubmitted styles */
+.sf-timeline-approval-badge--needsmoreinfo {
+  background-color: var(--slds-g-color-neutral-base-90);
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+.sf-timeline-approval-badge--modificationsuggested {
+  background-color: var(--slds-g-color-neutral-base-90);
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+.sf-timeline-approval-badge--indiscussion {
+  background-color: var(--slds-g-color-neutral-base-90);
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+.sf-timeline-approval-badge--approved {
+  background-color: var(--slds-g-color-success-container-1);
+  color: var(--slds-g-color-success-1);
+}
+
+.sf-timeline-approval-badge--rejected {
+  background-color: var(--slds-g-color-error-container-1);
+  color: var(--slds-g-color-error-1);
+}
+
+.sf-timeline-approval-badge--modificationsuggested {
+  background-color: var(--slds-g-color-palette-violet-90);
+  color: var(--slds-g-color-neutral-base-20);
+}
+
+.sf-timeline-approval-arrow {
+  color: var(--slds-g-color-neutral-base-40);
+  font-size: 12px !important;
+  font-weight: 500;
+}
+
+.sf-timeline-approval-comment {
+  color: var(--slds-g-color-neutral-base-10);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-left: 4px;
+}
+
+.sf-timeline-see-more-btn {
+  background: none;
+  border: none;
+  color: var(--slds-g-color-accent-1);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 4px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.sf-timeline-see-more-btn:hover {
+  text-decoration: underline;
+}
+
+/* Edit Info Container */
+.sf-timeline-edit-info {
+  display: inline;
+}
+
+/* See Note Button */
+.sf-timeline-see-note-btn {
+  background: none !important;
+  border: none !important;
+  color: var(--slds-g-color-accent-1) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  margin-left: 8px !important;
+  text-decoration: none !important;
+  display: inline !important;
+}
+
+.sf-timeline-see-note-btn:hover {
+  text-decoration: underline !important;
+  color: var(--slds-g-color-brand-base-30) !important;
+}
+
+/* Expanded Details */
+.sf-timeline-details {
+  margin-top: 12px;
+  background: var(--slds-g-color-surface-container-1);
+  border: 1px solid var(--slds-g-color-neutral-base-80);
+  border-radius: 4px;
+  padding: 12px 16px;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.sf-timeline-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.sf-timeline-info-label {
+  font-size: 12px !important;
+  font-weight: 700;
+  color: var(--slds-g-color-neutral-base-40);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sf-timeline-info-value {
+  font-size: 13px;
+  color: var(--slds-g-color-neutral-base-10);
+  line-height: 1.5;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+/* Discussion Section */
+.sf-timeline-discussion {
+  padding-top: 0;
+}
+
+.sf-timeline-replies {
+  margin-bottom: 12px;
+}
+
+.sf-timeline-reply {
+  display: flex;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.sf-timeline-reply:first-child {
+  padding-top: 0;
+}
+
+.sf-timeline-reply-avatar {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  background: var(--slds-g-color-accent-1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--slds-g-color-surface-1);
+  font-size: 12px !important;
+  font-weight: 600;
+}
+
+.sf-timeline-reply-content {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.sf-timeline-reply-username {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--slds-g-color-neutral-base-10);
+}
+
+.sf-timeline-reply-message {
+  font-size: 13px;
+  color: var(--slds-g-color-neutral-base-20);
+}
+
+.sf-timeline-reply-timestamp {
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+/* Reply Input */
+.sf-timeline-reply-input {
+  display: flex;
+  gap: 8px;
+}
+
+.sf-timeline-reply-input input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.sf-timeline-reply-input input:focus {
+  border-color: var(--slds-g-color-accent-1);
+  box-shadow: 0 0 0 1px var(--slds-g-color-accent-1);
+}
+
+.sf-timeline-reply-input input::placeholder {
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+.sf-timeline-post-btn {
+  background: var(--slds-g-color-accent-1);
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--slds-g-color-surface-1);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sf-timeline-post-btn:hover {
+  background: var(--slds-g-color-brand-base-30);
+}
+
+.sf-timeline-post-btn:disabled {
+  background: var(--slds-g-color-neutral-base-80);
+  cursor: not-allowed;
+}

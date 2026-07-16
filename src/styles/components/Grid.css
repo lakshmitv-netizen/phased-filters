@@ -1,0 +1,3313 @@
+.forecasting-container {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-2) 0 0 0;
+  background-color: var(--color-surface-white);
+  overflow: hidden;
+  min-height: 0; /* Important for flex children to respect container bounds */
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0;
+  background-color: var(--color-surface-white);
+  border-bottom: 1px solid color-mix(in srgb, var(--slds-g-color-neutral-base-10) 10%, transparent);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--slds-g-color-neutral-base-10) 6%, transparent),
+    0 8px 18px rgba(0, 0, 0, 0.1);
+  padding-bottom: var(--spacing-2);
+  position: sticky;
+  top: 0;
+  z-index: 1001;
+}
+
+.page-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 4px;
+}
+
+.page-header-title {
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--color-on-surface-3);
+  line-height: 28px;
+  padding-left: var(--spacing-4);
+  margin: 0;
+  margin-top: 0;
+}
+
+.page-header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--spacing-1);
+  margin-top: 0;
+  margin-right: var(--spacing-3);
+}
+
+.page-header-right-top {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.grid-status-text-header {
+  font-size: 12px;
+  color: var(--slds-g-color-neutral-base-40);
+  line-height: 16px;
+  font-weight: 400;
+  white-space: nowrap;
+  padding-left: var(--spacing-4);
+  margin-top: 6px;
+}
+
+/* ── Inline "Totals & edits scope" control in the grid subtitle (SLDS 2) ───────── */
+.grid-scope-inline {
+  position: relative !important;
+  display: inline-block !important;
+  white-space: nowrap;
+}
+
+.grid-scope-label {
+  color: var(--slds-g-color-neutral-base-40, #706e6b);
+}
+.grid-scope-label--everything {
+  color: var(--slds-g-color-neutral-base-30, #5c5c5c);
+  font-weight: 600;
+}
+
+/* SLDS badge for the scope value */
+.grid-scope-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+  vertical-align: middle;
+  background: var(--slds-g-color-neutral-base-95, #f3f3f3);
+  color: var(--slds-g-color-neutral-base-30, #444);
+  border: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+}
+.grid-scope-badge--everything {
+  background: var(--slds-g-color-neutral-base-95, #eef4ff);
+  color: var(--slds-g-color-brand-base-30, #014486);
+  border-color: var(--slds-g-color-brand-base-70, #aacbff);
+}
+
+/* SLDS 2 button-icon menu trigger (calculator + caret) */
+.grid-scope-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 1.75rem;
+  padding: 0 0.25rem;
+  margin: 0 0 0 0.25rem;
+  border: none !important;
+  border-radius: 0.25rem;
+  background: transparent !important;
+  color: var(--slds-g-color-accent-1, #0176d3) !important;
+  cursor: pointer;
+  vertical-align: middle;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.grid-scope-menu-trigger:hover {
+  color: var(--slds-g-color-brand-base-30, #014486) !important;
+}
+.grid-scope-menu-trigger:focus-visible {
+  outline: 2px solid var(--slds-g-color-accent-1, #0176d3);
+  outline-offset: 1px;
+}
+.grid-scope-menu-trigger--open {
+  color: var(--slds-g-color-brand-base-30, #014486) !important;
+}
+.grid-scope-menu-trigger--everything {
+  color: var(--slds-g-color-accent-1, #0176d3) !important;
+}
+.grid-scope-menu-trigger__icon,
+.grid-scope-menu-trigger__caret {
+  flex-shrink: 0;
+}
+
+/* SLDS 2 popover surface */
+.grid-scope-popover.slds-popover {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  width: 320px !important;
+  max-width: 320px !important;
+  background: var(--slds-g-color-surface-container-1, #ffffff) !important;
+  border: 1px solid var(--slds-g-color-border-base-1, #e5e5e5) !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16) !important;
+  padding: 0 !important;
+  white-space: normal !important;
+  text-align: left !important;
+  cursor: default;
+}
+.grid-scope-popover__nubbin {
+  position: absolute;
+  top: -7px;
+  left: 18px;
+  width: 12px;
+  height: 12px;
+  background: var(--slds-g-color-surface-container-1, #ffffff);
+  border-left: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+  border-top: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+  transform: rotate(45deg);
+}
+.grid-scope-popover__body {
+  padding: 0.75rem;
+}
+.grid-scope-popover__title {
+  margin: 0 0 0.25rem;
+  padding: 0 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--slds-g-color-neutral-base-10, #181818);
+}
+
+.grid-scope-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font: inherit;
+}
+.grid-scope-option:hover {
+  background: var(--slds-g-color-surface-container-2, #f3f3f3);
+}
+.grid-scope-option--selected {
+  background: var(--slds-g-color-surface-container-2, #f3f3f3);
+}
+/* SLDS 2 radio dot */
+.grid-scope-option__radio {
+  position: relative;
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  margin-top: 1px;
+  border: 1px solid var(--slds-g-color-border-base-4, #939393);
+  border-radius: 50%;
+  background: var(--slds-g-color-surface-container-1, #fff);
+  box-sizing: border-box;
+}
+.grid-scope-option--selected .grid-scope-option__radio {
+  border-color: var(--slds-g-color-accent-1, #0176d3);
+}
+.grid-scope-option--selected .grid-scope-option__radio::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--slds-g-color-accent-1, #0176d3);
+  transform: translate(-50%, -50%);
+}
+.grid-scope-option__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.grid-scope-option__label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--slds-g-color-neutral-base-10, #181818);
+  line-height: 1.25rem;
+}
+.grid-scope-option__label--warning {
+  color: var(--slds-g-color-neutral-base-10, #181818);
+}
+.grid-scope-option__desc {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--slds-g-color-neutral-base-30, #5c5c5c);
+  line-height: 1rem;
+}
+
+.grid-scope-popover__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+}
+.grid-scope-popover__footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* SLDS 2 buttons (class + !important beats App.css button reset) */
+.grid-scope-btn {
+  height: 2rem;
+  padding: 0 1rem;
+  font-size: 0.8125rem !important;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 9999px;
+  border: 1px solid transparent !important;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+.grid-scope-btn_text {
+  padding: 0;
+  height: auto;
+  background: transparent !important;
+  color: var(--slds-g-color-accent-1, #0176d3) !important;
+}
+.grid-scope-btn_text:hover {
+  text-decoration: underline;
+}
+.grid-scope-btn_neutral {
+  background: var(--slds-g-color-surface-container-1, #fff) !important;
+  color: var(--slds-g-color-neutral-base-30, #5c5c5c) !important;
+  border-color: var(--slds-g-color-border-base-4, #c9c9c9) !important;
+}
+.grid-scope-btn_neutral:hover {
+  background: var(--slds-g-color-surface-container-2, #f3f3f3) !important;
+}
+.grid-scope-btn_brand {
+  background: var(--slds-g-color-accent-1, #0176d3) !important;
+  color: var(--slds-g-color-surface-container-1, #fff) !important;
+}
+.grid-scope-btn_brand:hover {
+  background: var(--slds-g-color-brand-base-30, #014486) !important;
+}
+
+.breadcrumbs-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+  padding-left: var(--spacing-4);
+}
+
+.breadcrumbs {
+  font-size: var(--font-size-base) !important;
+  color: var(--slds-g-color-accent-1) !important;
+  line-height: var(--line-height-base) !important;
+}
+
+.breadcrumbs-link {
+  color: var(--slds-g-color-accent-1) !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  font-size: var(--font-size-base) !important;
+  line-height: var(--line-height-base) !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.breadcrumbs-link:hover {
+  opacity: 0.8 !important;
+  text-decoration: underline !important;
+}
+
+.breadcrumbs-link:active {
+  opacity: 0.6 !important;
+}
+
+.breadcrumbs-separator {
+  margin: 0 var(--spacing-2);
+  color: var(--slds-g-color-accent-1);
+}
+
+.page-title-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-2);
+}
+
+.page-title {
+  font-size: var(--font-size-4) !important;
+  font-weight: var(--font-weight-regular) !important;
+  color: var(--color-dark-text) !important;
+  line-height: var(--line-height-4) !important;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.title-dropdown {
+  width: 16px;
+  height: 16px;
+  color: var(--color-neutral-text);
+  cursor: pointer;
+}
+
+.last-refreshed-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+
+.last-refreshed {
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-20) !important;
+  line-height: 16px !important;
+  font-weight: 400 !important;
+}
+
+.last-refreshed-semibold {
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 18px !important;
+  color: var(--slds-g-color-neutral-base-20) !important;
+}
+
+.refresh-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 24px !important;
+  height: 24px !important;
+  padding: 0 !important;
+  border: 1px solid var(--slds-g-color-border-base-4) !important;
+  border-radius: 50% !important;
+  background-color: var(--slds-g-color-surface-1) !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 10%, transparent) !important;
+}
+
+.refresh-button:hover {
+  background-color: var(--slds-g-color-surface-container-1) !important;
+  border-color: var(--slds-g-color-accent-1) !important;
+}
+
+.refresh-icon {
+  width: 12px !important;
+  height: 12px !important;
+  color: var(--slds-g-color-accent-1) !important;
+}
+
+.refresh-button:hover .refresh-icon {
+  color: var(--slds-g-color-accent-1) !important;
+}
+
+.grid-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  flex: 1;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.grid-search {
+  position: relative;
+  width: 300px;
+}
+
+.grid-search-input {
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-4) var(--spacing-2) var(--spacing-8);
+  border: 1px solid var(--slds-g-color-neutral-base-60);
+  border-radius: var(--border-radius-1);
+  font-size: var(--font-size-base);
+  color: var(--color-dark-text);
+  background-color: var(--color-surface-white);
+}
+
+.grid-search-input:focus {
+  outline: none;
+  border-color: var(--color-primary-blue);
+  border-width: 1px;
+}
+
+.grid-search-icon {
+  position: absolute;
+  left: var(--spacing-3);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--color-neutral-text);
+  pointer-events: none;
+}
+
+.grid-search-clear {
+  position: absolute;
+  right: var(--spacing-3);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--color-neutral-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.grid-search-clear:hover {
+  color: var(--color-dark-text);
+}
+
+.grid-search-clear svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Button Group */
+.grid-button-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--slds-g-color-neutral-base-60);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.grid-button-group-item {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-surface-white) !important;
+  border: none !important;
+  border-right: 1px solid var(--slds-g-color-neutral-base-60) !important;
+  cursor: pointer;
+  color: var(--slds-g-color-accent-1) !important;
+  transition: background-color 0.15s;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.grid-button-group-item:last-child {
+  border-right: none !important;
+}
+
+.grid-button-group-item:hover {
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+.grid-button-group-item svg {
+  width: 16px;
+  height: 16px;
+  color: var(--slds-g-color-accent-1);
+  fill: var(--slds-g-color-accent-1);
+}
+
+.grid-button-group-item svg.sort-icon {
+  width: 14px !important;
+  height: 14px !important;
+  max-width: 14px !important;
+  max-height: 14px !important;
+}
+
+.grid-button-group-item.active {
+  background-color: var(--slds-g-color-accent-1) !important;
+}
+
+.grid-button-group-item.active svg {
+  color: var(--color-surface-white);
+  fill: var(--color-surface-white);
+}
+
+.grid-button-group-item.active svg.sort-icon {
+  width: 14px !important;
+  height: 14px !important;
+  max-width: 14px !important;
+  max-height: 14px !important;
+}
+
+/* Approval Status Pills */
+.approval-status-cell {
+  text-align: center;
+  padding: 4px 8px;
+}
+
+.approval-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 12px;
+  padding: 4px 8px;
+  font-size: 12px !important;
+  font-weight: 500;
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.approval-pill:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+.approval-pill:active {
+  transform: scale(0.98);
+}
+
+.approval-pill--notSubmitted {
+  background-color: var(--slds-g-color-neutral-base-90);
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+.approval-pill--notSubmitted:hover {
+  opacity: 0.85;
+}
+
+.approval-pill--pending {
+  background-color: var(--slds-g-color-warning-2);
+  color: var(--slds-g-color-warning-1);
+}
+
+.approval-pill--needsMoreInfo {
+  background-color: var(--slds-g-color-palette-blue-60);
+  color: var(--color-dark-text);
+}
+
+.approval-pill--approved {
+  background-color: var(--slds-g-color-success-2);
+  color: var(--slds-g-color-success-1);
+}
+
+.approval-pill--approvedWithCondition {
+  background-color: var(--slds-g-color-warning-2);
+  color: var(--slds-g-color-warning-1);
+}
+
+.approval-pill--rejected {
+  background-color: var(--slds-g-color-error-2);
+  color: var(--slds-g-color-error-1);
+}
+
+/* Legacy statuses - map to notSubmitted styles */
+.approval-pill--needsMoreInfo {
+  background-color: var(--slds-g-color-neutral-base-90);
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+.approval-pill--modificationSuggested {
+  background-color: var(--slds-g-color-neutral-base-90);
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+.approval-pill--inDiscussion {
+  background-color: var(--slds-g-color-neutral-base-90);
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+.approval-pill--empty {
+  color: var(--slds-g-color-neutral-base-60);
+  font-size: 12px !important;
+  cursor: default;
+  padding: 0;
+}
+
+.approval-pill--empty:hover {
+  opacity: 1;
+  transform: none;
+}
+
+/* Approval Tooltip */
+.approval-tooltip {
+  pointer-events: auto;
+}
+
+.approval-tooltip-content {
+  position: relative;
+  background: var(--color-surface-white);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 15%, transparent);
+  padding: 10px 12px;
+  font-size: 12px !important;
+  max-width: 280px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.4;
+  color: var(--slds-g-color-neutral-base-30);
+  font-family: var(--font-family-base, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+}
+
+.approval-tooltip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.approval-tooltip-nubbin {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid var(--color-surface-white);
+  filter: drop-shadow(0 -2px 2px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 10%, transparent));
+}
+
+/* Approval Aggregate Stats (for measure rows) */
+.approval-aggregate-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 0;
+}
+
+.approval-aggregate-bar {
+  display: flex;
+  height: 18px !important;
+  border-radius: 9px !important;
+  overflow: hidden;
+  width: 152px !important; /* Match badge width */
+  max-width: 152px !important;
+  border: 1px solid color-mix(in srgb, var(--slds-g-color-neutral-base-10) 10%, transparent) !important; /* Very thin outline */
+  box-sizing: border-box !important;
+}
+
+.approval-bar-segment {
+  height: 100%;
+  flex-shrink: 0;
+}
+
+.approval-bar-segment:first-child {
+  border-top-left-radius: 9px !important;
+  border-bottom-left-radius: 9px !important;
+}
+
+.approval-bar-segment:last-child {
+  border-top-right-radius: 9px !important;
+  border-bottom-right-radius: 9px !important;
+}
+
+.approval-bar-segment--approved {
+  background-color: var(--slds-g-color-palette-teal-70) !important;
+  min-width: 2px !important; /* Ensure visibility */
+  flex-shrink: 0 !important;
+  opacity: 1 !important;
+  z-index: 1 !important;
+}
+
+.approval-bar-segment--approvedWithCondition {
+  background-color: var(--slds-g-color-palette-yellow-90) !important;
+  min-width: 2px !important;
+  flex-shrink: 0 !important;
+  opacity: 1 !important;
+}
+
+.approval-bar-segment--pending {
+  background-color: var(--slds-g-color-palette-yellow-90) !important;
+}
+
+.approval-bar-segment--rejected {
+  background-color: var(--slds-g-color-palette-pink-70) !important;
+}
+
+/* Legacy statuses - map to notSubmitted styles */
+.approval-bar-segment--needsMoreInfo {
+  background-color: var(--slds-g-color-surface-container-1) !important; /* Light tinted gray */
+}
+
+.approval-bar-segment--modificationSuggested {
+  background-color: var(--slds-g-color-surface-container-1) !important; /* Light tinted gray */
+}
+
+.approval-bar-segment--inDiscussion {
+  background-color: var(--slds-g-color-surface-container-1) !important; /* Light tinted gray */
+}
+
+.approval-bar-segment--notSubmitted {
+  background-color: var(--slds-g-color-surface-container-1) !important; /* Light tinted gray */
+}
+
+.approval-bar-segment--none {
+  background-color: var(--slds-g-color-neutral-base-90);
+}
+
+.approval-aggregate-counts {
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Selected approval status cells */
+.approval-status-cell.cell-selected {
+  background-color: transparent !important;
+  border: 2px solid var(--color-grid-selection-border) !important;
+  box-shadow: none !important;
+  outline: none !important; /* Remove outline when selected */
+}
+
+/* Approval comment indicator (triangle) - matches cell-note-indicator style */
+.approval-status-cell.approval-has-comment {
+  position: relative;
+}
+
+.approval-comment-indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 10px solid var(--slds-g-color-warning-2);
+  border-left: 10px solid transparent;
+  z-index: 1; /* Lower than frozen column (5), frozen header (10), and corner (20) */
+  pointer-events: none;
+}
+
+/* Approval Status Pills */
+.approval-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  width: 152px !important;
+  min-height: 28px !important;
+  padding: 4px 16px 4px 10px !important;
+  padding-right: 16px !important;
+  border-radius: 999px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  border: 1px solid color-mix(in srgb, var(--approval-pill-text) 18%, transparent) !important;
+  cursor: pointer !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  background-color: var(--approval-pill-bg) !important;
+  color: var(--approval-pill-text) !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-shadow: none !important;
+  transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s !important;
+}
+
+.approval-pill:hover {
+  opacity: 0.9 !important;
+  transform: scale(1.02) !important;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 8%, transparent) !important;
+}
+
+.approval-status-cell {
+  text-align: center !important;
+  vertical-align: middle;
+  padding: 8px 12px !important;
+  overflow: visible !important; /* Allow drag handle to be visible */
+}
+
+/* Override sub-column styles for approval status cells */
+.sub-col-value-td.approval-status-cell,
+.grid-cell.sub-col-value-td.approval-status-cell {
+  padding: 8px 12px !important;
+  text-align: center !important;
+  overflow: visible !important; /* Allow drag handle to be visible */
+}
+
+.approval-pill__content {
+  min-width: 0;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  flex: 1 1 auto !important;
+}
+
+.approval-pill__icon {
+  width: 12px !important;
+  min-width: 12px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.approval-pill__label {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  text-align: left !important;
+}
+
+.approval-pill__chevron {
+  width: 12px !important;
+  min-width: 12px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  opacity: 0.8 !important;
+}
+
+/* Triangle indicator for approval cells with comments */
+.approval-cell-has-comment {
+  position: relative;
+}
+
+.approval-comment-triangle {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid var(--slds-g-color-accent-1);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.approval-status-cell .approval-pill {
+  margin: 0 !important;
+  max-width: 100% !important;
+}
+
+.grid-wrapper {
+  position: relative;
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  min-height: 0;
+  min-width: 0; /* Allow flex item to shrink below content size */
+  gap: 0;
+  overflow: visible; /* Allow notification to be visible outside bounds */
+  padding: 0;
+  background: var(--slds-g-color-neutral-base-95);
+  z-index: 1002;
+}
+
+.grid-container-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+  min-width: 0; /* Allow flex item to shrink below content size */
+  position: relative;
+  overflow: hidden; /* Contain children within bounds */
+  padding: 0;
+  margin: var(--spacing-2) var(--spacing-2) var(--spacing-2) var(--spacing-2);
+  max-width: calc(100% - var(--spacing-2) * 2);
+  box-shadow: var(--slds-g-shadow-2);
+  border-radius: 8px;
+  background-color: var(--color-surface-white);
+  border: 1px solid color-mix(in srgb, var(--slds-g-color-neutral-base-10) 10%, transparent);
+  z-index: 1003;
+}
+
+.grid-container-wrapper > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Loading overlay for measure category changes */
+.grid-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  gap: 16px;
+  border-radius: 8px;
+}
+
+.grid-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--slds-g-color-neutral-base-90);
+  border-top-color: var(--slds-g-color-accent-1);
+  border-radius: 50%;
+  animation: grid-loading-spin 0.8s linear infinite;
+}
+
+@keyframes grid-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.grid-loading-message {
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--slds-g-color-neutral-base-20);
+  line-height: 20px;
+  text-align: left;
+}
+
+.grid-container {
+  border: none !important;
+  border-radius: 0;
+  background-color: var(--color-surface-white) !important;
+  flex: 1 1 0;
+  min-width: 300px; /* Ensure container is at least as wide as first frozen column */
+  min-height: 0;
+  overflow: auto; /* Single overflow property for both directions */
+  margin-bottom: 0;
+  box-shadow: none !important;
+  /* Hide scrollbar by default */
+  scrollbar-width: none; /* Firefox - hide scrollbar completely */
+  scrollbar-color: transparent transparent;
+}
+
+/* Hide scrollbar for webkit browsers (Chrome, Safari, Edge) */
+.grid-container::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background: transparent;
+}
+
+.grid-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.grid-container::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 4px;
+}
+
+/* Show scrollbar on hover */
+.grid-container:hover {
+  scrollbar-width: thin; /* Firefox - show thin scrollbar on hover */
+  scrollbar-color: var(--slds-g-color-neutral-base-70) transparent;
+}
+
+.grid-container:hover::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.grid-container:hover::-webkit-scrollbar-thumb {
+  background: var(--slds-g-color-neutral-base-70);
+}
+
+.grid-container:hover::-webkit-scrollbar-thumb:hover {
+  background: var(--slds-g-color-neutral-base-65);
+}
+
+/* When sub-columns enabled: ensure right edge of cells is visible (spacing prevents clipping) */
+.grid-container.has-sub-columns {
+  padding-right: 12px;
+}
+
+.grid-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-base);
+  table-layout: auto;
+  border: none;
+  min-width: 300px; /* Ensure table is at least as wide as first frozen column */
+}
+
+/* When searching/filtering, don't force full width */
+.grid-table.filtered {
+  width: auto;
+  min-width: auto;
+}
+
+/* Equal sub-column widths: use fixed layout when sub-columns are present */
+.grid-table.has-sub-columns {
+  table-layout: fixed;
+}
+
+/* Flattened sort: hierarchy path under dimension name (body / font-scale-neg-1, on-surface-1 / neutral-40) */
+.grid-flattened-hierarchy-path {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  cursor: default;
+}
+
+.grid-flattened-hierarchy-path-text {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--slds-g-font-size-3, 12px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--slds-g-line-height-2, 18px);
+  color: var(--slds-g-color-on-surface-1, var(--slds-g-color-neutral-base-40));
+}
+
+.grid-flattened-hierarchy-path-info {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  color: var(--slds-g-color-on-surface-1, var(--slds-g-color-neutral-base-40));
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.grid-flattened-hierarchy-path:hover .grid-flattened-hierarchy-path-info {
+  opacity: 1;
+}
+
+.grid-flattened-hierarchy-popover {
+  padding: 8px 12px;
+  background: var(--color-surface-white);
+  border: 1px solid var(--slds-g-color-neutral-base-90);
+  border-radius: 6px;
+  box-shadow: var(--slds-g-shadow-3, 0 4px 12px rgba(0, 0, 0, 0.12));
+  font-size: var(--slds-g-font-size-3, 12px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--slds-g-line-height-2, 18px);
+  color: var(--slds-g-color-on-surface-2, var(--slds-g-color-neutral-base-10));
+  white-space: normal;
+  word-break: break-word;
+  pointer-events: auto;
+}
+
+/* Frozen column resize handle */
+.frozen-col-resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 6px;
+  cursor: col-resize;
+  z-index: 30;
+  background: transparent;
+  transition: background 0.15s ease;
+}
+
+.frozen-col-resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  bottom: 20%;
+  right: 2px;
+  width: 2px;
+  background: transparent;
+  border-radius: 2px;
+  transition: background 0.15s ease;
+}
+
+.frozen-col-resize-handle:hover::after,
+.frozen-col-resize-handle:active::after {
+  background: var(--slds-g-color-accent-1);
+}
+
+/* Vertically spanning resize handle for frozen columns */
+.frozen-col-resize-handle-vertical {
+  /* full-height absolute strip; see inline style for left/top/bottom */
+}
+
+button.frozen-col-resize-handle-vertical {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  line-height: inherit;
+  color: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Thin vertical line along the full height */
+.frozen-col-resize-handle-vertical::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background: transparent;
+  transition: background 0.15s ease;
+  pointer-events: none;
+}
+
+.frozen-col-resize-handle-vertical:hover::before {
+  background: rgba(1, 118, 211, 0.35);
+}
+
+.frozen-col-resize-handle-vertical:active::before {
+  background: var(--slds-g-color-accent-1);
+}
+
+/* Pill grab handle in center */
+.frozen-col-resize-handle-pill {
+  position: sticky;
+  top: 50vh;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 36px;
+  background: var(--slds-g-color-neutral-base-70);
+  border-radius: 3px;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 15%, transparent);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.frozen-col-resize-handle-vertical:hover .frozen-col-resize-handle-pill {
+  background: var(--slds-g-color-accent-1);
+  width: 5px;
+  height: 44px;
+  box-shadow: 0 2px 8px rgba(1, 118, 211, 0.4);
+}
+
+.frozen-col-resize-handle-vertical:active .frozen-col-resize-handle-pill {
+  background: var(--slds-g-color-accent-1);
+}
+
+/* Vertically centered resize handle for frozen columns */
+.frozen-col-resize-handle-vertical {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.frozen-col-resize-handle-indicator {
+  width: 3px;
+  height: 50px;
+  background: var(--slds-g-color-neutral-base-70);
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 5%, transparent);
+}
+
+.frozen-col-resize-handle-vertical:hover .frozen-col-resize-handle-indicator {
+  background: var(--slds-g-color-accent-1);
+  width: 4px;
+  height: 60px;
+  box-shadow: 0 0 0 2px rgba(1, 118, 211, 0.2);
+}
+
+.frozen-col-resize-handle-vertical:active .frozen-col-resize-handle-indicator {
+  background: var(--slds-g-color-accent-2);
+  width: 4px;
+}
+
+/* When frozen cols are active: use --first-col-width CSS variable (set on the table element)
+   to override the hard-coded 300px !important constraints. */
+/* This rule is now merged into .grid-header th:first-child above */
+
+.grid-table.has-frozen-cols .grid-cell:first-child,
+.grid-table.has-frozen-cols .grid-cell.frozen-column-cell:first-of-type {
+  min-width: var(--first-col-width, 300px) !important;
+  max-width: var(--first-col-width, 300px) !important;
+  width: var(--first-col-width, 300px) !important;
+}
+
+.grid-table.dimensions-time-table {
+  table-layout: fixed;
+}
+
+.grid-table.dimensions-time-table .grid-header th {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Table thead: neutral-95 fill (local map: --slds-g-color-surface-3) */
+.grid-header {
+  background-color: var(--slds-g-color-surface-3) !important;
+  box-shadow: 0 6px 12px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 30%, transparent) !important;
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-70) !important;
+}
+
+.grid-header th {
+  /* Responsive padding: min 5px 7px (for short screens), max ~9px 12px (for tall screens) */
+  padding: clamp(5px, calc(5px + 4px * (100vh - 600px) / 600px), 9px) clamp(7px, calc(7px + 5px * (100vh - 600px) / 600px), 12px);
+  text-align: left;
+  font-family: var(--font-family-base) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  font-size: var(--font-size-base) !important;
+  color: var(--slds-g-color-neutral-base-20) !important;
+  line-height: var(--line-height-base) !important;
+  border-right: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-width: 0 1px 1px 1px !important;
+  white-space: nowrap;
+  background-color: var(--slds-g-color-surface-3) !important;
+  /* Sticky header for vertical scroll */
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  box-shadow: 0 6px 12px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 30%, transparent) !important;
+}
+
+/* Footer is now at bottom, no header adjustment needed */
+
+.grid-header th:last-child {
+  border-right: none;
+}
+
+/* ── Stronger border for main column headers when sub-columns are active ── */
+.grid-header th[colspan] {
+  border-right: 1.5px solid var(--slds-g-color-neutral-base-80) !important;
+}
+
+.grid-header th[colspan]:last-child {
+  border-right: none !important;
+}
+
+.grid-header > tr:first-child > th:first-child {
+  min-width: var(--first-col-width, 300px) !important;
+  max-width: var(--first-col-width, 300px) !important;
+  width: var(--first-col-width, 300px) !important;
+  position: sticky !important;
+  left: 0 !important;
+  top: 0 !important;
+  z-index: 50 !important; /* Top-most sticky corner header */
+  background-color: var(--slds-g-color-surface-3) !important;
+  border-right: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-80) !important;
+}
+
+/* With sub-columns active, the top-left header is a real rowspan=2 table cell. */
+.has-sub-columns .grid-header > tr:first-child > th:first-child {
+  vertical-align: middle;
+}
+
+/* When frozen cols are active, header first cell should match body cell width */
+.grid-table.has-frozen-cols .grid-header > tr:first-child > th:first-child {
+  min-width: var(--first-col-width, 300px) !important;
+  max-width: var(--first-col-width, 300px) !important;
+  width: var(--first-col-width, 300px) !important;
+  position: sticky !important;
+  left: 0 !important;
+  top: 0 !important;
+  z-index: 50 !important;
+}
+
+.grid-header > tr:first-child > th:first-child::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -10px;
+  bottom: 0;
+  width: 10px;
+  background: linear-gradient(to right, color-mix(in srgb, var(--slds-g-color-neutral-base-10) 10%, transparent), transparent);
+  pointer-events: none;
+}
+
+.grid-header-title-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.grid-header-settings-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 24px !important;
+  height: 24px !important;
+  padding: 4px !important;
+  border: 1px solid var(--slds-g-color-border-base-4) !important;
+  border-radius: 50% !important;
+  background-color: var(--slds-g-color-surface-1) !important;
+  cursor: pointer !important;
+  color: var(--slds-g-color-accent-1) !important;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.grid-header-settings-button:hover {
+  color: var(--color-primary-blue) !important;
+  border-color: var(--color-primary-blue) !important;
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+.grid-header-settings-button svg {
+  display: block;
+}
+
+.grid-header th:not(:first-child) {
+  text-align: center;
+  min-width: 100px;
+}
+
+.grid-header th[rowspan="2"] {
+  vertical-align: middle;
+}
+
+.grid-body {
+  background-color: var(--color-surface-white) !important;
+}
+
+.grid-row {
+  transition: background-color 0.2s;
+  background-color: var(--color-surface-white) !important;
+}
+
+.grid-row:hover {
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+/* Column filter: parent still shown while some children are hidden from the tree */
+/* Column filter: white circle + accent funnel on parent row type icon */
+.grid-row-type-icon-with-filter-dot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  vertical-align: middle;
+  overflow: visible;
+  z-index: 2;
+}
+
+.grid-row-filter-applied-dot {
+  position: absolute;
+  top: -2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #FF6B35;
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.grid-row-filter-applied-dot__funnel {
+  display: none;
+}
+
+/* Default .cell-content / .divided-frozen-row use overflow:hidden — badge sits outside icon bounds */
+.grid-row.row-has-descendants-column-filter .cell-content.cell-content-has-filter-badge {
+  overflow: visible;
+}
+
+.grid-row.row-has-descendants-column-filter .divided-frozen-row.divided-frozen-row--filter-badge {
+  overflow: visible;
+}
+
+/* First column is sticky; allow badge to paint outside cell padding */
+.grid-row.row-has-descendants-column-filter .grid-cell.frozen-column-cell:first-of-type {
+  overflow: visible;
+}
+
+/* Measure header rows: custom measure glyph (public/measure-row.svg) */
+.grid-row.measure-row .measure-row-hierarchy-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 6px;
+  width: 20px;
+  height: 20px;
+}
+
+.grid-row.measure-row .measure-row-hierarchy-icon img {
+  display: block;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* Wider asset (52×45) with built-in filter badge — keep aligned with row type column */
+.grid-row.measure-row .measure-row-hierarchy-icon--all-descendants-filtered {
+  width: 30px;
+  height: 29px;
+}
+
+.grid-row.measure-row .measure-row-hierarchy-icon--all-descendants-filtered img {
+  width: 30px;
+  height: 29px;
+}
+
+/* Panel “filtered out” aggregate rows — uniform grey circle + glyph (source SVGs use different brand fills) */
+.grid-row.grid-row-filtered-out-dimension .grid-row-filtered-out-dimension-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 6px;
+}
+
+.grid-row.grid-row-filtered-out-dimension .grid-row-filtered-out-dimension-icon img {
+  display: block;
+  width: 20px;
+  height: 20px;
+  /* Per-dimension brightness/contrast so account / category / product land on the same grey after grayscale */
+  filter: grayscale(1) brightness(1.86) contrast(0.92);
+}
+
+.grid-row.grid-row-filtered-out-dimension .grid-row-filtered-out-dimension-icon[data-filtered-dimension='account'] img {
+  filter: grayscale(1) brightness(1.72) contrast(0.92);
+}
+
+.grid-row.grid-row-filtered-out-dimension .grid-row-filtered-out-dimension-icon[data-filtered-dimension='category'] img {
+  filter: grayscale(1) brightness(2.18) contrast(0.94);
+}
+
+.grid-row.grid-row-filtered-out-dimension .grid-row-filtered-out-dimension-icon[data-filtered-dimension='product'] img {
+  filter: grayscale(1) brightness(1.88) contrast(0.92);
+}
+
+/* Neutral grey copy (on-surface-3 in this app is brand-tinted; use SLDS neutrals for true grey) */
+.grid-row.grid-row-filtered-out-dimension {
+  --filtered-out-text-color: var(--slds-g-color-neutral-base-50);
+  --filtered-out-strike-color: color-mix(in srgb, var(--slds-g-color-neutral-base-60) 28%, var(--color-surface-white));
+  --filtered-out-edge-border: var(--slds-g-color-neutral-base-70);
+}
+
+.grid-row.grid-row-filtered-out-dimension td:first-child {
+  border-left: 1px solid var(--filtered-out-edge-border) !important;
+}
+
+.grid-row.grid-row-filtered-out-dimension td:last-child {
+  border-right: 1px solid var(--filtered-out-edge-border) !important;
+}
+
+.grid-row.grid-row-filtered-out-dimension .cell-name {
+  color: var(--filtered-out-text-color) !important;
+  font-weight: 400 !important;
+  text-decoration: line-through !important;
+  text-decoration-color: var(--filtered-out-strike-color);
+}
+
+.grid-row.grid-row-filtered-out-dimension .cell-value,
+.grid-row.grid-row-filtered-out-dimension .grid-cell.sub-col-value-td {
+  color: var(--filtered-out-text-color) !important;
+  font-weight: 400 !important;
+  text-decoration: line-through !important;
+  text-decoration-color: var(--filtered-out-strike-color);
+}
+
+.grid-row.grid-row-filtered-out-dimension .frozen-column-part {
+  color: var(--filtered-out-text-color) !important;
+  text-decoration: line-through !important;
+  text-decoration-color: var(--filtered-out-strike-color);
+}
+
+/* Measure rows in "Measures / Dimensions x Time" layout - header rows */
+.grid-row.measure-row {
+  background-color: var(--color-surface-white) !important;
+  font-family: var(--font-family-base) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  font-size: var(--font-size-base) !important;
+  color: var(--slds-g-color-neutral-base-20) !important;
+  line-height: var(--line-height-base) !important;
+  /* Sticky positioning - stick right below the header */
+  position: sticky;
+  /* Calculate top offset to match header height: padding-top + line-height + padding-bottom + border-bottom */
+  /* Header padding: clamp(5px, calc(5px + 4px * (100vh - 600px) / 600px), 9px) */
+  /* Header line-height: 18px */
+  /* Header border-bottom: 1px */
+  /* Total: 18px + 2 * clamp(5px, calc(5px + 4px * (100vh - 600px) / 600px), 9px) + 1px */
+  top: clamp(29px, calc(29px + 8px * (100vh - 600px) / 600px), 37px);
+  z-index: 8; /* Below the sticky header stack */
+  box-shadow: 0 2px 4px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 10%, transparent) !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-80) !important;
+}
+
+.grid-row.measure-row:hover {
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+/* When sub-columns exist, measure rows stick below both main + sub-column header rows */
+.grid-table.has-sub-columns .grid-row.measure-row {
+  top: clamp(58px, calc(58px + 16px * (100vh - 600px) / 600px), 72px) !important;
+  z-index: 7 !important; /* Below the full sticky header stack */
+}
+
+.grid-row.dimension-row {
+  background-color: var(--color-surface-white) !important;
+  font-weight: 600 !important;
+}
+
+.grid-row.time-row {
+  background-color: var(--color-surface-white) !important;
+  font-weight: 600 !important;
+}
+
+.grid-row.time-row.year {
+  background-color: var(--color-surface-white) !important;
+  font-weight: 600 !important;
+}
+
+.grid-row.time-row.quarter {
+  background-color: var(--color-surface-white) !important;
+  font-weight: 600 !important;
+}
+
+.grid-row.time-row.month {
+  background-color: var(--color-surface-white) !important;
+  font-weight: 600 !important;
+}
+
+/* For Dimensions / Time x Measures layout: Dimension rows bold with background, Time rows normal */
+.dimensions-time-table:not(.time-dimensions-table) .grid-row.dimension-row {
+  font-weight: 600 !important;
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+.dimensions-time-table:not(.time-dimensions-table) .grid-row.time-row,
+.dimensions-time-table:not(.time-dimensions-table) .grid-row.time-row.year,
+.dimensions-time-table:not(.time-dimensions-table) .grid-row.time-row.quarter,
+.dimensions-time-table:not(.time-dimensions-table) .grid-row.time-row.month {
+  font-weight: normal !important;
+}
+
+/* For Time / Dimensions x Measures layout: Time rows bold with background, Dimension rows normal */
+.time-dimensions-table .grid-row.time-row,
+.time-dimensions-table .grid-row.time-row.year,
+.time-dimensions-table .grid-row.time-row.quarter,
+.time-dimensions-table .grid-row.time-row.month {
+  font-weight: 600 !important;
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+.time-dimensions-table .grid-row.dimension-row {
+  font-weight: normal !important;
+}
+
+.grid-cell {
+  /* Responsive padding: min 5px 7px (for short screens), max ~9px 12px (for tall screens) */
+  padding: clamp(5px, calc(5px + 4px * (100vh - 600px) / 600px), 9px) clamp(7px, calc(7px + 5px * (100vh - 600px) / 600px), 12px);
+  border-right: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-width: 1px 1px 1px 0 !important;
+  vertical-align: middle;
+  background-color: inherit !important;
+  /* Responsive min-height: min 18px (for short screens), max 32px (for tall screens) */
+  min-height: clamp(18px, calc(18px + 14px * (100vh - 600px) / 600px), 32px);
+}
+
+.grid-cell:first-child,
+.grid-cell.frozen-column-cell:first-of-type {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 5;
+  background-color: var(--color-surface-white) !important;
+  min-width: var(--first-col-width, 300px);
+  max-width: var(--first-col-width, 300px);
+  width: var(--first-col-width, 300px);
+  border-right: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-80) !important;
+}
+
+/* When frozen cols are active, ensure first cell is sticky and matches header width */
+.grid-table.has-frozen-cols .grid-cell:first-child,
+.grid-table.has-frozen-cols .grid-cell.frozen-column-cell:first-of-type {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 5;
+}
+
+.grid-cell.frozen-column-cell {
+  /* position: relative removed - let sticky positioning work */
+}
+
+.grid-cell.divided-frozen-cell {
+  padding: 0 !important;
+  overflow: visible !important;
+  height: 1px; /* CSS trick: lets .divided-frozen-row use height: 100% relative to row height */
+  /* width/min-width/max-width set via inline style dynamically */
+}
+
+.divided-frozen-row {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.grid-cell.divided-frozen-cell .divided-cell-content {
+  flex: 0 0 300px; /* Always 300px — dimensions column never compresses */
+  width: 300px;
+  min-width: 300px;
+  border-right: 1px solid var(--slds-g-color-neutral-base-80);
+  display: flex;
+  align-items: center;
+  overflow: visible;
+  padding: 4px 8px;
+  padding-right: 40px; /* Space for 3-dot button */
+  background-color: var(--color-surface-white);
+}
+
+.grid-cell.divided-frozen-cell .divided-cell-content .cell-name {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: block;
+}
+
+.frozen-column-part {
+  flex: 1 1 0; /* Share available space equally among frozen columns */
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-right: 1px solid var(--slds-g-color-neutral-base-80);
+  background-color: var(--color-surface-white);
+  overflow: hidden;
+  padding: 4px 8px;
+  position: relative;
+}
+
+.frozen-column-part:last-child {
+  padding-right: 32px; /* Gap between last badge and the 3-dot button */
+}
+
+.frozen-column-part:last-child::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -10px;
+  bottom: 0;
+  width: 10px;
+  background: linear-gradient(to right, color-mix(in srgb, var(--slds-g-color-neutral-base-10) 10%, transparent), transparent);
+  pointer-events: none;
+  z-index: 6;
+}
+
+.frozen-column-part span {
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-30);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.grid-row.measure-row .frozen-column-part span {
+  font-size: var(--font-size-base) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  color: var(--slds-g-color-neutral-base-20) !important;
+}
+
+.grid-cell.frozen-column-cell:not(:first-of-type) {
+  position: sticky;
+  z-index: 5;
+  background-color: var(--color-surface-white) !important;
+  border-right: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-80) !important;
+}
+
+.grid-cell:first-child::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -10px;
+  bottom: 0;
+  width: 10px;
+  background: linear-gradient(to right, color-mix(in srgb, var(--slds-g-color-neutral-base-10) 10%, transparent), transparent);
+  pointer-events: none;
+  z-index: 6;
+}
+
+.grid-row:hover .grid-cell:first-child {
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+/* Measure rows - first column sticky, white (matches body surface) */
+.grid-row.measure-row .grid-cell:first-child {
+  background-color: var(--color-surface-white) !important;
+  /* Sticky first column for measure rows - stick both horizontally and vertically */
+  position: sticky;
+  left: 0;
+  /* Match the top offset of the parent measure row */
+  top: clamp(29px, calc(29px + 8px * (100vh - 600px) / 600px), 37px);
+  z-index: 18; /* Below sticky headers, above regular body cells */
+  box-shadow: 2px 2px 4px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 10%, transparent) !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-right: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-80) !important;
+}
+
+/* Measure row cells - white fill, taller row */
+.grid-row.measure-row .grid-cell {
+  /* Responsive min-height: min 28px (for short screens), max 42px (for tall screens) - noticeably taller than regular cells */
+  min-height: clamp(28px, calc(28px + 14px * (100vh - 600px) / 600px), 42px) !important;
+  padding-top: clamp(8px, calc(8px + 4px * (100vh - 600px) / 600px), 12px) !important;
+  padding-bottom: clamp(8px, calc(8px + 4px * (100vh - 600px) / 600px), 12px) !important;
+  background-color: var(--color-surface-white) !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-right: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  font-size: var(--font-size-base) !important;
+  color: var(--slds-g-color-neutral-base-20) !important;
+}
+
+.grid-row.measure-row:hover .grid-cell:first-child {
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+/* Measure row - subtle container hover on entire row */
+.grid-row.measure-row:hover .grid-cell {
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+/* Measure row edited cells - override hover to show orange background */
+.grid-row.measure-row:hover .cell-value-cell.edited-cell {
+  background: var(--slds-g-color-palette-yellow-90) !important;
+  box-shadow: inset 4px 0 0 var(--slds-g-color-warning-1) !important;
+}
+
+/* Dimension rows first column in Dimensions / Time x Measures view */
+.dimensions-time-table:not(.time-dimensions-table) .grid-row.dimension-row .grid-cell:first-child {
+  background-color: var(--slds-g-color-surface-container-1) !important; /* Container tone for row header column */
+}
+
+.dimensions-time-table:not(.time-dimensions-table) .grid-row.dimension-row:hover .grid-cell:first-child {
+  background-color: var(--slds-g-color-surface-container-1) !important; /* Keep grey color on hover */
+}
+
+/* Time rows first column in Time / Dimensions x Measures view */
+.time-dimensions-table .grid-row.time-row .grid-cell:first-child {
+  background-color: var(--slds-g-color-surface-container-1) !important; /* Container tone for row header column */
+}
+
+.time-dimensions-table .grid-row.time-row:hover .grid-cell:first-child {
+  background-color: var(--slds-g-color-surface-container-1) !important; /* Keep grey color on hover */
+}
+
+/* Keep first frozen column var(--color-surface-white) for all cells (except dimension/time row-header layouts which use container tone) */
+.grid-cell:first-child.cell-focused {
+  background-color: var(--color-surface-white) !important;
+}
+
+.grid-cell:first-child:focus {
+  background-color: var(--color-surface-white) !important;
+}
+
+.grid-cell:first-child.cell-selected {
+  background-color: var(--color-surface-white) !important;
+}
+
+.grid-cell:first-child.cell-selected.cell-focused {
+  background-color: var(--color-surface-white) !important;
+}
+
+/* Measure rows first column - var(--color-surface-white) background like other cells */
+.grid-row.measure-row .grid-cell:first-child.cell-focused {
+  background-color: var(--color-surface-white) !important;
+}
+
+.grid-row.measure-row .grid-cell:first-child:focus {
+  background-color: var(--color-surface-white) !important;
+}
+
+.grid-row.measure-row .grid-cell:first-child.cell-selected {
+  background-color: var(--color-surface-white) !important;
+  border: 2px solid var(--color-grid-selection-border) !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Measure row cells - show selection border like non-measure cells */
+.grid-row.measure-row .grid-cell.cell-selected {
+  border: 2px solid var(--color-grid-selection-border) !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.grid-row.measure-row .grid-cell.cell-selected.edited-cell {
+  background: var(--slds-g-color-palette-yellow-90) !important;
+  border-top: 2px solid var(--color-grid-selection-border) !important;
+  border-right: 2px solid var(--color-grid-selection-border) !important;
+  border-bottom: 2px solid var(--color-grid-selection-border) !important;
+  border-left: none !important;
+  box-shadow: inset 4px 0 0 var(--slds-g-color-warning-1) !important;
+}
+
+.grid-row.measure-row .grid-cell.cell-selected.impacted-cell {
+  background: var(--slds-g-color-palette-yellow-95) !important;
+  border-top: 2px solid var(--color-grid-selection-border) !important;
+  border-right: 2px solid var(--color-grid-selection-border) !important;
+  border-bottom: 2px solid var(--color-grid-selection-border) !important;
+  border-left: none !important;
+  box-shadow: inset 4px 0 0 var(--slds-g-color-warning-container-1) !important;
+}
+
+/* Dimension rows first column - keep grey even when focused/selected */
+.dimensions-time-table:not(.time-dimensions-table) .grid-row.dimension-row .grid-cell:first-child.cell-focused {
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+.dimensions-time-table:not(.time-dimensions-table) .grid-row.dimension-row .grid-cell:first-child:focus {
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+.dimensions-time-table:not(.time-dimensions-table) .grid-row.dimension-row .grid-cell:first-child.cell-selected {
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+/* Time rows first column - keep grey even when focused/selected */
+.time-dimensions-table .grid-row.time-row .grid-cell:first-child.cell-focused {
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+.time-dimensions-table .grid-row.time-row .grid-cell:first-child:focus {
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+.time-dimensions-table .grid-row.time-row .grid-cell:first-child.cell-selected {
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+.grid-cell:last-child {
+  border-right: none;
+}
+
+/* Override: sub-column cells keep right border (last column shows grid boundary) */
+.grid-table.has-sub-columns .grid-cell.sub-col-actual-cell:last-child,
+.grid-table.has-sub-columns .grid-cell.sub-col-value-td:last-child {
+  border-right: 1.5px solid var(--slds-g-color-neutral-base-80) !important;
+}
+
+.cell-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding-right: 40px; /* Space for 3-dot button */
+  overflow: hidden;
+  min-width: 0;
+}
+
+.cell-indent {
+  display: inline-block;
+}
+
+.cell-indent.level-0 {
+  width: 0;
+}
+
+.cell-indent.level-1 {
+  width: var(--spacing-4);
+}
+
+.cell-indent.level-2 {
+  width: calc(var(--spacing-4) * 2);
+}
+
+.cell-indent.level-3 {
+  width: calc(var(--spacing-4) * 3);
+}
+
+.cell-indent.level-4 {
+  width: calc(var(--spacing-4) * 4);
+}
+
+.cell-indent.level-5 {
+  width: calc(var(--spacing-4) * 5);
+}
+
+.cell-indent.level-6 {
+  width: calc(var(--spacing-4) * 6);
+}
+
+.cell-indent.level-7 {
+  width: calc(var(--spacing-4) * 7);
+}
+
+.cell-indent.level-8 {
+  width: calc(var(--spacing-4) * 8);
+}
+
+.cell-indent.level-9 {
+  width: calc(var(--spacing-4) * 9);
+}
+
+.cell-indent.level-10 {
+  width: calc(var(--spacing-4) * 10);
+}
+
+.cell-indent.level-11 {
+  width: calc(var(--spacing-4) * 11);
+}
+
+.cell-indent.level-12 {
+  width: calc(var(--spacing-4) * 12);
+}
+
+.chevron-icon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-neutral-text);
+  flex-shrink: 0;
+}
+
+.chevron-icon:hover {
+  color: var(--color-primary-blue);
+}
+
+.chevron-icon svg {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.2s;
+}
+
+
+.chevron-icon.expanded svg {
+  transform: rotate(90deg);
+}
+
+/* Native <button> chevrons match prior div styling (a11y: interactive control semantics). */
+button.chevron-icon {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  line-height: inherit;
+  color: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.measure-icon {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-neutral-text);
+  flex-shrink: 0;
+}
+
+.cell-name {
+  color: var(--color-dark-text) !important;
+  font-size: var(--font-size-base) !important;
+  line-height: var(--line-height-base) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: block;
+  max-width: 100%;
+}
+
+/* Measure names: body scale, semibold, neutral-20 */
+.grid-row.measure-row .cell-name {
+  font-weight: var(--font-weight-semibold) !important;
+  font-size: var(--font-size-base) !important;
+  color: var(--slds-g-color-neutral-base-20) !important;
+  line-height: var(--line-height-base) !important;
+  letter-spacing: 0.2px !important;
+}
+
+/* Dimension rows (hierarchical + dimensions/time grids): copy neutral-40 — not measure/time rows, not filtered-out summary */
+.grid-row:not(.measure-row):not(.time-row):not(.grid-row-filtered-out-dimension) .cell-name {
+  color: var(--slds-g-color-neutral-base-40) !important;
+}
+
+/* Default value text only — edited / saved / impacted keep their state colors */
+.grid-row:not(.measure-row):not(.time-row):not(.grid-row-filtered-out-dimension) .cell-value:not(.cell-value-edited):not(.cell-value-impacted):not(.cell-value-saved) {
+  color: var(--slds-g-color-neutral-base-40) !important;
+}
+
+.grid-row:not(.measure-row):not(.time-row):not(.grid-row-filtered-out-dimension) .frozen-column-part span {
+  color: var(--slds-g-color-neutral-base-40) !important;
+}
+
+.grid-row:not(.measure-row):not(.time-row):not(.grid-row-filtered-out-dimension) .chevron-icon {
+  color: var(--slds-g-color-neutral-base-40) !important;
+}
+
+.grid-row:not(.measure-row):not(.time-row):not(.grid-row-filtered-out-dimension) .measure-icon {
+  color: var(--slds-g-color-neutral-base-40) !important;
+}
+
+.grid-row:not(.measure-row):not(.time-row):not(.grid-row-filtered-out-dimension) .cell-input {
+  color: var(--slds-g-color-neutral-base-40) !important;
+}
+
+/* Row type icons - SVGs already have colored backgrounds built-in */
+
+.cell-value {
+  text-align: right !important;
+  color: var(--color-dark-text) !important;
+  font-size: var(--font-size-base) !important;
+  line-height: var(--line-height-base) !important;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer !important;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  padding-left: 12px;
+  padding-right: 20px;
+  /* Responsive min-height: min 18px (for short screens), max 32px (for tall screens) */
+  min-height: clamp(18px, calc(18px + 14px * (100vh - 600px) / 600px), 32px);
+}
+
+.cell-value-readonly {
+  cursor: default !important;
+}
+
+
+/* Diagonal line texture for non-editable cells (Last Year data) */
+.cell-readonly-texture {
+  background: 
+    radial-gradient(ellipse at center, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 50%),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 3px,
+      var(--slds-g-color-neutral-base-90) 3px,
+      var(--slds-g-color-neutral-base-90) 5px
+    ),
+    var(--slds-g-color-surface-1) !important;
+  cursor: default !important;
+}
+
+.cell-readonly-texture .cell-value {
+  cursor: default !important;
+}
+
+/* Lighter, wider-spaced stripes when plan submitter views grid during Submitted review */
+.cell-plan-review-requester-texture {
+  background:
+    radial-gradient(ellipse at center, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0) 55%),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 7px,
+      var(--slds-g-color-neutral-base-95) 7px,
+      var(--slds-g-color-neutral-base-95) 9px
+    ),
+    var(--slds-g-color-surface-1) !important;
+  cursor: not-allowed !important;
+}
+
+.cell-plan-review-requester-texture .cell-value {
+  cursor: not-allowed !important;
+}
+
+/* Actual measure row for readonly measures (Last Year data) - striped texture */
+.grid-row.readonly-measure-row-actual {
+  background: 
+    radial-gradient(ellipse at center, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 50%),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 3px,
+      var(--slds-g-color-neutral-base-90) 3px,
+      var(--slds-g-color-neutral-base-90) 5px
+    ),
+    var(--slds-g-color-surface-1) !important;
+  font-weight: var(--font-weight-semibold) !important;
+}
+
+/* Apply stripes to value cells only, not the name column (first child) */
+.grid-row.readonly-measure-row-actual .grid-cell:not(:first-child) {
+  background: 
+    radial-gradient(ellipse at center, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 50%),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 3px,
+      var(--slds-g-color-neutral-base-90) 3px,
+      var(--slds-g-color-neutral-base-90) 5px
+    ),
+    var(--slds-g-color-surface-1) !important;
+}
+
+/* Remove stripes from name column (first column) - keep it var(--color-surface-white) */
+.grid-row.readonly-measure-row-actual .grid-cell:first-child {
+  background: var(--slds-g-color-surface-1) !important;
+}
+
+/* Dimension rows under readonly measures - remove stripes from name column (first column) */
+/* Value cells will get stripes from .cell-readonly-texture class */
+.grid-row.readonly-dimension-row .grid-cell:first-child {
+  background: var(--slds-g-color-surface-1) !important;
+}
+
+.cell-value-cell.edited-cell {
+  background: var(--slds-g-color-palette-yellow-90) !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-right: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-left: none !important;
+  box-shadow: inset 4px 0 0 var(--slds-g-color-warning-1) !important;
+  position: relative;
+  vertical-align: middle;
+  height: clamp(18px, calc(18px + 14px * (100vh - 600px) / 600px), 32px);
+}
+
+.cell-value-wrapper-edited-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  overflow: visible;
+}
+
+.cell-value-cell.impacted-cell {
+  background: var(--slds-g-color-palette-yellow-95) !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-right: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-left: none !important;
+  box-shadow: inset 4px 0 0 var(--slds-g-color-warning-container-1) !important;
+  position: relative;
+  vertical-align: middle;
+}
+
+/* Measure row cells have same background as other cells */
+.grid-row.measure-row .cell-value-cell.impacted-cell {
+  background: var(--slds-g-color-palette-yellow-95) !important;
+  box-shadow: inset 4px 0 0 var(--slds-g-color-warning-container-1) !important;
+}
+
+/* Measure row edited cells */
+.grid-row.measure-row .cell-value-cell.edited-cell {
+  background: var(--slds-g-color-palette-yellow-90) !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-right: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-left: none !important;
+  box-shadow: inset 4px 0 0 var(--slds-g-color-warning-1) !important;
+}
+
+.cell-value-wrapper-impacted-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  overflow: visible;
+}
+
+.cell-value-impacted {
+  color: var(--slds-g-color-neutral-base-20) !important; /* Dark gray for impacted cell value */
+  font-weight: 600 !important; /* Semibold */
+  line-height: 1.1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  text-align: right;
+  margin: 0;
+  margin-top: 1px !important;
+  /* Override cell-value's padding — the parent section already handles all spacing */
+  padding: 0 !important;
+}
+
+.cell-value-left-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+/* Post-save +/− discs only (not lock icon) */
+.cell-value-left-icon.cell-value-left-icon--compact-disc {
+  left: 5px;
+  width: 14px;
+  height: 14px;
+}
+
+/* Approval stamp: neutral-90 track ring + electric blue 50 (palette-blue-50) progress by approval % */
+button.cell-approval-stamp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-surface-white);
+  cursor: pointer;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  outline: none;
+  position: relative;
+  z-index: 2;
+}
+
+button.cell-approval-stamp-btn:focus-visible {
+  outline-width: 2px;
+  outline-style: solid;
+  outline-color: var(--slds-g-color-accent-1);
+  outline-offset: 2px;
+}
+
+.cell-approval-stamp-ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.cell-approval-stamp-ring__track {
+  stroke: var(--slds-g-color-neutral-base-90);
+}
+
+.cell-approval-stamp-ring__progress {
+  stroke: var(--slds-g-color-palette-blue-50);
+}
+
+.cell-approval-stamp-img {
+  display: block;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  position: relative;
+  z-index: 1;
+}
+
+.cell-value-left-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0px;
+  width: 100%;
+  /* Responsive height: min 18px (for short screens), max 32px (for tall screens) */
+  height: clamp(18px, calc(18px + 14px * (100vh - 600px) / 600px), 32px);
+  padding: 3px 20px 1px 20px;
+  padding-left: 30px; /* Icon is 20px wide at left:8px, so ends at 28px. Add 2px gap = 30px */
+  position: relative;
+  z-index: 0;
+  box-sizing: border-box;
+}
+
+.cell-delta-sign-icon {
+  flex-shrink: 0;
+  display: block;
+}
+
+.cell-delta-badge {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--slds-g-spacing-1);
+  width: 100%;
+  text-align: right;
+  background-color: transparent; /* Transparent background */
+  margin-right: -6px; /* shift % row slightly left in the cell */
+  /* Body scale −1, regular; on-surface-3 (brand-base-15 in variables.css) */
+  color: var(--color-on-surface-3) !important;
+  font-weight: var(--font-weight-regular, var(--slds-g-font-weight-4)) !important;
+  font-family: var(--font-family-base) !important;
+  font-size: var(--slds-g-font-size-3, 12px) !important;
+  line-height: var(--slds-g-line-height-2, 18px);
+  padding: 0;
+  margin: 1px 0 -6px 0 !important;
+  border-radius: 4px;
+  white-space: nowrap;
+  height: auto;
+  margin-bottom: -6px !important;
+  position: relative;
+  top: 1px !important;
+}
+
+.cell-value-edited {
+  /* Color will be set inline: orange for increments, blue for decrements */
+  font-weight: 600 !important; /* Semibold */
+  line-height: 1.1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  text-align: right;
+  margin: 0;
+  margin-top: 1px !important;
+  /* Override cell-value's padding — the parent section already handles all spacing */
+  padding: 0 !important;
+}
+
+.cell-edit-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.cell-edit-icon svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.cell-value-wrapper-saved-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  overflow: visible;
+}
+
+.cell-value-wrapper-saved-container > .cell-value {
+  padding: 0 20px;
+  padding-left: 30px;
+  box-sizing: border-box;
+}
+
+.cell-value-saved.cell-value-increase {
+  color: var(--slds-g-color-palette-hot-orange-60) !important; /* Orange for increase */
+  font-weight: 600 !important; /* Semibold */
+}
+
+.cell-value-saved.cell-value-decrease {
+  color: var(--slds-g-color-brand-base-40) !important; /* Blue for decrease */
+  font-weight: 600 !important; /* Semibold */
+}
+
+.cell-edit-icon-saved {
+  width: 20px !important;
+  height: 20px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  padding: 0 !important; /* Remove padding for saved icon */
+}
+
+.cell-edit-icon-saved svg {
+  width: 20px !important;
+  height: 20px !important;
+  display: block;
+}
+
+.cell-edit-popover-tab {
+  color: var(--slds-g-color-neutral-base-40) !important;
+  border-bottom: 2px solid transparent !important;
+}
+
+.cell-edit-popover-tab.active {
+  color: var(--slds-g-color-accent-1) !important;
+  border-bottom: 2px solid var(--slds-g-color-accent-1) !important;
+}
+
+.cell-value-cell {
+  text-align: right;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Fill handle sits past the cell corner; avoid clipping and keep it above the next row’s paint */
+tbody td:has(.fill-handle) {
+  position: relative;
+  z-index: 41;
+  overflow: visible !important;
+}
+
+/* Class set from GridRow when the handle is shown — works when nested :has() on td is unsupported or buggy */
+tbody td.grid-cell.cell-has-fill-handle {
+  position: relative;
+  z-index: 41;
+  overflow: visible !important;
+}
+
+/* Sticky measure rows use z-index 7–8; bump the row that owns the fill handle above following body rows */
+tbody tr.grid-row.measure-row:has(td:has(.fill-handle)),
+.grid-table.has-sub-columns tbody tr.grid-row.measure-row:has(td:has(.fill-handle)),
+tbody tr.grid-row.measure-row:has(td.cell-has-fill-handle),
+.grid-table.has-sub-columns tbody tr.grid-row.measure-row:has(td.cell-has-fill-handle) {
+  z-index: 40 !important;
+}
+
+/* Dimension / time rows: z-index only applies once the row is positioned */
+tbody tr.grid-row:has(td:has(.fill-handle)):not(.measure-row),
+tbody tr.grid-row:has(td.cell-has-fill-handle):not(.measure-row) {
+  position: relative;
+  z-index: 40 !important;
+}
+
+.cell-value-cell:hover {
+  background-color: color-mix(in srgb, var(--slds-g-color-neutral-base-10) 2%, transparent);
+}
+
+.grid-row.measure-row .cell-value-cell:hover {
+  background-color: color-mix(in srgb, var(--slds-g-color-neutral-base-10) 2%, transparent) !important;
+}
+
+/* Measure cell values: semibold + base type; default text neutral-20 */
+.grid-row.measure-row .cell-value {
+  font-weight: var(--font-weight-semibold) !important;
+  font-size: var(--font-size-base) !important;
+  line-height: var(--line-height-base) !important;
+  letter-spacing: 0.2px !important;
+}
+
+.grid-row.measure-row .cell-value:not(.cell-value-edited):not(.cell-value-impacted):not(.cell-value-saved) {
+  color: var(--slds-g-color-neutral-base-20) !important;
+}
+
+/* Make chevrons in measure rows thicker and bigger */
+.grid-row.measure-row .chevron-icon {
+  width: 20px !important; /* Bigger icon */
+  height: 20px !important; /* Bigger icon */
+  color: var(--slds-g-color-neutral-base-20) !important;
+}
+
+.grid-row.measure-row .chevron-icon svg {
+  width: 16px !important; /* Bigger SVG */
+  height: 16px !important; /* Bigger SVG */
+}
+
+.grid-row.measure-row .chevron-icon svg path {
+  stroke-width: 3.5 !important; /* Thicker stroke */
+}
+
+/* Newly added measure animation - skeleton placeholder effect */
+.grid-row.newly-added-measure .grid-cell {
+  border-color: transparent !important;
+  animation: revealBorders 1.2s ease-out 0.9s forwards;
+  position: relative;
+}
+
+/* Hide actual content initially */
+.grid-row.newly-added-measure .cell-value {
+  opacity: 0;
+  animation: revealContent 0.5s ease-out 0.9s forwards;
+}
+
+.grid-row.newly-added-measure .cell-name {
+  opacity: 0;
+  animation: revealContent 0.5s ease-out 0.9s forwards;
+}
+
+/* Skeleton placeholder for cell values */
+.grid-row.newly-added-measure .cell-value-cell {
+  position: relative;
+}
+
+.grid-row.newly-added-measure .cell-value-cell::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 55%;
+  height: 18px;
+  background: linear-gradient(90deg, 
+    var(--slds-g-color-neutral-base-90) 0%, 
+    var(--slds-g-color-surface-container-1) 20%,
+    var(--slds-g-color-neutral-base-90) 40%,
+    var(--slds-g-color-surface-container-1) 60%,
+    var(--slds-g-color-neutral-base-90) 80%,
+    var(--slds-g-color-surface-container-1) 100%);
+  background-size: 200% 100%;
+  border-radius: 3px;
+  animation: skeletonShimmer 1.5s ease-in-out infinite,
+             fadeOutPlaceholder 0.4s ease-out 0.9s forwards;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Skeleton placeholder for cell name */
+.grid-row.newly-added-measure .cell-name {
+  position: relative;
+}
+
+.grid-row.newly-added-measure .cell-name::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 65%;
+  height: 16px;
+  background: linear-gradient(90deg, 
+    var(--slds-g-color-neutral-base-90) 0%, 
+    var(--slds-g-color-surface-container-1) 20%,
+    var(--slds-g-color-neutral-base-90) 40%,
+    var(--slds-g-color-surface-container-1) 60%,
+    var(--slds-g-color-neutral-base-90) 80%,
+    var(--slds-g-color-surface-container-1) 100%);
+  background-size: 200% 100%;
+  border-radius: 3px;
+  animation: skeletonShimmer 1.5s ease-in-out infinite,
+             fadeOutPlaceholder 0.4s ease-out 0.9s forwards;
+  z-index: 2;
+  pointer-events: none;
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes fadeOutPlaceholder {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes revealContent {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes revealBorders {
+  0% {
+    border-color: transparent !important;
+  }
+  100% {
+    border-color: var(--slds-g-color-neutral-base-50) !important;
+  }
+}
+
+/* Newly added measure column header - simple appear effect (no skeleton) */
+th.newly-added-measure-column {
+  opacity: 0;
+  animation: revealContent 0.5s ease-out forwards;
+}
+
+/* Skeleton animation for cells in newly added measure columns */
+.newly-added-measure-column-cell {
+  border-color: transparent !important;
+  animation: revealBorders 1.2s ease-out 0.9s forwards;
+  position: relative;
+}
+
+/* Hide actual content initially */
+.newly-added-measure-column-cell .cell-value {
+  opacity: 0;
+  animation: revealContent 0.5s ease-out 0.9s forwards;
+}
+
+/* Skeleton placeholder for cell values in newly added columns */
+.newly-added-measure-column-cell {
+  position: relative;
+}
+
+.newly-added-measure-column-cell::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 55%;
+  height: 18px;
+  background: linear-gradient(90deg,
+    var(--slds-g-color-neutral-base-90) 0%,
+    var(--slds-g-color-surface-container-1) 20%,
+    var(--slds-g-color-neutral-base-90) 40%,
+    var(--slds-g-color-surface-container-1) 60%,
+    var(--slds-g-color-neutral-base-90) 80%,
+    var(--slds-g-color-surface-container-1) 100%);
+  background-size: 200% 100%;
+  border-radius: 3px;
+  animation: skeletonShimmer 1.5s ease-in-out infinite,
+             fadeOutPlaceholder 0.4s ease-out 0.9s forwards;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.cell-value-cell:focus {
+  outline: 2px solid var(--slds-g-color-neutral-base-80);
+  outline-offset: -2px;
+  background-color: color-mix(in srgb, var(--slds-g-color-neutral-base-10) 5%, transparent);
+}
+
+.cell-focused {
+  background-color: color-mix(in srgb, var(--slds-g-color-neutral-base-10) 3%, transparent);
+}
+
+.cell-selected {
+  background-color: transparent !important;
+  /* 2px on perimeter and between adjacent selected cells (border-collapse) */
+  border: 2px solid var(--color-grid-selection-border) !important;
+  box-shadow: none !important;
+  outline: none !important; /* Remove outline when selected */
+  overflow: visible !important; /* keep drag handle fully visible outside cell */
+}
+
+.cell-selected.cell-focused {
+  background-color: transparent !important;
+  outline: none !important; /* Remove outline when selected and focused */
+}
+
+.cell-selected:focus {
+  outline: none !important; /* Remove focus outline when selected */
+}
+
+/* Edited / impacted when selected — flat yellow 90 / 95 fills */
+.cell-selected.edited-cell {
+  background: var(--slds-g-color-palette-yellow-90) !important;
+  border-top: 2px solid var(--color-grid-selection-border) !important;
+  border-right: 2px solid var(--color-grid-selection-border) !important;
+  border-bottom: 2px solid var(--color-grid-selection-border) !important;
+  border-left: none !important;
+  box-shadow: inset 4px 0 0 var(--slds-g-color-warning-1) !important;
+}
+
+.cell-selected.impacted-cell {
+  background: var(--slds-g-color-palette-yellow-95) !important;
+  border-top: 2px solid var(--color-grid-selection-border) !important;
+  border-right: 2px solid var(--color-grid-selection-border) !important;
+  border-bottom: 2px solid var(--color-grid-selection-border) !important;
+  border-left: none !important;
+  box-shadow: inset 4px 0 0 var(--slds-g-color-warning-container-1) !important;
+}
+
+.grid-container {
+  outline: none;
+}
+
+.grid-container:focus {
+  outline: none;
+}
+
+.grid-table:focus {
+  outline: none;
+}
+
+.cell-input {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--color-primary-blue);
+  border-radius: 2px;
+  padding: 2px 4px;
+  font-size: var(--font-size-base);
+  font-family: var(--font-family-base);
+  color: var(--color-dark-text);
+  background-color: var(--color-surface-white) !important;
+  opacity: 1 !important;
+  position: relative;
+  z-index: 3;
+  outline: none;
+}
+
+.cell-input:focus {
+  border-color: var(--color-primary-blue);
+  box-shadow: 0 0 0 2px rgba(6, 106, 254, 0.1);
+}
+
+/* Search highlighting */
+.search-highlight {
+  background-color: var(--slds-g-color-palette-yellow-80);
+  color: inherit;
+  padding: 2px 1px;
+  font-weight: 500;
+}
+
+.search-highlight-mark {
+  background-color: var(--slds-g-color-palette-yellow-80);
+  color: inherit;
+  padding: 2px 1px;
+  font-weight: 500;
+}
+
+/* No results message */
+.grid-no-results {
+  padding: 40px 20px;
+  text-align: left;
+  color: var(--color-neutral-text);
+  font-size: var(--font-size-base);
+}
+
+/* Dog ear triangle indicator for cells with notes */
+.cell-note-indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 10px solid var(--slds-g-color-warning-2);
+  border-left: 10px solid transparent;
+  z-index: 1; /* Lower than frozen column (5), frozen header (10), and corner (20) */
+  pointer-events: none;
+}
+
+/* Hide indicators for cells marked as read */
+.cell-marked-read .cell-note-indicator,
+td[data-cell-read="true"] .cell-note-indicator,
+.cell-read-hidden,
+.cell-marked-read .cell-value-left-icon,
+td[data-cell-read="true"] .cell-value-left-icon,
+.cell-value-wrapper-edited-container.cell-marked-read .cell-value-left-icon,
+.cell-value-wrapper-saved-container.cell-marked-read .cell-value-left-icon,
+.cell-value-wrapper-impacted-container.cell-marked-read .cell-value-left-icon {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Lock indicator for locked cells */
+.cell-lock-indicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--slds-g-color-neutral-base-40);
+  pointer-events: none;
+  z-index: 1; /* Lower than frozen column (5), frozen header (10), and corner (20) */
+}
+
+.cell-lock-indicator svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* Drag handle indicator */
+.cell-drag-handle {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  cursor: grab;
+  z-index: 100;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cell-drag-handle:active {
+  cursor: grabbing;
+}
+
+.cell-drag-handle svg {
+  width: 8px;
+  height: 8px;
+}.filter-badge {
+  position: absolute !important;
+  top: 6px !important;
+  right: -4px !important;
+  background-color: var(--slds-g-color-error-2) !important;
+  color: var(--color-surface-white) !important;
+  border-radius: 50% !important;
+  width: 18px !important;
+  height: 18px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  border: 2px solid var(--color-surface-white) !important;
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 30%, transparent) !important;
+  z-index: 10 !important;
+}
+
+/* ── Sub-column header row ── */
+.sub-col-header-row th {
+  padding: 8px 10px !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-80);
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-80);
+  border-right: 1px solid var(--slds-g-color-neutral-base-80);
+  background-color: var(--slds-g-color-neutral-base-90) !important;
+  position: sticky;
+  /* top is set dynamically via --header-row-height JS variable for pixel-perfect placement */
+  top: var(--header-row-height, 37px);
+  z-index: 40;
+  text-align: left;
+  font-size: 12px !important;
+  font-weight: 600;
+  color: var(--slds-g-color-neutral-base-30);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+  box-shadow: 0 2px 4px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 8%, transparent) !important;
+}
+
+.sub-col-header-row th:last-child {
+  border-right: none;
+}
+
+.sub-col-header-item-th {
+  /* inherits .sub-col-header-row th styles */
+  border-right: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  z-index: 41 !important; /* Above sticky rows/cell content; below frozen placeholder */
+}
+
+.sub-col-header-item-actual {
+  color: var(--slds-g-color-neutral-base-30);
+  background-color: var(--slds-g-color-neutral-base-90) !important;
+  z-index: 41 !important;
+}
+
+/* Sub-column header content: ensure consistent vertical alignment */
+.sub-col-header-content {
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+/* Push the sort/filter icons to the right edge (replaces space-between now that a
+   colored line-dot may precede the label). */
+.sub-col-header-content .col-header-icons {
+  margin-left: auto;
+}
+
+/* Colored dot in a sub-column header that maps to its Charts-panel trend line. */
+.sub-col-line-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+/* ── Stronger border for last sub-column in each main column group ── */
+.sub-col-header-item-th.sub-col-last-in-group {
+  border-right: 1.5px solid var(--slds-g-color-neutral-base-80) !important;
+}
+
+/* ── Sub-column data cells ── */
+.sub-col-value-td {
+  border-right: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  font-size: inherit;
+  padding: 0 !important;
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+  overflow: hidden !important;
+  position: relative;
+  z-index: 0;
+}
+
+.sub-col-value-td > span {
+  display: block;
+  text-align: right;
+  padding-left: 12px;
+  padding-right: 20px;
+  width: 100%;
+  font-weight: 600;
+}
+
+/* Don't apply the above to the percentage label inside data bars */
+.sub-col-value-td .data-bar-pct {
+  display: inline !important;
+  width: auto !important;
+  padding: 0 !important;
+}
+
+.sub-col-value-td.target-achievement-td {
+  background: transparent !important;
+}
+
+.sub-col-value-td.target-achievement-td.target-achievement-td-exceeded {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0.16) 52%, rgba(255, 255, 255, 0) 100%),
+    linear-gradient(90deg, var(--slds-g-color-warning-container-1) 0%, var(--slds-g-color-palette-yellow-80) 40%, var(--slds-g-color-palette-yellow-70) 100%),
+    radial-gradient(circle, rgba(255, 255, 255, 1) 0 20%, transparent 26%),
+    linear-gradient(0deg, transparent 43%, rgba(255, 255, 255, 1) 49%, transparent 55%),
+    linear-gradient(90deg, transparent 43%, rgba(255, 255, 255, 1) 49%, transparent 55%),
+    linear-gradient(45deg, transparent 45%, rgba(255, 255, 255, 0.95) 49%, transparent 53%),
+    linear-gradient(-45deg, transparent 45%, rgba(255, 255, 255, 0.95) 49%, transparent 53%),
+    radial-gradient(circle, rgba(255, 255, 255, 1) 0 20%, transparent 26%),
+    linear-gradient(0deg, transparent 43%, rgba(255, 255, 255, 0.98) 49%, transparent 55%),
+    linear-gradient(90deg, transparent 43%, rgba(255, 255, 255, 0.98) 49%, transparent 55%),
+    linear-gradient(45deg, transparent 45%, rgba(255, 255, 255, 0.92) 49%, transparent 53%),
+    linear-gradient(-45deg, transparent 45%, rgba(255, 255, 255, 0.92) 49%, transparent 53%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.98) 0 20%, transparent 26%),
+    linear-gradient(0deg, transparent 43%, rgba(255, 255, 255, 0.96) 49%, transparent 55%),
+    linear-gradient(90deg, transparent 43%, rgba(255, 255, 255, 0.96) 49%, transparent 55%),
+    linear-gradient(45deg, transparent 45%, rgba(255, 255, 255, 0.9) 49%, transparent 53%),
+    linear-gradient(-45deg, transparent 45%, rgba(255, 255, 255, 0.9) 49%, transparent 53%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.96) 0 18%, transparent 24%),
+    linear-gradient(0deg, transparent 44%, rgba(255, 255, 255, 0.88) 49%, transparent 54%),
+    linear-gradient(90deg, transparent 44%, rgba(255, 255, 255, 0.88) 49%, transparent 54%);
+  background-size:
+    100% 100%,
+    100% 100%,
+    18px 18px, 18px 18px, 18px 18px, 18px 18px, 18px 18px,
+    15px 15px, 15px 15px, 15px 15px, 15px 15px, 15px 15px,
+    13px 13px, 13px 13px, 13px 13px, 13px 13px, 13px 13px,
+    10px 10px, 10px 10px, 10px 10px;
+  background-position:
+    0 0,
+    0 0,
+    12% 22%, 12% 22%, 12% 22%, 12% 22%, 12% 22%,
+    47% 30%, 47% 30%, 47% 30%, 47% 30%, 47% 30%,
+    80% 62%, 80% 62%, 80% 62%, 80% 62%, 80% 62%,
+    90% 20%, 90% 20%, 90% 20%;
+  background-repeat: no-repeat !important;
+}
+
+.sub-col-value-td.sub-col-last-in-group {
+  border-right: 1.5px solid var(--slds-g-color-neutral-base-80) !important;
+}
+
+/* ── "Actual" cell border when sub-columns are active ── */
+.sub-col-actual-cell {
+  border-right: 1px solid var(--slds-g-color-neutral-base-80) !important;
+}
+
+/* ── Measure cells with sub-columns: ensure thickened borders apply ── */
+/* These rules must be more specific than .grid-row.measure-row .grid-cell */
+.grid-row.measure-row .grid-cell.sub-col-actual-cell {
+  border-right: 1px solid var(--slds-g-color-neutral-base-80) !important;
+}
+
+.grid-row.measure-row .grid-cell.sub-col-actual-cell.sub-col-last-in-group,
+.grid-row.measure-row .grid-cell.sub-col-value-td.sub-col-last-in-group {
+  border-right: 1.5px solid var(--slds-g-color-neutral-base-80) !important;
+}
+
+.grid-row.measure-row .grid-cell.sub-col-value-td {
+  border-right: 1px solid var(--slds-g-color-neutral-base-80) !important;
+}
+
+/* ── Right edge of last column group: show visible border for grid boundary ── */
+/* This must come after .sub-col-last-in-group to override it */
+.sub-col-header-item-th.sub-col-last-in-group.sub-col-last-column-group,
+.sub-col-header-item-th.sub-col-last-column-group,
+.grid-header th.sub-col-last-column-group,
+.sub-col-actual-cell.sub-col-last-column-group,
+.sub-col-value-td.sub-col-last-in-group.sub-col-last-column-group,
+.sub-col-value-td.sub-col-last-column-group,
+.grid-row.measure-row .grid-cell.sub-col-actual-cell.sub-col-last-column-group,
+.grid-row.measure-row .grid-cell.sub-col-value-td.sub-col-last-in-group.sub-col-last-column-group,
+.grid-row.measure-row .grid-cell.sub-col-value-td.sub-col-last-column-group {
+  border-right: 1.5px solid var(--slds-g-color-neutral-base-80) !important;
+}
+
+/* ── Conditional Formatting Indicators ── */
+
+/* Small badge shown in "Create Indicator Columns" mode */
+.cf-indicator-badge {
+  position: absolute;
+  bottom: 3px;
+  right: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  padding: 0 4px;
+  font-size: 12px !important;
+  font-weight: 600;
+  color: var(--color-surface-white);
+  line-height: 1;
+  pointer-events: none;
+  z-index: 2;
+  gap: 2px;
+  opacity: 0.9;
+}
+
+.cf-indicator-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-surface-white);
+  flex-shrink: 0;
+}
+
+/* Data bar inside badge */
+.cf-data-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  min-width: 4px;
+}
+
+/* ── CF Indicator Sub-column Cells ── */
+
+.cf-indicator-sub-col {
+  padding: 0 !important;
+  text-align: center;
+}
+
+.cf-sub-icon-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 100%;
+  padding: 4px 6px;
+}
+
+.cf-sub-icon-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: var(--color-surface-white);
+  border-radius: 50%;
+  font-size: 12px !important;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.cf-sub-icon-label {
+  font-size: 12px !important;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60px;
+}
+
+/* Icon overlay for iconSet rules in modify-cells mode */
+.cell-cf-icon-overlay {
+  position: absolute !important;
+  top: 50% !important;
+  left: 10px !important;   /* sits just after the 4px border + 2px gap */
+  transform: translateY(-50%) !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+.cf-sub-bar-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 4px 8px;
+  height: 100%;
+}
+
+.cf-sub-bar-track {
+  height: 8px;
+  background: var(--slds-g-color-surface-container-1);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--slds-g-color-neutral-base-90);
+}
+
+.cf-sub-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.2s ease;
+  min-width: 2px;
+}
+
+.cf-sub-bar-pct {
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  text-align: right;
+  line-height: 1;
+}
+
+.cf-sub-scale-cell {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  font-size: 12px !important;
+  box-sizing: border-box;
+}
+
+.cf-sub-no-match {
+  color: var(--slds-g-color-neutral-base-50) !important;
+  font-size: 12px !important;
+}
+
+/* ─── Diverging Bar sub-column ─────────────────────────────────────────────── */
+
+.cf-sub-diverge-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 4px 8px;
+  height: 100%;
+}
+
+.cf-sub-diverge-track {
+  position: relative;
+  height: 8px;
+  background: var(--slds-g-color-surface-container-1);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--slds-g-color-neutral-base-90);
+}
+
+.cf-sub-diverge-mid {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--slds-g-color-neutral-base-65);
+  z-index: 1;
+}
+
+.cf-sub-diverge-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  min-width: 2px;
+  border-radius: 2px;
+  transition: left 0.2s ease, width 0.2s ease;
+}
+
+.cf-sub-diverge-lbl {
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  text-align: center;
+  line-height: 1;
+}
+
+/* ── Conditional Formatting: Modify Cells override ─────────────────────────
+   These rules MUST stay at the very end of this file.
+   Strategy: CSS custom properties (--cf-bg, --cf-gradient, etc.) are set as
+   inline style vars via GridRow. The .cell-cf-active class triggers the
+   !important override here. Because these selectors are declared LAST they
+   win any cascade tie against equal-specificity !important rules above.
+   Higher-specificity selectors are repeated to beat compound selectors like
+   .grid-row.measure-row:hover .cell-value-cell.edited-cell (4-class depth).
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* base: beats 1–2 class selectors */
+.cell-value-cell.cell-cf-active[data-cf-viz="colorScale"],
+.cell-value-cell.cell-cf-active[data-cf-viz="background"],
+.cell-value-cell.cell-cf-active.cell-cf-has-bg {
+  background-color: var(--cf-bg) !important;
+  background-image: none !important;
+}
+
+.cell-value-cell.cell-cf-active[data-cf-viz="dataBar"],
+.cell-value-cell.cell-cf-active.cell-cf-has-gradient {
+  background: var(--cf-gradient) !important;
+}
+
+.cell-value-cell.cell-cf-active[data-cf-viz="font"],
+.cell-value-cell.cell-cf-active.cell-cf-has-color {
+  color: var(--cf-color) !important;
+}
+
+.cell-value-cell.cell-cf-active[data-cf-viz="border"],
+.cell-value-cell.cell-cf-active.cell-cf-has-border {
+  border-left: var(--cf-border) !important;
+  padding-left: 4px !important;
+}
+
+/* 3-class depth: beats .edited-cell / .impacted-cell compound selectors */
+.grid-row .cell-value-cell.cell-cf-active[data-cf-viz="colorScale"],
+.grid-row .cell-value-cell.cell-cf-active[data-cf-viz="background"],
+.grid-row .cell-value-cell.cell-cf-active.cell-cf-has-bg {
+  background-color: var(--cf-bg) !important;
+  background-image: none !important;
+}
+.grid-row .cell-value-cell.cell-cf-active[data-cf-viz="dataBar"],
+.grid-row .cell-value-cell.cell-cf-active.cell-cf-has-gradient {
+  background: var(--cf-gradient) !important;
+}
+.grid-row .cell-value-cell.cell-cf-active[data-cf-viz="font"],
+.grid-row .cell-value-cell.cell-cf-active.cell-cf-has-color {
+  color: var(--cf-color) !important;
+}
+.grid-row .cell-value-cell.cell-cf-active[data-cf-viz="border"],
+.grid-row .cell-value-cell.cell-cf-active.cell-cf-has-border {
+  border-left: var(--cf-border) !important;
+  padding-left: 4px !important;
+}
+
+/* 4-class depth: beats .grid-row.measure-row .cell-value-cell.edited-cell */
+.grid-row.measure-row .cell-value-cell.cell-cf-active[data-cf-viz="colorScale"],
+.grid-row.measure-row .cell-value-cell.cell-cf-active[data-cf-viz="background"],
+.grid-row.measure-row .cell-value-cell.cell-cf-active.cell-cf-has-bg {
+  background-color: var(--cf-bg) !important;
+  background-image: none !important;
+}
+.grid-row.measure-row .cell-value-cell.cell-cf-active[data-cf-viz="dataBar"],
+.grid-row.measure-row .cell-value-cell.cell-cf-active.cell-cf-has-gradient {
+  background: var(--cf-gradient) !important;
+}
+.grid-row.measure-row .cell-value-cell.cell-cf-active[data-cf-viz="font"],
+.grid-row.measure-row .cell-value-cell.cell-cf-active.cell-cf-has-color {
+  color: var(--cf-color) !important;
+}
+.grid-row.measure-row .cell-value-cell.cell-cf-active[data-cf-viz="border"],
+.grid-row.measure-row .cell-value-cell.cell-cf-active.cell-cf-has-border {
+  border-left: var(--cf-border) !important;
+  padding-left: 4px !important;
+}
+
+/* 5-class depth: beats .grid-row.measure-row:hover .cell-value-cell.edited-cell */
+.grid-row.measure-row:hover .cell-value-cell.cell-cf-active[data-cf-viz="colorScale"],
+.grid-row.measure-row:hover .cell-value-cell.cell-cf-active[data-cf-viz="background"],
+.grid-row.measure-row:hover .cell-value-cell.cell-cf-active.cell-cf-has-bg {
+  background-color: var(--cf-bg) !important;
+  background-image: none !important;
+}
+.grid-row.measure-row:hover .cell-value-cell.cell-cf-active[data-cf-viz="dataBar"],
+.grid-row.measure-row:hover .cell-value-cell.cell-cf-active.cell-cf-has-gradient {
+  background: var(--cf-gradient) !important;
+}
+.grid-row.measure-row:hover .cell-value-cell.cell-cf-active[data-cf-viz="font"],
+.grid-row.measure-row:hover .cell-value-cell.cell-cf-active.cell-cf-has-color {
+  color: var(--cf-color) !important;
+}
+.grid-row.measure-row:hover .cell-value-cell.cell-cf-active[data-cf-viz="border"],
+.grid-row.measure-row:hover .cell-value-cell.cell-cf-active.cell-cf-has-border {
+  border-left: var(--cf-border) !important;
+  padding-left: 4px !important;
+}

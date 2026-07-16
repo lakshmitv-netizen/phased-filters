@@ -1,0 +1,1324 @@
+/* Manage Hierarchies modal — ported from the IPF_Shell setup app.
+   All classes are namespaced with the mh2- prefix so they never collide
+   with the rest of this project. */
+
+
+
+
+.mh2-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+
+.mh2-modal-container {
+  background-color: white;
+  width: 1226px;
+  max-width: 95vw;
+  height: 727px;
+  max-height: 90vh;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+
+.mh2-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 24px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+
+.mh2-modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #181818;
+  margin: 0;
+}
+
+
+.mh2-modal-close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.mh2-modal-close-button img {
+  width: 24px;
+  height: 24px;
+}
+
+
+.mh2-modal-header-simple {
+  padding: 14px 24px;
+  border-bottom: 1px solid #c9c9c9;
+  box-shadow: 0px 1px 0px 0px #c9c9c9;
+  background-color: white;
+}
+
+
+.mh2-modal-body-simple {
+  flex: 1;
+  padding: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: white;
+}
+
+
+/* SLDS2 neutral button styling. */
+.mh2-hierarchies-create-button {
+  background-color: #fff !important;
+  border: 1px solid #c9c9c9 !important;
+  color: #0176d3 !important;
+  padding: 6px 16px !important;
+  border-radius: 4px !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  cursor: pointer !important;
+  height: 32px !important;
+  white-space: nowrap !important;
+  line-height: 20px !important;
+}
+
+
+.mh2-hierarchies-create-button:hover {
+  background-color: #f3f3f3 !important;
+  border-color: #c9c9c9 !important;
+}
+
+
+.mh2-table-cell-actions {
+  width: 51px;
+  text-align: center;
+  padding: 9px 8px !important;
+}
+
+
+.mh2-table-row-dropdown {
+  background: white;
+  border: 1px solid #5c5c5c;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 6px 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  width: 28px;
+}
+
+
+.mh2-table-row-dropdown:hover {
+  background-color: #f3f3f3;
+}
+
+
+.mh2-table-row-dropdown img {
+  width: 14px;
+  height: 14px;
+}
+
+
+.mh2-data-status-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+.mh2-status-icon {
+  width: 16px;
+  height: 16px;
+}
+
+
+.mh2-modal-footer {
+  background-color: #f3f3f3;
+  border-top: 1px solid #c9c9c9;
+  box-shadow: 0px -1px 0px 0px #c9c9c9;
+  padding: 12px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  border-radius: 0 0 4px 4px;
+  flex-shrink: 0;
+}
+
+
+/* Neutral Cancel button (SLDS2 neutral). */
+.mh2-modal-cancel-button {
+  background-color: #fff !important;
+  color: #0176d3 !important;
+  border: 1px solid #c9c9c9 !important;
+  padding: 7px 16px !important;
+  border-radius: 4px !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  cursor: pointer !important;
+  height: 32px !important;
+}
+
+
+.mh2-modal-cancel-button:hover {
+  background-color: #f3f3f3 !important;
+}
+
+
+/* Brand (blue) Save button. */
+.mh2-modal-save-button {
+  background-color: #0176d3 !important;
+  color: #fff !important;
+  border: 1px solid #0176d3 !important;
+  padding: 7px 16px !important;
+  border-radius: 4px !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  cursor: pointer !important;
+  height: 32px !important;
+}
+
+
+.mh2-modal-save-button:hover {
+  background-color: #014486 !important;
+  border-color: #014486 !important;
+}
+
+
+.mh2-modal-cancel-button:disabled,
+.mh2-modal-save-button:disabled {
+  background-color: #c9c9c9 !important;
+  color: #919191 !important;
+  border-color: #c9c9c9 !important;
+  cursor: not-allowed !important;
+}
+
+
+
+
+.mh2-modal-hierarchies-2 {
+  width: 1012px;
+  height: 80vh;
+  max-height: 760px;
+}
+
+
+/* Card wrapper that holds the create/edit form content, so the form sits in a
+   contained card while the Cancel/Save actions live in the sticky modal footer. */
+.mh2-form-card {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0 10px;
+  margin: 0 12px 12px;
+}
+
+
+.mh2-manage-hierarchies-2-body {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-areas:
+    "left right";
+  gap: 0;
+  padding: 0;
+  align-items: stretch;
+  height: 100%;
+}
+
+
+/* When creating/editing/cloning, the left Dimensions panel is hidden and the
+   right panel spans the entire modal width. */
+.mh2-manage-hierarchies-2-body.mh2-panel-fullwidth {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "right";
+}
+
+.mh2-manage-hierarchies-2-body.mh2-panel-fullwidth .mh2-manage-hierarchies-2-panel-right {
+  border-left: none;
+}
+
+
+.mh2-manage-hierarchies-2-panel {
+  background-color: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 0;
+}
+
+
+.mh2-manage-hierarchies-2-panel-left {
+  grid-area: left;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-right: none;
+}
+
+
+.mh2-manage-hierarchies-2-panel-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #181818;
+  padding: 16px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+
+.mh2-manage-hierarchies-2-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+
+.mh2-manage-hierarchies-2-panel-header .mh2-manage-hierarchies-2-panel-title {
+  border-bottom: none;
+  margin: 0;
+  padding: 16px;
+}
+
+
+.mh2-manage-hierarchies-2-panel-right .mh2-manage-hierarchies-2-panel-header .mh2-manage-hierarchies-2-panel-title {
+  padding-left: 0px;
+}
+
+
+.mh2-manage-hierarchies-2-panel-header .mh2-hierarchies-create-button {
+  margin-right: 16px;
+}
+
+
+.mh2-manage-hierarchies-2-panel-header .mh2-edit-panel-header-actions {
+  margin-right: 12px;
+}
+
+
+.mh2-manage-hierarchies-2-create-header-left {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  /* Left padding reserves room for the hanging back arrow; the "Back" label and
+     the title both align to this 34px edge (so "B" sits right above "E"). */
+  padding: 10px 0 10px 34px;
+}
+
+.mh2-manage-hierarchies-2-create-header-left .mh2-manage-hierarchies-2-back-button {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  color: #0176d3;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.mh2-manage-hierarchies-2-create-header-left .mh2-manage-hierarchies-2-back-button:hover {
+  text-decoration: underline;
+}
+
+/* Hang the arrow to the left of the aligned text column (positioned against the
+   header-left container, not the button, so the "Back" label stays aligned). */
+.mh2-manage-hierarchies-2-create-header-left .mh2-back-arrow {
+  position: absolute;
+  left: 12px;
+  top: 10px;
+  font-size: 18px;
+  line-height: 1;
+  color: #0176d3;
+}
+
+.mh2-manage-hierarchies-2-create-header-left .mh2-manage-hierarchies-2-panel-title {
+  padding: 0;
+  line-height: 1.4;
+}
+
+
+.mh2-manage-hierarchies-2-back-button {
+  border: none;
+  background: none;
+  color: #0176d3;
+  font-size: 13px;
+  font-weight: 600;
+  margin-left: 16px;
+  cursor: pointer;
+}
+
+
+.mh2-manage-hierarchies-2-create-body {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  overflow: auto;
+  padding-top: 12px;
+}
+
+
+.mh2-manage-hierarchies-2-edit-body {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  overflow: auto;
+  padding-top: 12px;
+}
+
+
+.mh2-manage-hierarchies-2-create-body.mh2-slide-in,
+.mh2-manage-hierarchies-2-edit-body.mh2-slide-in {
+  animation: manageHierarchies2CreateSlideIn 0.26s ease-out forwards;
+}
+
+
+.mh2-manage-hierarchies-2-create-body.mh2-slide-out,
+.mh2-manage-hierarchies-2-edit-body.mh2-slide-out {
+  animation: manageHierarchies2CreateSlideOut 0.26s ease-out forwards;
+}
+
+
+.mh2-manage-hierarchies-2-dimension-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+
+.mh2-manage-hierarchies-2-info-box {
+  margin-top: auto;
+  margin: auto 12px 12px 12px;
+  border: 1px solid #d8dde6;
+  background-color: #f3f3f3;
+  border-radius: 4px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.mh2-manage-hierarchies-2-info-text {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #444;
+}
+
+
+.mh2-manage-hierarchies-2-info-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #181818;
+}
+
+
+.mh2-manage-hierarchies-2-dimension-item {
+  border: none;
+  border-bottom: 1px solid #e5e5e5;
+  background-color: white;
+  color: #444;
+  border-radius: 0;
+  padding: 10px 16px;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+
+/* background/color use !important to beat the global
+   `:where(button:not(.fill-handle)) { … !important }` reset in App.css */
+.mh2-manage-hierarchies-2-dimension-item.mh2-active {
+  background-color: #e5f0ff !important;
+  color: #032d60 !important;
+  font-weight: 700;
+  box-shadow: inset 4px 0 0 #0176d3;
+}
+
+
+.mh2-manage-hierarchies-2-panel-right {
+  grid-area: right;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border-left: 1px solid #e5e5e5;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.mh2-manage-hierarchies-2-table-container {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+
+.mh2-manage-hierarchies-2-content-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+@keyframes manageHierarchies2CreateSlideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+
+@keyframes manageHierarchies2CreateSlideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+
+.mh2-manage-hierarchies-2-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+
+.mh2-manage-hierarchies-2-table thead {
+  background-color: #f3f3f3;
+}
+
+
+.mh2-manage-hierarchies-2-table th {
+  text-align: left;
+  padding: 10px 8px;
+  color: #5c5c5c;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid #c9c9c9;
+  border-right: 1px solid #d8dde6;
+}
+
+
+.mh2-manage-hierarchies-2-table th:last-child {
+  border-right: none;
+}
+
+
+.mh2-manage-hierarchies-2-table td {
+  padding: 10px 8px;
+  color: #181818;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+
+.mh2-empty-state {
+  text-align: center;
+  padding: 72px 16px;
+  border-bottom: none !important;
+}
+
+.mh2-empty-state-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #181818;
+}
+
+.mh2-empty-state-subtitle {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #5c5c5c;
+}
+
+.mh2-manage-hierarchies-2-link {
+  color: #0176d3;
+  cursor: pointer;
+}
+
+
+.mh2-manage-hierarchies-2-link-button {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  /* !important beats the global `:where(button) { color: inherit !important }`
+     reset in App.css so the link stays blue. */
+  color: #0176d3 !important;
+  cursor: pointer;
+}
+
+.mh2-manage-hierarchies-2-link-button:hover {
+  text-decoration: underline;
+}
+
+
+.mh2-measures-info-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 10px 8px;
+  padding: 8px 12px;
+  border: 1px solid #d8dde6;
+  border-radius: 4px;
+  background-color: #f3f8ff;
+}
+
+
+.mh2-measures-info-bar-text {
+  font-size: 13px;
+  color: #181818;
+}
+
+
+.mh2-measures-info-bar-link {
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0176d3;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+.mh2-measures-info-bar-link:hover {
+  color: #014486;
+}
+
+
+
+.mh2-dropdown-wrapper {
+  position: relative;
+}
+
+
+.mh2-dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 4px;
+  background-color: white;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1), 
+              0 3px 3px rgba(0, 0, 0, 0.1), 
+              0 0 5px rgba(0, 0, 0, 0.1);
+  min-width: 164px;
+  z-index: 1000;
+  padding: 4px 0;
+}
+
+
+.mh2-dropdown-menu-item {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 13px;
+  color: #181818;
+  cursor: pointer;
+  line-height: 18px;
+}
+
+
+.mh2-dropdown-menu-item:hover {
+  background-color: #f3f3f3;
+}
+
+
+.mh2-dropdown-menu-item-danger {
+  color: #c23934;
+}
+
+
+.mh2-dropdown-menu-item-danger:hover {
+  background-color: #fef2f2;
+}
+
+
+.mh2-dropdown-menu-divider {
+  height: 1px;
+  background-color: #e5e5e5;
+  margin: 4px 0;
+}
+
+
+.mh2-edit-panel-header-actions {
+  display: flex;
+  gap: 0;
+  margin-left: auto;
+  position: relative;
+  z-index: 3;
+}
+
+
+.mh2-edit-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  max-height: 100%;
+}
+
+
+.mh2-edit-panel-section-title {
+  padding: 0;
+}
+
+
+.mh2-edit-panel-section-title p {
+  font-size: 14px;
+  font-weight: 600;
+  color: #181818;
+  margin: 0;
+}
+
+
+.mh2-edit-panel-notification {
+  display: flex;
+  gap: 12px;
+  margin: 12px 0;
+  padding: 10px 12px;
+  background-color: #e8f4f8;
+  border: 1px solid #1b96c9;
+  border-radius: 4px;
+  align-items: flex-start;
+}
+
+
+.mh2-notification-icon {
+  font-size: 16px;
+  color: #0176d3;
+  font-weight: bold;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+
+.mh2-notification-text {
+  font-size: 13px;
+  color: #181818;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.mh2-notification-clone-link {
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 13px;
+  /* !important beats the global `:where(button) { font/color: inherit !important }`
+     reset in App.css so the link stays bold + blue. */
+  font-weight: 600 !important;
+  color: #0176d3 !important;
+  cursor: pointer;
+  text-decoration: underline;
+  line-height: 1.4;
+}
+
+.mh2-notification-clone-link:hover {
+  text-decoration: underline;
+}
+
+
+.mh2-edit-panel-tree {
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+
+.mh2-tree-header {
+  display: grid;
+  grid-template-columns: 200px 200px;
+  background-color: #f3f3f3;
+  border-bottom: 1px solid #c9c9c9;
+}
+
+
+.mh2-tree-header-cell {
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #5c5c5c;
+  border-right: 1px solid #c9c9c9;
+}
+
+
+.mh2-tree-header-cell:last-child {
+  border-right: none;
+}
+
+
+.mh2-tree-row {
+  display: grid;
+  grid-template-columns: 200px 200px;
+  border-bottom: 1px solid #e5e5e5;
+  background-color: white;
+}
+
+
+.mh2-tree-row:hover {
+  background-color: #f9f9f9;
+}
+
+
+.mh2-tree-row:last-child {
+  border-bottom: none;
+}
+
+
+.mh2-tree-row-level-1 .mh2-tree-cell:first-child {
+  padding-left: 20px;
+}
+
+
+.mh2-tree-row-level-2 .mh2-tree-cell:first-child {
+  padding-left: 35px;
+}
+
+
+.mh2-tree-row-level-3 .mh2-tree-cell:first-child {
+  padding-left: 52px;
+}
+
+
+.mh2-tree-row-level-4 .mh2-tree-cell:first-child {
+  padding-left: 70px;
+}
+
+
+.mh2-tree-cell {
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-right: 1px solid #e5e5e5;
+}
+
+
+.mh2-tree-cell:last-child {
+  border-right: none;
+}
+
+
+.mh2-tree-chevron {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #5c5c5c;
+  padding: 2px 4px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transform: rotate(90deg);
+}
+
+
+.mh2-tree-chevron-empty {
+  visibility: hidden;
+}
+
+
+.mh2-tree-node-link {
+  font-size: 13px;
+  color: #0176d3;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.mh2-tree-node-link:hover {
+  text-decoration: underline;
+}
+
+
+.mh2-tree-input {
+  width: 100%;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 13px;
+  color: #181818;
+  height: 24px;
+}
+
+
+.mh2-tree-input:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 3px rgba(1, 118, 211, 0.3);
+}
+
+
+
+.mh2-edit-panel-text-button {
+  height: 32px !important;
+  border: 1px solid #c9c9c9 !important;
+  background-color: white !important;
+  color: #5c5c5c !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  cursor: pointer !important;
+  padding: 0 16px !important;
+  border-radius: 4px !important;
+  pointer-events: auto !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  padding: 7px 16px;
+  border-radius: 4px;
+}
+
+
+.mh2-edit-panel-text-button:hover {
+  background-color: #f3f3f3;
+  border-color: #a9a9a9;
+}
+
+
+.mh2-edit-panel-text-button-cancel {
+  margin-right: 8px;
+}
+
+
+.mh2-edit-panel-text-button-save {
+  background-color: #0176d3 !important;
+  color: white !important;
+  border-color: #0176d3 !important;
+}
+
+
+.mh2-edit-panel-text-button-save:hover {
+  background-color: #014c8d;
+  border-color: #014c8d;
+}
+
+
+.mh2-edit-panel-text-button-danger {
+  background-color: #ba0517;
+  color: white;
+  border-color: #ba0517;
+}
+
+
+.mh2-edit-panel-text-button-danger:hover {
+  background-color: #952c28;
+  border-color: #952c28;
+}
+
+
+.mh2-clone-form-section {
+  margin-bottom: 16px;
+}
+
+
+.mh2-required-asterisk {
+  color: #ba0517;
+}
+
+
+.mh2-clone-form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 590;
+  color: #5c5c5c;
+  margin-bottom: 8px;
+}
+
+
+.mh2-clone-form-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+
+.mh2-clone-info-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #5c5c5c;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.mh2-clone-form-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #181818;
+}
+
+
+.mh2-clone-form-input:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 1px #0176d3;
+}
+
+
+.mh2-clone-form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 9L3 5h8L7 9z' fill='%23747474'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+
+.mh2-clone-level-control {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: fit-content;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+
+.mh2-clone-level-button {
+  background: white;
+  border: none;
+  border-right: 1px solid #c9c9c9;
+  padding: 8px 16px;
+  font-size: 18px;
+  color: #0176d3;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+}
+
+
+.mh2-clone-level-button:last-child {
+  border-right: none;
+  border-left: 1px solid #c9c9c9;
+}
+
+
+.mh2-clone-level-button:hover {
+  background-color: #f3f3f3;
+}
+
+
+.mh2-clone-level-value {
+  padding: 8px 16px;
+  font-size: 13px;
+  color: #181818;
+  min-width: 50px;
+  text-align: center;
+}
+
+
+.mh2-clone-hierarchy-table {
+  margin-top: 0;
+  margin-bottom: 16px;
+  border: 1px solid #c9c9c9;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+
+.mh2-clone-table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 50px;
+  background-color: #f3f3f3;
+  border-bottom: 1px solid #c9c9c9;
+}
+
+
+.mh2-clone-table-header-cell {
+  padding: 8px;
+  font-size: 12px;
+  font-weight: 590;
+  color: #5c5c5c;
+}
+
+
+.mh2-clone-table-header-actions {
+  padding: 0;
+}
+
+
+.mh2-clone-table-body {
+  display: flex;
+  flex-direction: column;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+
+.mh2-clone-table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 50px;
+  border-bottom: 1px solid #c9c9c9;
+  min-height: 32px;
+}
+
+
+.mh2-clone-table-row:last-child {
+  border-bottom: none;
+}
+
+
+.mh2-clone-table-row-indent-1 .mh2-clone-table-cell:first-child {
+  padding-left: 24px;
+}
+
+
+.mh2-clone-table-row-indent-2 .mh2-clone-table-cell:first-child {
+  padding-left: 40px;
+}
+
+
+.mh2-clone-table-row-indent-3 .mh2-clone-table-cell:first-child {
+  padding-left: 56px;
+}
+
+
+.mh2-clone-table-row-indent-4 .mh2-clone-table-cell:first-child {
+  padding-left: 72px;
+}
+
+
+.mh2-clone-table-row-indent-5 .mh2-clone-table-cell:first-child {
+  padding-left: 88px;
+}
+
+
+.mh2-clone-table-row-indent-6 .mh2-clone-table-cell:first-child {
+  padding-left: 104px;
+}
+
+
+.mh2-clone-table-row-indent-7 .mh2-clone-table-cell:first-child {
+  padding-left: 120px;
+}
+
+
+.mh2-clone-table-row-indent-8 .mh2-clone-table-cell:first-child {
+  padding-left: 136px;
+}
+
+
+.mh2-clone-table-row-indent-9 .mh2-clone-table-cell:first-child {
+  padding-left: 152px;
+}
+
+
+.mh2-clone-table-row-indent-10 .mh2-clone-table-cell:first-child {
+  padding-left: 168px;
+}
+
+
+.mh2-clone-table-cell {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+.mh2-clone-chevron {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #5c5c5c;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.mh2-clone-chevron-empty {
+  width: 16px;
+  height: 16px;
+  visibility: hidden;
+}
+
+
+.mh2-clone-level-text {
+  font-size: 13px;
+  color: #0176d3;
+  text-decoration: none;
+}
+
+
+.mh2-clone-name-input {
+  flex: 1;
+  padding: 4px 8px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #5c5c5c;
+}
+
+
+.mh2-clone-name-input:focus {
+  outline: none;
+  border-color: #0176d3;
+}
+
+
+.mh2-clone-table-cell-actions {
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.mh2-clone-level-dropdown-wrapper {
+  position: relative;
+}
+
+
+.mh2-clone-level-dropdown-button {
+  background: white;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 24px;
+}
+
+
+.mh2-clone-level-dropdown-button:hover {
+  background-color: #f3f3f3;
+}
+
+
+.mh2-clone-level-dropdown-button img {
+  width: 14px;
+  height: 14px;
+}
+
+
+.mh2-clone-level-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  background: white;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 140px;
+}
+
+
+.mh2-clone-level-dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  text-align: left;
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: #181818;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+
+.mh2-clone-level-dropdown-item:hover {
+  background-color: #f3f3f3;
+}
+
+
+.mh2-clone-level-dropdown-item:first-child {
+  border-radius: 4px 4px 0 0;
+}
+
+
+.mh2-clone-level-dropdown-item:last-child {
+  border-radius: 0 0 4px 4px;
+}
+@keyframes manageHierarchies2CreateSlideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes manageHierarchies2CreateSlideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}

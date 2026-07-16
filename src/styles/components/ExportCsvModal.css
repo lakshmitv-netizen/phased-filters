@@ -1,0 +1,374 @@
+.export-csv-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--color-overlay-scrim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100050;
+  padding: var(--slds-g-spacing-4, 16px);
+  box-sizing: border-box;
+}
+
+.export-csv-modal-dialog {
+  background: var(--slds-g-color-surface-1, var(--color-surface-white));
+  border-radius: var(--slds-g-radius-border-3, 8px);
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 18%, transparent);
+  width: 100%;
+  max-width: 520px;
+  max-height: min(92vh, 720px);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  border: 1px solid var(--slds-g-color-border-1);
+}
+
+.export-csv-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--slds-g-spacing-3, 12px);
+  padding: var(--slds-g-spacing-4, 16px) var(--slds-g-spacing-5, 20px);
+  border-bottom: 1px solid var(--slds-g-color-border-1);
+  flex-shrink: 0;
+}
+
+.export-csv-modal-title {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--slds-g-font-size-6, 16px);
+  font-weight: var(--slds-g-font-weight-6, 600);
+  line-height: 1.35;
+  color: var(--slds-g-color-on-surface-2, var(--slds-g-color-neutral-base-10));
+}
+
+.export-csv-modal-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--slds-g-radius-border-2);
+  background: transparent;
+  color: var(--slds-g-color-on-surface-1);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.export-csv-modal-close:hover {
+  background: var(--slds-g-color-surface-container-1);
+  color: var(--slds-g-color-on-surface-2);
+}
+
+.export-csv-modal-body {
+  padding: var(--slds-g-spacing-4, 16px) var(--slds-g-spacing-5, 20px);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.export-csv-modal-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: var(--slds-g-spacing-2, 8px);
+  font-family: var(--font-family-base);
+  font-size: var(--slds-g-font-size-4, 13px);
+  font-weight: var(--slds-g-font-weight-6, 600);
+  color: var(--slds-g-color-on-surface-2);
+  cursor: pointer;
+  margin-bottom: var(--slds-g-spacing-4, 16px);
+  user-select: none;
+}
+
+.export-csv-modal-checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--slds-g-color-accent-1);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.export-csv-modal-section {
+  margin-bottom: var(--slds-g-spacing-4, 16px);
+}
+
+.export-csv-modal-section-label {
+  margin: 0 0 var(--slds-g-spacing-2, 8px);
+  font-family: var(--font-family-base);
+  font-size: var(--slds-g-font-size-3, 12px);
+  font-weight: var(--slds-g-font-weight-6, 600);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--slds-g-color-on-surface-1);
+}
+
+.export-csv-modal-section-lead {
+  margin: 0 0 var(--slds-g-spacing-3, 12px);
+  font-family: var(--font-family-base);
+  font-size: var(--slds-g-font-size-4, 13px);
+  font-weight: var(--slds-g-font-weight-6, 600);
+  color: var(--slds-g-color-on-surface-2);
+}
+
+.export-csv-modal-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--slds-g-spacing-3, 12px);
+}
+
+@media (max-width: 480px) {
+  .export-csv-modal-field-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.export-csv-modal-field {
+  margin-bottom: var(--slds-g-spacing-3, 12px);
+}
+
+.export-csv-modal-field:last-child {
+  margin-bottom: 0;
+}
+
+.export-csv-modal-label {
+  display: block;
+  margin-bottom: var(--slds-g-spacing-1, 4px);
+  font-family: var(--font-family-base);
+  font-size: var(--slds-g-font-size-3, 12px);
+  font-weight: var(--slds-g-font-weight-6, 600);
+  color: var(--slds-g-color-on-surface-1);
+}
+
+.export-csv-modal-label--static {
+  margin-bottom: var(--slds-g-spacing-2, 8px);
+}
+
+.export-csv-modal-field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--slds-g-color-neutral-base-10);
+  margin-bottom: 6px;
+  font-family: var(--font-family-base);
+  line-height: 1.4;
+}
+
+.export-csv-modal-sublabel {
+  display: block;
+  margin-bottom: var(--slds-g-spacing-1, 4px);
+  font-size: 12px;
+  font-weight: var(--slds-g-font-weight-6, 600);
+  color: var(--slds-g-color-on-surface-2);
+  font-family: var(--font-family-base);
+}
+
+.export-csv-modal-combobox-wrap {
+  position: relative;
+  min-width: 0;
+}
+
+/* Surface-1 reads as an active editable field; container grey looked disabled */
+.export-csv-modal-input,
+.export-csv-modal-select {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-family-base);
+  font-size: var(--slds-g-font-size-4, 13px);
+  line-height: 1.35;
+  padding: var(--slds-g-spacing-2, 8px) var(--slds-g-spacing-3, 12px);
+  border-radius: var(--slds-g-radius-border-2);
+  border: 1px solid var(--slds-g-color-border-1);
+  background-color: var(--slds-g-color-surface-1, #fff);
+  color: var(--slds-g-color-on-surface-2);
+  color-scheme: light;
+}
+
+.export-csv-modal-input:hover,
+.export-csv-modal-select:hover {
+  border-color: var(--slds-g-color-border-2);
+}
+
+.export-csv-modal-input:focus,
+.export-csv-modal-select:focus {
+  outline: 2px solid var(--slds-g-color-accent-1);
+  outline-offset: 1px;
+  border-color: var(--slds-g-color-accent-1);
+}
+
+.export-csv-modal-period-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--slds-g-spacing-3, 12px);
+}
+
+.export-csv-modal-preview-block {
+  margin-top: var(--slds-g-spacing-2, 8px);
+  margin-bottom: var(--slds-g-spacing-3, 12px);
+}
+
+.export-csv-modal-preview-caption {
+  margin: 0 0 var(--slds-g-spacing-2, 8px);
+  font-family: var(--font-family-base);
+  font-size: var(--slds-g-font-size-3, 12px);
+  font-weight: var(--slds-g-font-weight-4, 400);
+  color: var(--slds-g-color-on-surface-1);
+}
+
+.export-csv-modal-csv-visual {
+  border: 1px solid var(--slds-g-color-border-1);
+  border-radius: var(--slds-g-radius-border-2);
+  overflow: hidden;
+  background: var(--slds-g-color-surface-1);
+}
+
+.export-csv-modal-csv-visual-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  background: var(--slds-g-color-surface-1);
+  border-bottom: 1px solid var(--slds-g-color-border-1);
+}
+
+/* Neutral “window chrome” — avoids bright R/Y/G drawing focus */
+.export-csv-modal-csv-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--slds-g-color-neutral-base-50) 35%, var(--slds-g-color-surface-1));
+  border: 1px solid var(--slds-g-color-border-1);
+}
+
+.export-csv-modal-csv-filename {
+  margin-left: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  color: var(--slds-g-color-on-surface-1);
+  font-weight: var(--slds-g-font-weight-4, 400);
+}
+
+.export-csv-modal-csv-grid {
+  padding: var(--slds-g-spacing-2, 8px);
+  background: var(--slds-g-color-surface-1);
+}
+
+.export-csv-modal-csv-row {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr 0.85fr 0.75fr;
+  gap: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--slds-g-color-on-surface-1);
+  padding: 5px 6px;
+  border-radius: 0;
+  background: var(--slds-g-color-surface-1);
+  border-bottom: 1px solid color-mix(in srgb, var(--slds-g-color-border-1) 85%, transparent);
+}
+
+.export-csv-modal-csv-row--header {
+  font-weight: var(--slds-g-font-weight-6, 600);
+  background: color-mix(in srgb, var(--slds-g-color-neutral-base-50) 6%, var(--slds-g-color-surface-1));
+  color: var(--slds-g-color-on-surface-2);
+  border-bottom: 1px solid var(--slds-g-color-border-1);
+}
+
+.export-csv-modal-csv-row:not(.export-csv-modal-csv-row--header):nth-child(even) {
+  background: color-mix(in srgb, var(--slds-g-color-neutral-base-50) 4%, var(--slds-g-color-surface-1));
+}
+
+.export-csv-modal-csv-row:not(.export-csv-modal-csv-row--header):last-child {
+  border-bottom: none;
+}
+
+.export-csv-modal-scoped {
+  margin-top: var(--slds-g-spacing-2, 8px);
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+.export-csv-modal-scoped.scoped-notification--multiline {
+  max-width: 100% !important;
+}
+
+.export-csv-modal-scoped .scoped-notification-content {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.export-csv-modal-scoped .scoped-notification-text {
+  text-align: left !important;
+  flex: 1;
+  min-width: 0;
+}
+
+.export-csv-modal-progress-wrap {
+  margin-top: var(--slds-g-spacing-3, 12px);
+}
+
+.export-csv-modal-progress-label {
+  display: block;
+  margin-bottom: var(--slds-g-spacing-1, 4px);
+  font-family: var(--font-family-base);
+  font-size: var(--slds-g-font-size-3, 12px);
+  color: var(--slds-g-color-on-surface-1);
+}
+
+.export-csv-modal-progress {
+  width: 100%;
+  height: 8px;
+  accent-color: var(--slds-g-color-accent-1);
+}
+
+.export-csv-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--slds-g-spacing-2, 8px);
+  flex-wrap: wrap;
+  padding: var(--slds-g-spacing-4, 16px) var(--slds-g-spacing-5, 20px);
+  border-top: 1px solid var(--slds-g-color-border-1);
+  flex-shrink: 0;
+}
+
+.export-csv-modal-btn {
+  font-family: var(--font-family-base) !important;
+  font-size: var(--slds-g-font-size-4, 13px) !important;
+  font-weight: var(--slds-g-font-weight-4, 400) !important;
+  line-height: 18px !important;
+  padding: 8px 16px !important;
+  border-radius: var(--slds-g-radius-border-2) !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease !important;
+}
+
+.export-csv-modal-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+.export-csv-modal-btn.export-csv-modal-btn--secondary {
+  background-color: var(--slds-g-color-surface-1) !important;
+  border: 1px solid var(--slds-g-color-border-1) !important;
+  color: var(--slds-g-color-on-surface-3) !important;
+  box-shadow: none !important;
+}
+
+.export-csv-modal-btn.export-csv-modal-btn--secondary:hover:not(:disabled) {
+  background-color: var(--slds-g-color-surface-container-1) !important;
+}
+
+.export-csv-modal-btn.export-csv-modal-btn--primary {
+  background-color: var(--slds-g-color-accent-1) !important;
+  border: none !important;
+  color: var(--slds-g-color-on-accent-1) !important;
+  box-shadow: 0 2px 4px color-mix(in srgb, var(--slds-g-color-accent-1) 35%, transparent) !important;
+}
+
+.export-csv-modal-btn.export-csv-modal-btn--primary:hover:not(:disabled) {
+  background-color: var(--slds-g-color-brand-base-30) !important;
+  transform: translateY(-1px) !important;
+}

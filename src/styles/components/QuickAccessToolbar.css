@@ -1,0 +1,199 @@
+/* Quick Access Toolbar — compact shortcut bar above the grid.
+   Styles mirror the deployed Commercial Planning grid exactly. */
+.quick-access-bar {
+  align-items: flex-end;
+  /* Solid gray to match the deployed grid. Explicitly reset any gradient image
+     that a global/theme rule might otherwise apply to the bar. */
+  background-color: var(--color-surface-gray, #f3f3f3) !important;
+  background-image: none !important;
+  border-bottom: 1px solid var(--color-border, #e5e5e5);
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  font-family: var(--font-family-base, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  gap: var(--spacing-4, 16px);
+  padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+}
+
+.quick-access-bar-control {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.quick-access-bar-label {
+  color: var(--color-neutral-text, #706e6b);
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold, 600);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.quick-access-bar-dropdown {
+  position: relative;
+}
+
+.quick-access-bar-trigger {
+  align-items: center;
+  background-color: #fff !important;
+  border: 1px solid var(--color-border-ui-strong, #c9c9c9);
+  border-radius: 4px;
+  color: var(--color-on-surface-strong, #181818);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--font-size-base, 13px);
+  gap: var(--spacing-2, 8px);
+  height: 32px;
+  justify-content: space-between;
+  max-width: 220px;
+  min-width: 160px;
+  padding: 0 var(--spacing-3, 12px);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.quick-access-bar-trigger.open,
+.quick-access-bar-trigger:hover {
+  border-color: var(--color-accent-blue, #0b5cab);
+}
+
+.quick-access-bar-trigger.open {
+  box-shadow: 0 0 0 1px var(--color-accent-blue, #0b5cab);
+}
+
+.quick-access-bar-value {
+  background-color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quick-access-bar-chevron {
+  color: var(--color-on-surface-2, #444);
+  flex-shrink: 0;
+}
+
+.quick-access-bar-menu {
+  background-color: #fff;
+  border: 1px solid var(--color-border-ui-strong, #c9c9c9);
+  border-radius: 4px;
+  box-shadow: var(--slds-g-shadow-2, 0 2px 8px #00000029);
+  left: 0;
+  max-height: 280px;
+  min-width: 200px;
+  overflow-y: auto;
+  padding: var(--spacing-1, 4px) 0;
+  position: absolute;
+  top: calc(100% + 4px);
+  z-index: 100000;
+}
+
+.quick-access-bar-option {
+  align-items: center;
+  color: var(--color-on-surface-strong, #181818);
+  cursor: pointer;
+  display: flex;
+  font-size: var(--font-size-base, 13px);
+  gap: var(--spacing-2, 8px);
+  padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+}
+
+.quick-access-bar-option:hover {
+  background-color: var(--color-surface-gray, #f3f3f3);
+}
+
+.quick-access-bar-checkbox {
+  align-items: center;
+  background-color: var(--color-surface-white, #fff);
+  border: 1px solid var(--color-border-ui-strong, #c9c9c9);
+  border-radius: 3px;
+  color: var(--color-surface-white, #fff);
+  display: flex;
+  flex-shrink: 0;
+  height: 16px;
+  justify-content: center;
+  width: 16px;
+}
+
+.quick-access-bar-checkbox.checked {
+  background-color: var(--color-accent-blue, #0b5cab);
+  border-color: var(--color-accent-blue, #0b5cab);
+}
+
+.quick-access-bar-option-label {
+  white-space: nowrap;
+}
+
+.quick-access-bar-empty {
+  color: var(--color-neutral-text, #706e6b);
+  font-size: var(--font-size-sm, 12px);
+  padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+}
+
+.quick-access-bar-date-group {
+  align-items: center;
+  display: flex;
+  gap: var(--spacing-2, 8px);
+}
+
+.quick-access-bar-date {
+  background-color: #fff;
+  border: 1px solid var(--color-border-ui-strong, #c9c9c9);
+  border-radius: 4px;
+  color: var(--color-on-surface-strong, #181818);
+  font-family: inherit;
+  font-size: var(--font-size-base, 13px);
+  height: 32px;
+  padding: 0 var(--spacing-2, 8px);
+}
+
+.quick-access-bar-date:focus {
+  border-color: var(--color-accent-blue, #0b5cab);
+  outline: none;
+}
+
+.quick-access-bar-date-sep {
+  color: var(--color-on-surface-2, #444);
+}
+
+.quick-access-bar-end {
+  align-items: center;
+  display: flex;
+  gap: var(--spacing-3, 12px);
+  margin-left: auto;
+}
+
+.quick-access-bar-configure {
+  background: none;
+  border: none;
+  color: var(--color-accent-blue, #0b5cab);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--font-size-base, 13px);
+  font-weight: var(--font-weight-semibold, 600);
+  padding: 0;
+}
+
+.quick-access-bar-configure:hover {
+  text-decoration: underline;
+}
+
+.quick-access-bar-close {
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  color: var(--color-on-surface-2, #444);
+  cursor: pointer;
+  display: inline-flex;
+  height: 28px;
+  justify-content: center;
+  padding: 0;
+  width: 28px;
+}
+
+.quick-access-bar-close:hover {
+  background-color: var(--color-surface-white, #fff);
+  color: var(--color-on-surface-strong, #181818);
+}

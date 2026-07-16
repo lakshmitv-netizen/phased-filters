@@ -1,0 +1,3443 @@
+.planning-grid-config {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 88px);
+  background-color: #f3f3f3;
+}
+
+.planning-grid-header {
+  height: 57px;
+  background-color: white;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.planning-grid-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #181818;
+}
+
+.planning-grid-header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Assign To helper tooltip (shown while the button is disabled). A disabled
+   button doesn't fire hover events, so the wrapper drives visibility. */
+.planning-grid-assign-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.planning-grid-assign-tooltip {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 20;
+  width: 240px;
+  padding: 8px 12px;
+  background-color: #16325c;
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1.4;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+}
+
+.planning-grid-assign-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  right: 24px;
+  border: 6px solid transparent;
+  border-bottom-color: #16325c;
+}
+
+.planning-grid-assign-wrapper:hover .planning-grid-assign-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.planning-grid-button {
+  height: 32px !important;
+  padding: 0 16px !important;
+  border-radius: 4px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  border: 1px solid #c9c9c9 !important;
+  background-color: white !important;
+  color: #181818 !important;
+  transition: all 0.15s ease !important;
+}
+
+.planning-grid-button:hover {
+  background-color: #f3f3f3 !important;
+}
+
+.planning-grid-button-neutral {
+  background-color: white !important;
+  color: #181818 !important;
+  border: 1px solid #c9c9c9 !important;
+}
+
+.planning-grid-button-brand {
+  background-color: #0176d3 !important;
+  color: white !important;
+  border: 1px solid #0176d3 !important;
+}
+
+.planning-grid-button-brand:hover {
+  background-color: #014e96 !important;
+}
+
+.planning-grid-button-disabled {
+  background-color: white !important;
+  color: #c9c9c9 !important;
+  border: 1px solid #e5e5e5 !important;
+  cursor: not-allowed !important;
+}
+
+.planning-grid-button-disabled:hover {
+  background-color: white !important;
+}
+
+.planning-grid-view-selector {
+  padding: 16px;
+  background-color: white;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.planning-grid-select {
+  width: 295px;
+  height: 32px;
+  padding: 0 32px 0 12px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #181818;
+  background-color: white;
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  cursor: pointer;
+  appearance: none;
+}
+
+.planning-grid-select:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.1);
+}
+
+.planning-grid-content-wrapper {
+  display: grid;
+  grid-template-columns: 340px 380px 1fr;
+  gap: 16px;
+  padding: 16px;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.planning-grid-left-panel {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.planning-grid-middle-panel {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.planning-grid-right-panel {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.planning-grid-panel {
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+  padding: 16px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.planning-grid-panel-header {
+  margin-bottom: 16px;
+}
+
+.planning-grid-panel-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #181818;
+}
+
+.planning-grid-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.planning-grid-tab {
+  padding: 12px 24px;
+  font-size: 13px;
+  color: #5c5c5c !important;
+  background: none;
+  border: none !important;
+  cursor: pointer;
+  border-bottom: 2px solid transparent !important;
+  font-weight: 400 !important;
+  transition: all 0.15s ease;
+}
+
+.planning-grid-tab:hover {
+  color: #181818 !important;
+}
+
+.planning-grid-tab.active {
+  color: #0176d3 !important;
+  border-bottom: 2px solid #0176d3 !important;
+  font-weight: 700 !important;
+}
+
+.planning-grid-components-content {
+  padding: 4px 0;
+}
+
+.planning-grid-input-section {
+  margin-bottom: 24px;
+}
+
+.planning-grid-label {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.planning-grid-input {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #181818;
+}
+
+.planning-grid-input:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.1);
+}
+
+.planning-grid-section {
+  margin-bottom: 16px;
+}
+
+.planning-grid-dimension-select {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #181818;
+  background-color: white;
+  border: 1px solid #dddbda;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.planning-grid-dimension-select:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.1);
+}
+
+.planning-grid-dimension-select option {
+  padding: 8px;
+}
+
+.planning-grid-default-dimension {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  /* !important overrides the global button reset in App.css
+     (:where(button) { border/background/color: none !important }). */
+  color: #181818 !important;
+  background-color: #f8f9fa !important;
+  border: 2px solid #e5e5e5 !important;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+  margin-bottom: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.planning-grid-default-dimension:hover {
+  background-color: #eef4ff !important;
+  border-color: #b6d7f7 !important;
+}
+
+.planning-grid-default-dimension.active {
+  background-color: #eef4ff !important;
+  border-color: #0176d3 !important;
+  box-shadow: 0 0 0 1px #0176d3;
+}
+
+.planning-grid-selected-dimension-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #181818;
+  background-color: #f8f9fa;
+  border: 2px solid #e5e5e5;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin-bottom: 8px;
+}
+
+.planning-grid-selected-dimension-item:hover {
+  background-color: #eef4ff;
+  border-color: #b6d7f7;
+}
+
+.planning-grid-selected-dimension-item.active {
+  background-color: #eef4ff;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 1px #0176d3;
+}
+
+.planning-grid-selected-dimension-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.planning-grid-drag-handle {
+  display: flex;
+  align-items: center;
+  cursor: grab;
+  opacity: 0.5;
+}
+
+.planning-grid-drag-handle:active {
+  cursor: grabbing;
+}
+
+.planning-grid-drag-handle img {
+  width: 12px;
+  height: 12px;
+}
+
+.planning-grid-dimension-remove {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.planning-grid-dimension-remove:hover {
+  background-color: #fee;
+  color: #c23934;
+}
+
+.planning-grid-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #181818;
+  margin-bottom: 8px;
+}
+
+.planning-grid-section-description {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.planning-grid-dimension-card {
+  background-color: #f8f9fa;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.planning-grid-dimension-card:hover {
+  background-color: #eef4ff;
+  border-color: #0176d3;
+}
+
+.planning-grid-dimension-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.planning-grid-dimension-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #181818;
+}
+
+.planning-grid-dimension-meta {
+  font-size: 12px;
+  color: #666;
+}
+
+.planning-grid-highlight-box {
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.planning-grid-highlight-box-compact {
+  margin-bottom: 16px;
+  padding: 12px 16px;
+}
+
+.planning-grid-highlight-label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.planning-grid-hierarchy-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #181818;
+  margin-bottom: 8px;
+}
+
+.planning-grid-hierarchy-select {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #181818;
+  background-color: white;
+  border: 1px solid #d8dde6;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.planning-grid-hierarchy-select:hover {
+  border-color: #0176d3;
+}
+
+.planning-grid-hierarchy-select:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.1);
+}
+
+.planning-grid-hierarchy-levels-count {
+  font-size: 12px;
+  color: #666;
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+
+
+.planning-grid-highlight-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #181818;
+}
+
+.planning-grid-measure-row-item {
+  margin-bottom: 8px;
+}
+
+.planning-grid-selected-dimension-remove {
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.planning-grid-selected-dimension-remove:hover {
+  background-color: #fee;
+}
+
+.planning-grid-selected-dimension-remove img {
+  width: 14px;
+  height: 14px;
+}
+
+.planning-grid-empty-state {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.planning-grid-empty-state-secondary {
+  padding: 32px 20px;
+}
+
+.planning-grid-empty-state-image {
+  width: 120px;
+  height: auto;
+  margin-bottom: 16px;
+  opacity: 0.8;
+}
+
+.planning-grid-empty-state-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #181818;
+  margin-bottom: 8px;
+}
+
+.planning-grid-empty-state-description {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.planning-grid-inline-link-button {
+  background: none;
+  border: none;
+  color: #0176d3;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  text-decoration: underline;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.planning-grid-inline-link-button:hover {
+  background-color: #eef4ff;
+  text-decoration: none;
+}
+
+/* SLDS brand button (filled blue). !important overrides the global button reset
+   in App.css (:where(button) { background/border/color: none !important }). */
+.planning-grid-empty-state-button {
+  width: 100%;
+  padding: 10px 16px;
+  background: #0176d3 !important;
+  border: 1px solid #0176d3 !important;
+  border-radius: 4px;
+  color: #fff !important;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin-top: 12px;
+}
+
+.planning-grid-empty-state-button:hover {
+  background: #014486 !important;
+  border-color: #014486 !important;
+}
+
+.planning-grid-empty-state-button:active {
+  background: #032d60 !important;
+  border-color: #032d60 !important;
+  transform: scale(0.98);
+}
+
+.planning-grid-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.planning-grid-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: #181818;
+  cursor: pointer;
+}
+
+.planning-grid-checkbox-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.planning-grid-filter-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  margin-top: 32px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.planning-grid-filter-text {
+  flex: 1;
+}
+
+.planning-grid-filter-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #181818;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.planning-grid-filter-description {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+}
+
+.planning-grid-toggle {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.planning-grid-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.planning-grid-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #c9c9c9;
+  transition: 0.3s;
+  border-radius: 28px;
+}
+
+.planning-grid-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.planning-grid-toggle input:checked + .planning-grid-toggle-slider {
+  background-color: #2e844a;
+}
+
+.planning-grid-toggle input:checked + .planning-grid-toggle-slider:before {
+  transform: translateX(20px);
+}
+
+.planning-grid-preview-container {
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+  padding: 16px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.planning-grid-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.planning-grid-preview-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #181818;
+}
+
+.planning-grid-close-button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.planning-grid-close-button img {
+  width: 24px;
+  height: 24px;
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+}
+
+.planning-grid-close-button:hover img {
+  opacity: 1;
+}
+
+.planning-grid-preview-description {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.planning-grid-preview-image {
+  background-color: #f8f9fa;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.planning-grid-preview-screenshot {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.planning-grid-preview-placeholder {
+  text-align: center;
+}
+
+.planning-grid-preview-placeholder span {
+  font-size: 18px;
+  font-weight: 600;
+  color: #666;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.planning-grid-preview-placeholder p {
+  font-size: 13px;
+  color: #999;
+  margin: 0;
+}
+
+.planning-grid-popover {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  max-width: 240px;
+  z-index: 1000;
+}
+
+.planning-grid-popover-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #181818;
+  margin-bottom: 8px;
+}
+
+.planning-grid-popover-content {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Add Measures Modal Styles */
+.planning-grid-add-measures-modal {
+  max-width: 1400px;
+  width: 95vw;
+  height: 85vh;
+  max-height: 800px;
+}
+
+.planning-grid-config .modal-container.planning-grid-add-measures-modal .modal-body {
+  padding: 0;
+}
+
+.planning-grid-category-groups-header {
+  margin-top: 12px;
+}
+
+/* "Select Measures" header row with the Create Measure button on the right. */
+.planning-grid-select-measures-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.planning-grid-select-measures-header h4 {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #181818 !important;
+  margin: 0 0 2px 0 !important;
+}
+
+.planning-grid-select-measures-header p {
+  font-size: 13px;
+  font-weight: 400;
+  color: #5c5c5c;
+  margin: 0;
+}
+
+.planning-grid-create-measure-btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.planning-grid-category-row-item {
+  cursor: pointer;
+}
+
+.planning-grid-category-row-count {
+  color: #5c5c5c;
+  font-size: 13px;
+}
+
+.planning-grid-add-measures-body {
+  display: flex;
+  gap: 0;
+  min-height: 500px;
+  width: 100%;
+  height: 100%;
+}
+
+.planning-grid-add-measures-left {
+  flex: 0 0 280px;
+  border-right: 1px solid #e5e5e5;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #fafafa;
+}
+
+.planning-grid-add-measures-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 24px 24px;
+  background-color: white;
+  overflow: hidden;
+}
+
+.planning-grid-step-header {
+  margin-bottom: 24px;
+}
+
+.planning-grid-step-header-text h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #181818;
+  margin-bottom: 4px;
+  margin-top: 0;
+}
+
+.planning-grid-step-header-text p {
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.planning-grid-subset-inputs {
+  margin-bottom: 20px;
+}
+
+.planning-grid-subset-inputs label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #181818;
+  margin-bottom: 8px;
+}
+
+.planning-grid-subset-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.planning-grid-subset-input-row input {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 13px;
+  border: 1px solid #dddbda;
+  border-radius: 4px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: white;
+}
+
+.planning-grid-subset-input-row input:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.1);
+}
+
+.planning-grid-subset-input-row button {
+  padding: 8px 16px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  background-color: #0176d3;
+  color: #ffffff;
+  border: 1px solid #0176d3;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-width: 44px;
+  flex-shrink: 0;
+  pointer-events: auto;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.planning-grid-subset-input-row button:hover:not(:disabled) {
+  background-color: #005fb2;
+  border-color: #005fb2;
+}
+
+.planning-grid-subset-input-row button:active:not(:disabled) {
+  transform: scale(0.98);
+  background-color: #014486;
+  border-color: #014486;
+}
+
+.planning-grid-subset-input-row button:disabled {
+  background-color: #c9c7c5;
+  border-color: #c9c7c5;
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.planning-grid-subset-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.planning-grid-subset-item {
+  display: flex;
+  align-items: stretch;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: transparent;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.planning-grid-subset-item.active {
+  background-color: #f3f4f6;
+  border-color: #d8dde6;
+  border-left: 3px solid #0176d3;
+  padding-left: 0;
+}
+
+.planning-grid-subset-main {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 12px;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #181818;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+.planning-grid-subset-main:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.planning-grid-subset-item.active .planning-grid-subset-main {
+  background-color: transparent;
+  color: #181818;
+}
+
+.planning-grid-subset-item.active .planning-grid-subset-main:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.planning-grid-subset-main strong {
+  font-weight: 600;
+  color: inherit;
+  font-size: 13px;
+}
+
+.planning-grid-subset-main span {
+  font-size: 11px;
+  color: inherit;
+  opacity: 0.8;
+}
+
+.planning-grid-subset-inline-actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 0 8px;
+  background-color: transparent;
+}
+
+.planning-grid-subset-item.active .planning-grid-subset-inline-actions {
+  background-color: transparent;
+}
+
+.planning-grid-subset-icon-button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  opacity: 0.7;
+}
+
+.planning-grid-subset-icon-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  opacity: 1;
+}
+
+.planning-grid-subset-item.active .planning-grid-subset-icon-button {
+  opacity: 0.6;
+}
+
+.planning-grid-subset-item.active .planning-grid-subset-icon-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  opacity: 1;
+}
+
+.planning-grid-subset-icon-button img {
+  width: 12px;
+  height: 12px;
+  filter: brightness(0) saturate(100%);
+}
+
+.planning-grid-subset-item.active .planning-grid-subset-icon-button img {
+  filter: brightness(0) saturate(100%);
+}
+
+.planning-grid-subset-edit-input {
+  width: 100%;
+  padding: 4px 8px;
+  font-size: 12px;
+  border: 1px solid #0176d3;
+  border-radius: 3px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: white;
+  color: #181818;
+}
+
+.planning-grid-subset-edit-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.1);
+}
+
+.planning-grid-subset-tip {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #fff9e6;
+  border-left: 3px solid #ffc107;
+  border-radius: 4px;
+}
+
+.planning-grid-subset-tip span {
+  font-size: 11px;
+  color: #666;
+  line-height: 1.5;
+  display: block;
+}
+
+.planning-grid-measure-toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  align-items: flex-end;
+}
+
+.planning-grid-filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.planning-grid-filter-label {
+  font-size: 12px;
+  color: #5c5c5c;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.planning-grid-measure-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 6px 12px;
+  background-color: white;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+}
+
+.planning-grid-measure-search img {
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+}
+
+.planning-grid-measure-search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  color: #181818;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.planning-grid-measure-filter-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.planning-grid-measure-filter-wrap img {
+  position: absolute;
+  right: 12px;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.planning-grid-measure-filter {
+  width: 100%;
+  height: 32px;
+  padding: 6px 28px 6px 12px;
+  font-size: 13px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  appearance: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #181818;
+}
+
+.planning-grid-measure-filter:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.1);
+}
+
+.planning-grid-create-new-button {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: #0176d3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.planning-grid-create-new-button:hover {
+  background-color: #014f86;
+}
+
+.planning-grid-table-controls {
+  margin-bottom: 12px;
+}
+
+.planning-grid-show-selected {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #181818;
+  cursor: pointer;
+}
+
+.planning-grid-show-selected input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.planning-grid-measures-table-wrap {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid #c9c9c9;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.planning-grid-measures-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.planning-grid-measures-table thead {
+  background-color: #f3f3f3;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.planning-grid-measures-table th {
+  padding: 9px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #5c5c5c;
+  border-bottom: 1px solid #c9c9c9;
+  white-space: nowrap;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.planning-grid-measures-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid #c9c9c9;
+  color: #181818;
+  font-size: 13px;
+}
+
+.planning-grid-measures-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.planning-grid-measures-table input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.planning-grid-measure-name-cell {
+  font-weight: 400;
+  color: #0176d3;
+  cursor: pointer;
+}
+
+.planning-grid-measure-name-cell:hover {
+  text-decoration: underline;
+}
+
+.planning-grid-add-measures-right .planning-grid-step-header {
+  margin-bottom: 16px;
+}
+
+.planning-grid-add-measures-right .planning-grid-step-header-text h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #181818;
+  margin-bottom: 4px;
+  margin-top: 0;
+}
+
+.planning-grid-add-measures-right .planning-grid-step-header-text p {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+}
+
+.planning-grid-category-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.planning-grid-category-badge.volume {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.planning-grid-category-badge.financials {
+  background-color: #e8f5e9;
+  color: #388e3c;
+}
+
+.planning-grid-category-badge.operations {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.planning-grid-category-badge.market-execution {
+  background-color: #fce4ec;
+  color: #c2185b;
+}
+
+.planning-grid-measure-actions {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.planning-grid-measure-action-button {
+  padding: 4px 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.15s ease;
+  font-size: 12px;
+  color: #666;
+}
+
+.planning-grid-measure-action-button:hover {
+  background-color: #f3f2f2;
+  color: #181818;
+}
+
+.planning-grid-add-measures-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+}
+
+.planning-grid-footer-back-link {
+  background: none;
+  border: none;
+  color: #0176d3;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.planning-grid-footer-back-link:hover {
+  background-color: #eef4ff;
+  text-decoration: underline;
+}
+
+.planning-grid-footer-right-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Create Measure View Styles */
+.planning-grid-measure-type-selector {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.planning-grid-create-measure-step-header {
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.planning-grid-create-measure-step-title h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #181818;
+  margin: 0 0 4px 0;
+}
+
+.planning-grid-create-measure-step-title p {
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+}
+
+.planning-grid-create-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.edit-panel-icon-button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid #dddbda;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  font-size: 16px;
+  color: #666;
+}
+
+.edit-panel-icon-button:hover {
+  background-color: #f8f9fa;
+  border-color: #c9c9c9;
+}
+
+.edit-panel-icon-button-cancel:hover {
+  background-color: #fee;
+  border-color: #c23934;
+  color: #c23934;
+}
+
+.edit-panel-icon-button-save {
+  background-color: #0176d3;
+  border-color: #0176d3;
+  color: white;
+}
+
+.edit-panel-icon-button-save:hover:not(:disabled) {
+  background-color: #014f86;
+  border-color: #014f86;
+}
+
+.edit-panel-icon-button-save svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.planning-grid-add-measures-right .planning-grid-step-header {
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.edit-form-field {
+  margin-bottom: 16px;
+}
+
+.edit-form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #181818;
+  margin-bottom: 8px;
+}
+
+.planning-grid-create-type-field {
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.planning-grid-create-type-field .edit-form-label {
+  font-size: 13px;
+}
+
+.planning-grid-create-subset-field {
+  margin-bottom: 20px;
+}
+
+.planning-grid-create-subset-multi-select {
+  position: relative;
+}
+
+.planning-grid-create-subset-multi-trigger {
+  width: 100%;
+  padding: 8px 32px 8px 10px;
+  font-size: 12px;
+  border: 1px solid #dddbda;
+  border-radius: 4px;
+  background-color: white;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #181818;
+}
+
+.planning-grid-create-subset-multi-trigger img {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  opacity: 0.6;
+}
+
+.planning-grid-create-subset-multi-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background-color: white;
+  border: 1px solid #dddbda;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.planning-grid-create-subset-multi-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.planning-grid-create-subset-multi-option:hover {
+  background-color: #f8f9fa;
+}
+
+.planning-grid-create-subset-multi-option input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.planning-grid-measure-type-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.planning-grid-measure-type-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  background-color: white;
+  border: 2px solid #dddbda;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+  position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.planning-grid-measure-type-card:hover {
+  border-color: #b6d7f7;
+  background-color: #fafbfc;
+}
+
+.planning-grid-measure-type-card.active {
+  border-color: #0176d3;
+  background-color: #eef4ff;
+  box-shadow: 0 0 0 1px #0176d3;
+}
+
+.planning-grid-measure-type-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.planning-grid-measure-type-content {
+  flex: 1;
+}
+
+.planning-grid-measure-type-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #181818;
+  margin-bottom: 4px;
+}
+
+.planning-grid-measure-type-description {
+  font-size: 11px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.planning-grid-measure-type-check {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 18px;
+  height: 18px;
+  background-color: #0176d3;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.planning-grid-measure-type-continue {
+  margin-top: 16px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: #0176d3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.planning-grid-measure-type-continue:hover {
+  background-color: #014f86;
+}
+
+.planning-grid-measure-type-continue:disabled {
+  background-color: #c9c9c9;
+  cursor: not-allowed;
+}
+
+.planning-grid-create-measure-form {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.measure-section {
+  margin-bottom: 24px;
+}
+
+.measure-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #181818;
+  margin: 0 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.edit-form-input,
+.edit-form-select {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 12px;
+  border: 1px solid #dddbda;
+  border-radius: 4px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #181818;
+  background-color: white;
+}
+
+.edit-form-input:focus,
+.edit-form-select:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.1);
+}
+
+.edit-form-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2.5 4.5L6 8L9.5 4.5' stroke='%23747474' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 32px;
+}
+
+.edit-form-textarea {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 12px;
+  border: 1px solid #dddbda;
+  border-radius: 4px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #181818;
+  background-color: white;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.edit-form-textarea:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.1);
+}
+
+.planning-grid-no-measure-selected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: #666;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.planning-grid-create-measure-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: #666;
+  font-size: 13px;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+.planning-grid-measure-type-combobox-wrap {
+  margin-bottom: 20px;
+}
+
+.planning-grid-measure-type-combobox-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #181818;
+  margin-bottom: 8px;
+}
+
+.planning-grid-measure-type-combobox {
+  position: relative;
+}
+
+.planning-grid-measure-type-combobox input {
+  width: 100%;
+  padding: 8px 32px 8px 10px;
+  font-size: 12px;
+  border: 1px solid #dddbda;
+  border-radius: 4px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #181818;
+  background-color: white;
+}
+
+.planning-grid-measure-type-combobox input:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.1);
+}
+
+.planning-grid-measure-type-combobox img {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.planning-grid-measure-type-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background-color: white;
+  border: 1px solid #dddbda;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.planning-grid-measure-type-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  font-size: 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.15s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #181818;
+}
+
+.planning-grid-measure-type-option:hover {
+  background-color: #f8f9fa;
+}
+
+.planning-grid-measure-type-option.active {
+  background-color: #eef4ff;
+  color: #0176d3;
+}
+
+.planning-grid-measure-type-option span:first-child {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.planning-grid-measure-type-option-empty {
+  padding: 12px;
+  text-align: center;
+  color: #666;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.modal-cancel-button,
+.modal-save-button {
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  border: 1px solid transparent;
+}
+
+.modal-cancel-button {
+  background-color: white;
+  color: #181818;
+  border-color: #c9c9c9;
+}
+
+.modal-cancel-button:hover {
+  background-color: #f3f3f3;
+  border-color: #c9c9c9;
+}
+
+.modal-save-button {
+  background-color: #0176d3;
+  color: white;
+  border-color: #0176d3;
+}
+
+.modal-save-button:hover {
+  background-color: #014f86;
+  border-color: #014f86;
+}
+
+.modal-save-button:disabled {
+  background-color: #c9c9c9;
+  border-color: #c9c9c9;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ==========================================
+   Hierarchy Setup Page & Measures Page Styles
+   ========================================== */
+
+.hierarchy-setup-page,
+.measures-page {
+  padding: 24px 32px;
+  background-color: #fafafa;
+  min-height: 100vh;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.page-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  color: #0176d3;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.back-button:hover {
+  text-decoration: underline;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 300;
+  color: #181818;
+  margin: 0;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: #706e6b;
+  margin: 0;
+}
+
+.page-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.page-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all 0.2s;
+}
+
+.page-button-primary {
+  background-color: #0176d3;
+  color: white;
+  border-color: #0176d3;
+}
+
+.page-button-primary:hover {
+  background-color: #014d92;
+  border-color: #014d92;
+}
+
+.page-button-secondary {
+  background-color: white;
+  color: #0176d3;
+  border-color: #c9c9c9;
+}
+
+.page-button-secondary:hover {
+  background-color: #f3f3f3;
+  border-color: #0176d3;
+}
+
+.page-button-icon {
+  background-color: white;
+  border: 1px solid #5c5c5c;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.page-button-icon:hover {
+  background-color: #f3f3f3;
+}
+
+.page-card {
+  background-color: white;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.page-card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-card-description {
+  font-size: 14px;
+  color: #444;
+  margin: 0;
+}
+
+.page-search-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.page-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.page-search img {
+  position: absolute;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+}
+
+.page-search input {
+  padding: 6px 12px 6px 36px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  font-size: 13px;
+  width: 240px;
+}
+
+.page-search input:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 3px rgba(1, 118, 211, 0.3);
+}
+
+.page-icon-button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.page-icon-button:hover {
+  background-color: #f3f3f3;
+  border-color: #706e6b;
+}
+
+.page-icon-button img {
+  width: 16px;
+  height: 16px;
+}
+
+.page-table-container {
+  overflow-x: auto;
+}
+
+.page-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.page-table thead {
+  background-color: #fafafa;
+  border-bottom: 2px solid #c9c9c9;
+}
+
+.page-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #444;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.page-table tbody tr {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.page-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.page-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.page-table tbody tr.row-active {
+  background-color: #f0f8ff;
+}
+
+.page-table tbody tr.row-active:hover {
+  background-color: #e6f4ff;
+}
+
+.page-table td {
+  padding: 12px 16px;
+  color: #181818;
+}
+
+.active-badge {
+  background-color: #06914d;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+
+.type-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.type-read {
+  background-color: #e8f4ff;
+  color: #0176d3;
+}
+
+.type-write {
+  background-color: #fff3e0;
+  color: #d97000;
+}
+
+/* Nav item clickable */
+.nav-item-clickable {
+  cursor: pointer;
+}
+
+.nav-item-clickable:hover {
+  background-color: #f3f3f3;
+}
+
+/* Scoped Notification */
+.scoped-notification {
+  background-color: #d8edff;
+  border: 1px solid #91c9f7;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin: 0 8px 16px 8px;
+  display: flex;
+  align-items: center;
+}
+
+.scoped-notification-text {
+  font-size: 13px;
+  color: #181818;
+  line-height: 1.5;
+}
+
+.scoped-notification-link {
+  background: none;
+  border: none;
+  color: #0176d3;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+  display: inline;
+}
+
+.scoped-notification-link:hover {
+  text-decoration: underline;
+}
+.planning-view-page {
+  padding: 24px 12px 24px 20px;
+  background-color: #f3f3f3;
+  min-height: calc(100vh - 88px);
+  margin-top: 0;
+}
+
+.measures-page-layout {
+  display: flex;
+  width: 100%;
+  min-height: calc(100vh - 88px);
+}
+
+.measures-page-layout .hierarchy-setup-sidebar {
+  position: static;
+  top: auto;
+  left: auto;
+  bottom: auto;
+  height: auto;
+  min-height: calc(100vh - 88px);
+}
+
+.measures-page-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.planning-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.planning-view-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.planning-view-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #181818;
+  margin: 0;
+}
+
+.planning-view-subtitle {
+  font-size: 13px;
+  color: #706e6b;
+  margin: 0;
+}
+
+.planning-view-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.planning-view-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.planning-view-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.planning-view-button:disabled {
+  background-color: #ecebea;
+  color: #747474;
+  border: 1px solid #939393;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.planning-view-button-secondary {
+  background-color: white;
+  border: 1px solid #5c5c5c;
+  color: #181818;
+}
+
+.planning-view-button-secondary:hover {
+  background-color: #f9f9f9;
+}
+
+.planning-view-button-primary {
+  background-color: #0176d3;
+  border: none;
+  color: white;
+}
+
+.planning-view-button-primary:hover {
+  background-color: #014c8c;
+}
+
+.planning-view-card {
+  background-color: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.planning-view-card-header {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e5e5e5;
+  background-color: white;
+}
+
+.planning-view-card-description {
+  font-size: 13px;
+  color: #444;
+  margin: 0;
+  flex: 1;
+}
+
+.planning-view-search-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-left: auto;
+}
+
+.planning-view-filters-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+.planning-view-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: white;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  padding: 6px 12px;
+  width: 220px;
+  height: 32px;
+}
+
+.planning-view-search img {
+  width: 16px;
+  height: 16px;
+}
+
+.planning-view-search input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 13px;
+  color: #181818;
+}
+
+.planning-view-icon-button {
+  width: 40px;
+  height: 32px;
+  background-color: white;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.planning-view-icon-button:hover {
+  background-color: #f3f3f3;
+}
+
+.planning-view-icon-button img {
+  width: 16px;
+  height: 16px;
+}
+
+.planning-view-filter-select {
+  background-color: white;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  padding: 6px 12px;
+  width: 200px;
+  height: 32px;
+  font-size: 13px;
+  color: #181818;
+  cursor: pointer;
+}
+
+.planning-view-table-container {
+  overflow-x: auto;
+}
+
+.planning-view-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.planning-view-table thead {
+  background-color: #f3f3f3;
+}
+
+.planning-view-table th {
+  text-align: left;
+  padding: 10px 12px;
+  font-weight: 600;
+  color: #5c5c5c;
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: 0;
+  border-bottom: 2px solid #e5e5e5;
+}
+
+.planning-view-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e5e5;
+  color: #444;
+}
+
+.planning-view-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.planning-grid-config .modal-container.planning-view-assign-modal {
+  height: auto;
+  max-height: 90vh;
+}
+
+/* Let the roles dropdown menu overflow the modal until selection completes. */
+.planning-grid-config .modal-container.planning-view-assign-modal,
+.planning-grid-config .modal-container.planning-view-assign-modal .modal-body {
+  overflow: visible;
+}
+
+.planning-grid-config .modal-container.planning-view-assign-modal .modal-body {
+  flex: 0 0 auto;
+}
+
+.planning-view-assign-modal-content {
+  gap: 12px;
+}
+
+.planning-view-assign-field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.planning-view-assign-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #181818;
+}
+
+.planning-view-role-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.planning-grid-config .planning-view-role-dropdown-trigger {
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid #747474;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #181818;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.planning-grid-config .planning-view-role-dropdown-trigger:hover {
+  border-color: #5c5c5c;
+}
+
+.planning-grid-config .planning-view-role-dropdown-trigger:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 1px #0176d3;
+}
+
+.planning-view-role-dropdown-trigger img {
+  width: 12px;
+  height: 12px;
+}
+
+.planning-view-role-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #dddbda;
+  border-radius: 4px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  max-height: 180px;
+  overflow-y: auto;
+  z-index: 20;
+}
+
+.planning-view-role-dropdown-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #181818;
+  cursor: pointer;
+}
+
+.planning-view-role-dropdown-option:hover {
+  background-color: #f3f3f3;
+}
+
+.planning-view-role-pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.planning-view-role-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background-color: #e8f4ff;
+  border: 1px solid #0176d3;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #0176d3;
+}
+
+.planning-view-role-pill-remove {
+  border: none;
+  background: transparent;
+  color: #0176d3;
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.planning-grid-link-button {
+  border: none;
+  background: none;
+  /* !important overrides the global button reset in App.css
+     (:where(button) { color: inherit !important }) so names render as blue links. */
+  color: #0176d3 !important;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.planning-grid-link-button:hover {
+  text-decoration: underline;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-draft {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.measure-category-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.measure-category-volume {
+  background-color: #e8f3ff;
+  color: #1b69bf;
+}
+
+.measure-category-revenue {
+  background-color: #e3fbf8;
+  color: #056764;
+}
+
+.measure-category-promotions {
+  background-color: #fef4d9;
+  color: #8b5e00;
+}
+
+.measure-category-financials {
+  background-color: #d6f7ed;
+  color: #0d6a57;
+}
+
+.measure-category-market-execution {
+  background-color: #ffe1ec;
+  color: #9a3a66;
+}
+
+.measure-category-operations {
+  background-color: #f8dd73;
+  color: #8f6300;
+}
+
+.measure-category-salesagreement {
+  background-color: #e8f3ff;
+  color: #1b69bf;
+}
+
+.measure-category-baseline {
+  background-color: #eef3ff;
+  color: #2f5fb8;
+}
+
+.measure-category-trade {
+  background-color: #fff1df;
+  color: #935500;
+}
+
+.measure-category-budget {
+  background-color: #efe6ff;
+  color: #5f3ab0;
+}
+
+.measure-category-fund {
+  background-color: #e3fff1;
+  color: #0b6b45;
+}
+
+.planning-view-create-modal-text {
+  margin: 0;
+  font-size: 14px;
+  color: #444;
+}
+
+/* Flow Prompt Modal */
+.flow-prompt-modal {
+  background-color: white;
+  border-radius: 8px;
+  padding: 32px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.flow-prompt-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.flow-prompt-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.flow-prompt-checkmark {
+  width: 24px;
+  height: 24px;
+  background-color: #2e844a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.flow-prompt-checkmark img {
+  width: 15px;
+  height: 15px;
+}
+
+.flow-prompt-text {
+  font-size: 15px;
+  color: #181818;
+  line-height: 24px;
+  margin: 0;
+  padding-top: 2px;
+}
+
+.flow-prompt-button {
+  background-color: #0176d3;
+  color: white;
+  border: none;
+  padding: 10px 32px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 40px;
+  display: block;
+  margin: 0 auto;
+}
+
+.flow-prompt-button:hover {
+  background-color: #014e96;
+}
+
+/* Landing Page */
+.landing-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f7faff 0%, #eef3fb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.landing-content {
+  width: min(1000px, 100%);
+}
+
+.landing-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #0f2747;
+  margin-bottom: 12px;
+}
+
+.landing-subtitle {
+  font-size: 16px;
+  color: #4d5d75;
+  margin-bottom: 28px;
+}
+
+.landing-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.landing-card {
+  text-align: left;
+  background-color: #ffffff;
+  border: 1px solid #d7deea;
+  border-radius: 12px;
+  padding: 24px;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.landing-card:hover {
+  transform: translateY(-2px);
+  border-color: #0176d3;
+  box-shadow: 0 8px 20px rgba(20, 64, 128, 0.14);
+}
+
+.landing-card h2 {
+  font-size: 22px;
+  color: #16325c;
+  margin-bottom: 10px;
+}
+
+.landing-card p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #4a5b75;
+}
+
+/* Hierarchy Setup Page */
+.hierarchy-setup-page {
+  padding: 6px;
+  background-color: #f3f3f3;
+  min-height: calc(100vh - 88px);
+}
+
+.hierarchy-setup-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.hierarchy-setup-title-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #edf4ff;
+  color: #0176d3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.hierarchy-setup-title {
+  font-size: 38px;
+  line-height: 1;
+  color: #032d60;
+  letter-spacing: -0.4px;
+}
+
+.hierarchy-setup-master-container {
+  border: 1px solid #d8dde6;
+  background: #fff;
+}
+
+.hierarchy-setup-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #d8dde6;
+}
+
+.hierarchy-setup-header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.hierarchy-setup-content {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  min-height: calc(100vh - 240px);
+}
+
+.hierarchy-setup-dimensions-panel {
+  border-right: none;
+}
+
+.hierarchy-setup-panel-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #181818;
+  padding: 10px 8px;
+  border-bottom: 1px solid #d8dde6;
+}
+
+.hierarchy-setup-dimension-item {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #eef1f6;
+  background: white;
+  text-align: left;
+  padding: 10px 8px;
+  font-size: 13px;
+  color: #181818;
+  cursor: pointer;
+}
+
+.hierarchy-setup-dimension-item.active {
+  background-color: #edf4ff;
+  box-shadow: inset 3px 0 0 #0176d3;
+}
+
+.hierarchy-setup-table-panel {
+  overflow: auto;
+  border-left: 1px solid #d8dde6;
+}
+
+.hierarchy-setup-table-headline {
+  font-size: 13px;
+  font-weight: 600;
+  color: #181818;
+  padding: 10px 8px;
+  border-bottom: 1px solid #d8dde6;
+}
+
+.hierarchy-setup-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.hierarchy-setup-table th {
+  text-align: left;
+  background-color: #f3f3f3;
+  color: #5c5c5c;
+  font-weight: 600;
+  padding: 10px 8px;
+  border-right: 1px solid #d8dde6;
+  border-bottom: 1px solid #d8dde6;
+}
+
+.hierarchy-setup-table th:last-child {
+  border-right: none;
+}
+
+.hierarchy-setup-table td {
+  padding: 11px 8px;
+  color: #181818;
+  border-bottom: 1px solid #eef1f6;
+}
+
+.hierarchy-setup-link {
+  border: none;
+  background: none;
+  color: #0176d3;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hierarchy-setup-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hierarchy-setup-status img {
+  width: 16px;
+  height: 16px;
+}
+
+.hierarchy-setup-sidebar {
+  background: #ffffff;
+  width: 225px;
+}
+
+.hierarchy-setup-sidebar-search {
+  padding: 10px 10px 8px;
+}
+
+.hierarchy-setup-search-field {
+  height: 30px;
+  border-color: #c9c9c9;
+  border-radius: 4px;
+  padding: 0 10px;
+}
+
+.hierarchy-setup-nav-group {
+  border-top: 1px solid #d8dde6;
+}
+
+.hierarchy-setup-nav-item {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+  color: #181818;
+}
+
+.hierarchy-setup-nav-parent {
+  font-size: 12px;
+  color: #5c5c5c;
+}
+
+.hierarchy-setup-nav-selected {
+  background: #eaf5ff;
+  border-left: 3px solid #0176d3;
+  padding-left: 5px;
+}
+
+.hierarchy-setup-nav-indent {
+  width: 12px;
+}
+
+.side-nav-link-button {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.side-nav-link-button:hover {
+  text-decoration: none;
+}
+
+.hierarchy-create-modal {
+  width: 1040px;
+  height: 720px;
+}
+
+.hierarchy-create-modal-body {
+  padding: 16px;
+}
+
+.hierarchy-create-modal .modal-footer {
+  gap: 12px;
+}
+
+.v3-modal {
+  position: relative;
+}
+
+.v3-modal-body {
+  position: relative;
+}
+
+.v3-create-overlay {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+}
+
+.v3-create-overlay.slide-in {
+  animation: manageHierarchies2CreateSlideIn 0.26s ease-out forwards;
+}
+
+.v3-create-overlay.slide-out {
+  animation: manageHierarchies2CreateSlideOut 0.26s ease-out forwards;
+}
+
+.v3-create-body {
+  padding: 12px;
+}
+
+/* Measure Info Banner */
+.planning-grid-measure-info-banner {
+  background-color: #E8F4FF;
+  border-left: 3px solid #0176D3;
+  padding: 12px 16px;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #014486;
+}
+
+.planning-grid-measure-info-banner span {
+  color: #014486;
+  font-weight: 400;
+}
+
+.planning-grid-info-banner-link {
+  background: none;
+  border: none;
+  color: #0176D3;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.planning-grid-info-banner-link:hover {
+  color: #014486;
+}
+
+/* ============================================================
+   Scoped supporting styles (modal / form / measure / formula).
+   Scoped under .planning-grid-config so they never override the
+   global equivalents used elsewhere (e.g. ReviewMeasuresModal).
+   ============================================================ */
+.planning-grid-config .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.planning-grid-config .modal-container {
+  background-color: white;
+  width: 1226px;
+  max-width: 95vw;
+  height: 727px;
+  max-height: 90vh;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.planning-grid-config .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e5e5;
+  background-color: white;
+}
+
+.planning-grid-config .modal-header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.planning-grid-config .modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #181818;
+  margin: 0;
+}
+
+.planning-grid-config .modal-close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.planning-grid-config .modal-close-button img {
+  width: 24px;
+  height: 24px;
+}
+
+.planning-grid-config .modal-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  padding: 24px;
+}
+
+.planning-grid-config .modal-footer {
+  background-color: #f3f3f3;
+  border-top: 1px solid #c9c9c9;
+  box-shadow: 0px -1px 0px 0px #c9c9c9;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: flex-end;
+  border-radius: 0 0 4px 4px;
+  flex-shrink: 0;
+}
+
+.planning-grid-config .modal-cancel-button {
+  background-color: white;
+  color: #181818;
+  border: 1px solid #c9c9c9;
+  padding: 8px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 36px;
+}
+
+.planning-grid-config .modal-cancel-button:hover {
+  background-color: #f3f3f3;
+}
+
+.planning-grid-config .modal-save-button {
+  background-color: #0176d3;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 36px;
+}
+
+.planning-grid-config .table-row-dropdown {
+  background: white;
+  border: 1px solid #5c5c5c;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 6px 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  width: 28px;
+}
+
+.planning-grid-config .table-row-dropdown:hover {
+  background-color: #f3f3f3;
+}
+
+.planning-grid-config .table-row-dropdown img {
+  width: 14px;
+  height: 14px;
+}
+
+.planning-grid-config .edit-panel-text-button {
+  height: 32px;
+  background-color: white;
+  color: #181818;
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  padding: 0 16px;
+  min-width: 70px;
+  border-radius: 4px;
+}
+
+.planning-grid-config .edit-panel-text-button:hover {
+  background-color: #f3f3f3;
+}
+
+.planning-grid-config .edit-panel-cancel-button {
+  border: none;
+  color: #181818;
+}
+
+.planning-grid-config .edit-panel-cancel-button:hover {
+  background-color: #f3f3f3;
+}
+
+.planning-grid-config .edit-panel-save-button {
+  background-color: #0176d3;
+  color: white;
+  border: 1px solid #0176d3;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.planning-grid-config .edit-panel-save-button:hover {
+  background-color: #014d92;
+  border-color: #014d92;
+}
+
+.planning-grid-config .edit-form-field {
+  margin-bottom: 16px;
+}
+
+.planning-grid-config .edit-form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 590;
+  color: #5c5c5c;
+  margin-bottom: 8px;
+}
+
+.planning-grid-config .edit-form-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #181818;
+}
+
+.planning-grid-config .edit-form-input:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 1px #0176d3;
+}
+
+.planning-grid-config .edit-form-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #181818;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 9L3 5h8L7 9z' fill='%23747474'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+.planning-grid-config .edit-form-select:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 1px #0176d3;
+}
+
+.planning-grid-config .edit-form-textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #181818;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.planning-grid-config .edit-form-textarea:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 1px #0176d3;
+}
+
+.planning-grid-config .edit-form-textarea::placeholder {
+  color: #9e9e9e;
+}
+
+.planning-grid-config .source-search-wrapper {
+  position: relative;
+}
+
+.planning-grid-config .source-search-wrapper .edit-form-input {
+  padding-right: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='6.5' cy='6.5' r='4.5' stroke='%23666' stroke-width='1.5'/%3E%3Cpath d='M10 10l3.5 3.5' stroke='%23666' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.planning-grid-config .measure-section {
+  padding: 16px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.planning-grid-config .measure-section:last-child {
+  border-bottom: none;
+}
+
+.planning-grid-config .measure-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #181818;
+  margin: 0 0 16px 0;
+  padding: 12px 16px;
+  background-color: #f3f3f3;
+  border-radius: 4px;
+}
+
+.planning-grid-config .formula-builder {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.planning-grid-config .formula-inputs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.planning-grid-config .formula-input {
+  min-width: 0;
+}
+
+.planning-grid-config .formula-textarea {
+  min-height: 80px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+}
+
+.planning-grid-config .check-syntax-button {
+  align-self: flex-start;
+  background-color: white;
+  border: 1px solid #0176d3;
+  color: #0176d3;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.planning-grid-config .check-syntax-button:hover {
+  background-color: #f3f9ff;
+}
+
+.planning-grid-config .writeback-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  margin-top: 8px;
+}
+
+.planning-grid-config .writeback-checkbox {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.planning-grid-config .writeback-checkbox-label span {
+  font-size: 13px;
+  color: #181818;
+}
+
+/* Create Measure form laid out like the Review Available Measures modal:
+   two-column sections with full-width textarea/formula/category fields. */
+.planning-grid-config .planning-grid-create-measure-view .planning-grid-create-measure-form {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.planning-grid-config .planning-grid-create-measure-view .edit-panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 4px;
+}
+
+.planning-grid-config .planning-grid-create-measure-view .measure-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 24px;
+  row-gap: 10px;
+  align-items: start;
+  padding: 8px 0;
+}
+
+.planning-grid-config .planning-grid-create-measure-view .measure-section-title {
+  grid-column: 1 / -1;
+  margin: 0 0 6px 0;
+  padding: 8px 12px;
+}
+
+.planning-grid-config .planning-grid-create-measure-view .edit-form-field {
+  margin-bottom: 0;
+}
+
+.planning-grid-config .planning-grid-create-measure-view .edit-form-field:has(.edit-form-textarea),
+.planning-grid-config .planning-grid-create-measure-view .edit-form-field:has(.formula-builder),
+.planning-grid-config .planning-grid-create-measure-view .planning-grid-create-subset-field {
+  grid-column: 1 / -1;
+}

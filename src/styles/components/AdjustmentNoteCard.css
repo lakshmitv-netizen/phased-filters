@@ -1,0 +1,72 @@
+/* Adjustment Note Card */
+.adjustment-note-card {
+  background-color: var(--color-surface-white);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  transition: box-shadow 0.2s ease;
+}
+
+.adjustment-note-card:hover {
+  box-shadow: 0 2px 4px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 8%, transparent);
+}
+
+.adjustment-note-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.adjustment-note-card-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.adjustment-note-card-avatar {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent-blue);
+  flex-shrink: 0;
+}
+
+.adjustment-note-card-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.adjustment-note-card-user-name {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--color-text-primary);
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.adjustment-note-card-timestamp {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-text-secondary);
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.adjustment-note-card-body {
+  margin-top: 8px;
+}
+
+.adjustment-note-card-text {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-text-primary);
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+

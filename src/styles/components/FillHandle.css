@@ -1,0 +1,46 @@
+.fill-handle {
+  touch-action: none;
+  /* Center of the circle sits on the cell’s bottom-right corner */
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  transform: translate(50%, 50%);
+  transform-origin: center center;
+  z-index: 2000;
+  /* Fallbacks if design tokens fail to resolve (e.g. partial CSS load) */
+  background-color: var(--color-interactive-border, #aeb2b8);
+  border: 1px solid var(--color-on-surface-strong, #032d60);
+  border-radius: 50%;
+  box-sizing: border-box;
+  pointer-events: auto;
+  cursor: crosshair;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  /* Compact dot; still tappable (between original 10px and 14px) */
+  width: 11px;
+  height: 11px;
+  min-width: 11px;
+  min-height: 11px;
+}
+
+button.fill-handle {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  line-height: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  display: block;
+}
+
+.fill-handle:hover {
+  background-color: var(--slds-g-color-neutral-base-60);
+  border-color: var(--slds-g-color-neutral-base-50);
+}
+
+.fill-handle:active {
+  background-color: var(--color-on-surface-strong);
+  border-color: var(--slds-g-color-neutral-base-20);
+}

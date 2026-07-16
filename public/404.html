@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Forecasting &amp; Planning</title>
+  <script>
+    // Single-page app redirect for GitHub Pages (spa-github-pages pattern).
+    // Encodes the path after the repo segment as "/?/path" so GitHub Pages
+    // serves index.html, which restores the URL via history API.
+    var segmentCount = 1; // number of path segments in the base: /ipf-clean-up/ = 1
+    var l = window.location;
+    l.replace(
+      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+      l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?/' +
+      l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
+      (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+      l.hash
+    );
+  </script>
+</head>
+<body></body>
+</html>

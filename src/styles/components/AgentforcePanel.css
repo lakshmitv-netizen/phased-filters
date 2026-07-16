@@ -1,0 +1,592 @@
+/* ── Agentforce Panel ─────────────────────────────────────────────────────── */
+
+.agentforce-panel {
+  width: 400px;
+  min-width: 400px;
+  max-width: 400px;
+  height: 100%;
+  max-height: 100%;
+  background-color: var(--color-surface-white, #fff) !important;
+  border: 1px solid var(--color-border, var(--slds-g-color-neutral-base-90, #e5e5e5));
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.08);
+  align-self: stretch;
+  position: relative;
+  z-index: 2006;
+  isolation: isolate;
+  font-family: var(--font-family-base, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.agentforce-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  padding: 0 8px 0 16px;
+  border-bottom: 1px solid var(--color-border, var(--slds-g-color-neutral-base-90, #e5e5e5));
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.agentforce-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.agentforce-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--slds-g-color-neutral-base-15, #1c1c1c);
+}
+
+.agentforce-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.agentforce-header-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #2563c9 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+}
+.agentforce-header-btn:hover {
+  background: rgba(37, 99, 201, 0.1) !important;
+}
+.agentforce-header-btn:disabled {
+  color: var(--slds-g-color-neutral-base-70, #b0b0b0) !important;
+  cursor: default;
+  background: none !important;
+}
+.agentforce-close {
+  color: var(--slds-g-color-neutral-base-30, #5c5c5c) !important;
+}
+.agentforce-close:hover {
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #1c1c1c !important;
+}
+
+/* ── Body ────────────────────────────────────────────────────────────────── */
+.agentforce-body {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: linear-gradient(180deg, #eaf1ff 0%, #eef0ff 45%, #f3eefb 100%);
+}
+
+/* ── Intro / empty state ──────────────────────────────────────────────────── */
+.agentforce-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 8px 6px 6px;
+  margin: auto 0;
+}
+
+.agentforce-intro-hero {
+  width: 240px;
+  height: auto;
+  max-width: 80%;
+  object-fit: contain;
+  margin-bottom: 10px;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.agentforce-intro-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #16325c;
+  margin-bottom: 8px;
+}
+
+.agentforce-intro-sub {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--slds-g-color-neutral-base-30, #444);
+  max-width: 330px;
+  margin-bottom: 18px;
+}
+
+.agentforce-suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.agentforce-suggestion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 56px;
+  text-align: left;
+  /* !important needed to beat the global `button { … !important }` reset in App.css */
+  background: #ffffff !important;
+  border: 1px solid var(--slds-g-color-neutral-base-80, #c9c9c9) !important;
+  border-radius: 999px;
+  padding: 0 22px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0250d9 !important;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(16, 24, 40, 0.1);
+  transition: border-color 0.12s, box-shadow 0.12s, transform 0.06s;
+}
+.agentforce-suggestion:hover {
+  border-color: #0250d9 !important;
+  box-shadow: 0 4px 12px rgba(2, 80, 217, 0.18);
+}
+.agentforce-suggestion:active {
+  transform: translateY(1px);
+}
+.agentforce-suggestion-text::before {
+  content: '\201C';
+}
+.agentforce-suggestion-text::after {
+  content: '\201D';
+}
+.agentforce-suggestion-arrow {
+  flex-shrink: 0;
+  color: #0250d9;
+}
+
+/* ── User message ─────────────────────────────────────────────────────────── */
+.agentforce-user-msg {
+  align-self: flex-end;
+  max-width: 85%;
+  background: #1b96ff;
+  color: #fff;
+  padding: 9px 12px;
+  border-radius: 12px 12px 2px 12px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* ── Agent reply block: white card + a button group outside it ────────────── */
+.agentforce-reply-block {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Agent reply (feed-item style: avatar + content on a white card) ──────── */
+.agentforce-reply {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: #ffffff;
+  border: 1px solid var(--color-border, #e6e6e6);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.08);
+}
+
+.agentforce-reply-avatar {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--slds-g-color-brand-base-90, #d6e6ff);
+  color: #0250d9;
+}
+.agentforce-reply-avatar-img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+}
+
+.agentforce-reply-content {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.agentforce-answer {
+  font-size: 13px;
+  line-height: 19px;
+  color: var(--slds-g-color-on-surface-2, #2e2e2e);
+  word-break: break-word;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.agentforce-answer-p {
+  margin: 0;
+}
+.agentforce-answer strong {
+  font-weight: 700;
+  color: var(--slds-g-color-on-surface-1, #181818);
+}
+
+.agentforce-bullets {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.agentforce-bullets li {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--slds-g-color-on-surface-2, #2e2e2e);
+}
+.agentforce-bullets strong {
+  font-weight: 700;
+  color: var(--slds-g-color-on-surface-1, #181818);
+}
+
+/* ── Ranked list (Bottom-3 / Top-3) — plain text, spacing only ─────────────── */
+.agentforce-ranklist {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 2px;
+}
+.agentforce-rank-line {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--slds-g-color-on-surface-2, #2e2e2e);
+}
+.agentforce-rank-line strong {
+  font-weight: 700;
+  color: var(--slds-g-color-on-surface-1, #181818);
+}
+
+.agentforce-filters-count {
+  align-self: flex-start;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  /* clickable link — beat the global `button { … !important }` reset in App.css */
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  color: #0250d9 !important;
+}
+.agentforce-filters-count:hover {
+  text-decoration: underline;
+}
+
+/* ── Thinking / loading state ─────────────────────────────────────────────── */
+.agentforce-thinking {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+}
+.agentforce-thinking-text {
+  font-size: 13px;
+  color: #5c5c5c;
+}
+.agentforce-thinking-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.agentforce-thinking-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #0250d9;
+  opacity: 0.35;
+  animation: agentforce-thinking-bounce 1.2s infinite ease-in-out;
+}
+.agentforce-thinking-dot:nth-child(2) { animation-delay: 0.18s; }
+.agentforce-thinking-dot:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes agentforce-thinking-bounce {
+  0%, 80%, 100% { opacity: 0.35; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agentforce-thinking-dot { animation: none; opacity: 0.6; }
+}
+
+/* ── Applied summary: "m filters applied • n conditional formatting rules applied" ── */
+.agentforce-applied-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.agentforce-applied-link {
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  /* clickable link — beat the global `button { … !important }` reset in App.css */
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  color: #0250d9 !important;
+}
+.agentforce-applied-link:hover {
+  text-decoration: underline;
+}
+.agentforce-applied-sep {
+  color: #747474;
+  font-weight: 700;
+}
+
+/* ── Feedback row (inside card, right-aligned) ────────────────────────────── */
+.agentforce-reply-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.agentforce-feedback {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.agentforce-feedback-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--slds-g-color-neutral-base-30, #5c5c5c) !important;
+  background: none !important;
+  border: none !important;
+}
+.agentforce-feedback-btn:hover {
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #1c1c1c !important;
+}
+.agentforce-feedback-btn.is-active {
+  color: #0250d9 !important;
+}
+
+/* ── Actions ──────────────────────────────────────────────────────────────── */
+.agentforce-actions {
+  display: flex;
+  gap: 8px;
+}
+.agentforce-btn {
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.12s, border-color 0.12s, box-shadow 0.12s;
+}
+.agentforce-btn--secondary {
+  background: #fff;
+  border-color: var(--slds-g-color-neutral-base-80, #c9c9c9);
+  color: #0b5cab;
+}
+.agentforce-btn--secondary:hover {
+  background: #f4f6f9;
+  border-color: #0b5cab;
+}
+.agentforce-btn--primary {
+  background: #1b96ff;
+  color: #fff;
+}
+.agentforce-btn--primary:hover {
+  background: #0d7ae0;
+}
+/* Single toggle button — outlined when off, green-filled when active (like Focus grid). */
+.agentforce-btn--toggle {
+  background: #fff;
+  border-color: #1b96ff;
+  color: #0b5cab;
+}
+.agentforce-btn--toggle:hover {
+  background: #eef6ff;
+}
+.agentforce-btn--toggle.agentforce-btn--applied {
+  background: #2e844a;
+  border-color: #2e844a;
+  color: #fff;
+}
+.agentforce-btn--toggle.agentforce-btn--applied:hover {
+  background: #256b3d;
+  border-color: #256b3d;
+}
+
+.agentforce-clear-link {
+  background: none;
+  border: none;
+  color: var(--slds-g-color-neutral-base-40, #747474);
+  font-size: 11.5px;
+  cursor: pointer;
+  align-self: center;
+  padding: 0;
+  text-decoration: underline;
+}
+.agentforce-clear-link:hover {
+  color: #c23934;
+}
+
+/* ── Recommendations (Figma: label + blue text-link rows with send icon) ──── */
+.agentforce-recs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+.agentforce-recs-label {
+  font-size: 13px;
+  font-weight: 590;
+  line-height: 18px;
+  color: var(--slds-g-color-on-surface-2, #2e2e2e);
+}
+.agentforce-recs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.agentforce-rec-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  text-align: left;
+  /* plain text link — beat the global `button { … !important }` reset in App.css */
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  cursor: pointer;
+  color: #0250d9 !important;
+}
+.agentforce-rec-icon {
+  flex-shrink: 0;
+  color: #0250d9;
+}
+.agentforce-rec-text {
+  flex: 1 1 0;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 18px;
+  color: #0250d9;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.agentforce-rec-item:hover .agentforce-rec-text {
+  text-decoration: underline;
+}
+
+/* ── Composer / footer ────────────────────────────────────────────────────── */
+.agentforce-footer {
+  flex-shrink: 0;
+  background: #fff;
+  border-top: 1px solid var(--color-border, #e5e5e5);
+  padding: 12px 14px 8px;
+}
+
+/* Recommendations pinned in the footer, just above the input */
+.agentforce-recs--sticky {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+.agentforce-composer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--slds-g-color-neutral-base-80, #c9c9c9);
+  border-radius: 24px;
+  padding: 4px 8px 4px 6px;
+  background: #fff;
+  transition: border-color 0.12s, box-shadow 0.12s;
+}
+.agentforce-composer:focus-within {
+  border-color: #1b96ff;
+  box-shadow: 0 0 0 2px rgba(27, 150, 255, 0.18);
+}
+.agentforce-input {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 32px;
+  border: none;
+  background: transparent;
+  padding: 0 4px;
+  font-size: 13px;
+  outline: none;
+}
+.agentforce-input::placeholder {
+  color: var(--slds-g-color-neutral-base-50, #8a8a8a);
+}
+.agentforce-composer-add,
+.agentforce-composer-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: none;
+  color: var(--slds-g-color-neutral-base-30, #5c5c5c) !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.agentforce-composer-add:hover,
+.agentforce-composer-icon:hover {
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #1c1c1c !important;
+}
+.agentforce-composer-send {
+  color: #fff !important;
+  background: linear-gradient(135deg, #7b3fe4 0%, #1b96ff 100%) !important;
+}
+.agentforce-composer-send:hover {
+  background: linear-gradient(135deg, #6b2fd0 0%, #0d7ae0 100%) !important;
+  color: #fff !important;
+}
+.agentforce-disclaimer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--slds-g-color-neutral-base-40, #8a8a8a);
+  margin-top: 8px;
+}
+
+/* ── Header trigger button (active state) ─────────────────────────────────── */
+.header-agentforce-trigger.header-agentforce-trigger--open {
+  color: #7b3fe4;
+  background: rgba(123, 63, 228, 0.12);
+  border-radius: 6px;
+}

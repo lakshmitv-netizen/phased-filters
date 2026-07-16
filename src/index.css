@@ -1,0 +1,1007 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-surface-gray);
+  overflow-x: hidden; /* Prevent page-level horizontal scroll */
+}
+
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--color-surface-gray);
+  padding-top: 0;
+  overflow-x: hidden; /* Prevent page-level horizontal scroll */
+}
+
+.title-and-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  margin: 0;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  color: var(--color-dark-text);
+  margin: 4px 0 0 8px;
+}
+
+.button-group {
+  display: flex;
+  margin: 0;
+  background-color: var(--slds-g-color-surface-container-2);
+  border-radius: 20px;
+  padding: 3px;
+  width: fit-content;
+}
+
+.view-button {
+  padding: 8px 20px;
+  border: none;
+  background-color: var(--color-surface-white);
+  color: var(--color-accent-blue);
+  font-size: 13px;
+  font-weight: 590;
+  cursor: pointer;
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  transition: all 0.2s ease;
+}
+
+.view-button.first {
+  border-radius: 17px 0 0 17px;
+}
+
+.view-button.last {
+  border-radius: 0 17px 17px 0;
+}
+
+.view-button:not(.first):not(.last) {
+  border-left: 1px solid var(--slds-g-color-surface-container-2);
+  border-right: 1px solid var(--slds-g-color-surface-container-2);
+}
+
+.view-button.active {
+  background-color: var(--color-accent-blue);
+  color: var(--color-on-accent);
+}
+
+/* Grid Styles */
+.simple-grid-wrapper {
+  margin: 24px;
+  background-color: var(--color-surface-white);
+  border: 1px solid var(--color-border-ui-strong);
+  border-radius: 8px;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: calc(100vh - 150px);
+}
+
+.simple-grid {
+  margin: 24px;
+  background-color: var(--color-surface-white);
+  border: 1px solid var(--color-border-ui-strong);
+  border-radius: 8px;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: calc(100vh - 150px);
+  display: block;
+  position: relative;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 280px 200px 200px 200px 200px 200px;
+  background-color: var(--color-surface-gray);
+  border-bottom: 2px solid var(--slds-g-color-neutral-base-90);
+  position: sticky;
+  top: 50px; /* Position below month-selector-header */
+  z-index: 30;
+  min-width: fit-content;
+}
+
+/* Time series view - dynamically change grid columns when there are 14 columns */
+.simple-grid.grid-timeseries .table-header,
+.simple-grid.grid-timeseries .table-row,
+.simple-grid.grid-timeseries .month-selector-header {
+  grid-template-columns: 280px 150px repeat(12, 120px);
+  min-width: fit-content;
+}
+
+.table-content {
+  min-width: fit-content;
+}
+
+.header-fixed-section {
+  width: 280px;
+  flex-shrink: 0;
+  border-right: 2px solid var(--color-border-ui-strong);
+  background-color: var(--color-surface-gray);
+  position: sticky;
+  left: 0;
+  z-index: 35;
+}
+
+.header-scrollable-section {
+  display: grid;
+  grid-template-columns: 200px 200px 200px 200px 200px;
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background-color: var(--color-surface-gray);
+}
+
+.header-fixed {
+  width: 280px;
+  min-width: 280px;
+  flex-shrink: 0;
+  border-right: 2px solid var(--color-border-ui-strong);
+  background-color: var(--color-surface-gray);
+  position: sticky;
+  left: 0;
+  z-index: 35;
+  box-shadow: var(--slds-g-shadow-3);
+}
+
+.header-scrollable {
+  display: grid;
+  grid-template-columns: 200px 200px 200px 200px 200px;
+  flex: 1;
+  background-color: var(--color-surface-gray);
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 280px 200px 200px 200px 200px 200px;
+  border-bottom: 1px solid var(--color-border-ui-strong);
+  min-height: 42px;
+  align-items: center;
+  background-color: var(--color-surface-white);
+  min-width: fit-content;
+  grid-template-rows: auto;
+  grid-auto-flow: row;
+}
+
+.row-fixed-section {
+  width: 280px;
+  flex-shrink: 0;
+  border-right: 2px solid var(--color-border-ui-strong);
+  position: sticky;
+  left: 0;
+  background-color: var(--color-surface-white);
+  z-index: 5;
+}
+
+.row-scrollable-section {
+  display: grid;
+  grid-template-columns: 200px 200px 200px 200px 200px;
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.row-fixed {
+  width: 280px;
+  min-width: 280px;
+  flex-shrink: 0;
+  border-right: 2px solid var(--color-border-ui-strong);
+  position: sticky;
+  left: 0;
+  background-color: var(--color-surface-white);
+  z-index: 5;
+  box-shadow: var(--slds-g-shadow-2);
+}
+
+.row-scrollable {
+  display: grid;
+  grid-template-columns: 200px 200px 200px 200px 200px;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.parent-row {
+  background-color: var(--color-surface-white);
+}
+
+.child-row {
+  background-color: var(--color-surface-white);
+}
+
+.cell {
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-neutral-text);
+  background-color: var(--color-surface-white);
+  min-width: 0;
+  max-width: 100%;
+  width: auto;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  grid-row: 1;
+  flex: 0 0 auto;
+}
+
+.name-cell {
+  padding-left: 8px;
+  position: sticky;
+  left: 0;
+  background-color: var(--color-surface-white);
+  z-index: 10;
+  border-right: 2px solid var(--color-border-ui-strong);
+  box-shadow: var(--slds-g-shadow-1);
+  box-sizing: border-box;
+  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
+}
+
+/* Make the first column sticky */
+.table-row > :nth-child(1),
+.table-header > :nth-child(1) {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+}
+
+.table-header > :nth-child(1) {
+  z-index: 35;
+  background-color: var(--color-surface-gray);
+}
+
+.table-header .name-header {
+  position: sticky;
+  left: 0;
+  background-color: var(--color-surface-gray);
+  z-index: 35;
+  border-right: 2px solid var(--color-border-ui-strong);
+  box-shadow: var(--slds-g-shadow-2);
+  min-width: 280px;
+}
+
+.header-cell {
+  font-weight: 590;
+  font-size: 12px;
+  line-height: 17px;
+  color: var(--color-neutral-text);
+  background-color: var(--color-surface-gray) !important;
+  text-align: right;
+  justify-content: flex-end;
+  grid-row: 1;
+  box-sizing: border-box;
+  min-height: 60px; /* Ensure enough height for header text + filter input */
+  padding: 8px 12px !important; /* Add padding for filter inputs */
+}
+
+.sortable-header {
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.sortable-header:hover {
+  background-color: var(--slds-g-color-neutral-base-90) !important;
+}
+
+.column-filter-input {
+  background-color: var(--color-surface-white);
+  color: var(--color-on-surface-strong);
+}
+
+.column-filter-input:focus {
+  outline: 2px solid var(--color-accent-blue);
+  outline-offset: -2px;
+}
+
+.name-header {
+  padding-left: 20px;
+  text-align: left;
+  justify-content: flex-start;
+}
+
+.month-selector-header {
+  display: grid;
+  grid-template-columns: 280px 200px 200px 200px 200px 200px;
+  background-color: var(--color-surface-gray);
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-90);
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-dark-text);
+  position: sticky;
+  top: 0;
+  z-index: 31;
+  min-width: fit-content;
+}
+
+.month-selector-header .cell {
+  background-color: transparent !important;
+}
+
+/* Headers wrapper - contains first column and headers */
+.headers-wrapper {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  grid-template-rows: auto auto;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: var(--color-surface-gray);
+}
+
+.first-column-header {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  background-color: var(--color-surface-gray);
+  border-bottom: 2px solid var(--slds-g-color-neutral-base-90);
+  border-right: 2px solid var(--color-border-ui-strong);
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-dark-text);
+  position: sticky;
+  left: 0;
+  z-index: 45;
+  box-shadow: var(--slds-g-shadow-2);
+  min-height: 100px; /* Ensure it spans both rows */
+  box-sizing: border-box;
+  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
+  overflow: visible;
+}
+
+.first-column-header > div {
+  display: block !important;
+  visibility: visible !important;
+  width: 100%;
+}
+
+.first-column-header input.hierarchy-filter-input {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+}
+
+.headers-wrapper .month-selector-header {
+  grid-column: 2;
+  grid-row: 1;
+  grid-template-columns: 1fr;
+  top: 0;
+  padding: 8px 12px;
+}
+
+.headers-wrapper .table-header {
+  grid-column: 2;
+  grid-row: 2;
+  grid-template-columns: 200px 200px 200px 200px 200px;
+  top: 50px;
+  padding: 8px 12px;
+}
+
+/* Time series specific headers wrapper */
+/* Account Manager Time Series only - exclude Account Director */
+.grid-timeseries:not(.account-director-timeseries) .headers-wrapper {
+  grid-template-columns: 280px 1590px !important;
+  min-width: 1870px !important; /* 280px + 1590px */
+  width: fit-content !important;
+  max-width: none !important;
+}
+
+.grid-timeseries .headers-wrapper .month-selector-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 12px 12px 0; /* Remove left padding so FY 25 starts immediately */
+  min-height: 50px;
+  width: fit-content;
+  min-width: 1590px; /* 150px (FY 25) + 12 * 120px (months) */
+  max-width: none;
+}
+
+/* Account Manager Time Series only - exclude Account Director */
+.grid-timeseries:not(.account-director-timeseries) .headers-wrapper .table-header {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  grid-template-columns: 150px repeat(12, 120px) !important;
+  width: fit-content !important;
+  min-width: 1590px !important;
+  max-width: none !important;
+  padding: 0 !important; /* Remove all padding for precise alignment */
+  display: grid !important;
+  grid-template-rows: auto !important;
+  box-sizing: border-box !important;
+}
+
+/* Account Director Time Series */
+.account-director-timeseries .headers-wrapper {
+  grid-template-columns: 280px 2040px !important;
+  min-width: 2320px !important; /* 280px + 2040px */
+  width: fit-content !important;
+  max-width: none !important;
+  grid-column-gap: 0 !important;
+  grid-row-gap: 0 !important;
+  gap: 0 !important;
+  overflow: visible; /* Allow dropdown menus to show */
+}
+
+.account-director-timeseries .headers-wrapper .month-selector-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 12px 8px 0; /* Remove left padding so FY 25 starts immediately */
+  min-height: auto;
+  gap: 8px;
+  width: fit-content;
+  min-width: 2040px; /* 120px (FY 25) + 4 * 120px (quarters) + 12 * 120px (months) */
+  max-width: none;
+  overflow: visible; /* Allow dropdown to show */
+}
+
+.account-director-timeseries .headers-wrapper .table-header {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  grid-template-columns: 120px repeat(4, 120px) repeat(12, 120px) !important;
+  width: fit-content !important;
+  min-width: 2040px !important;
+  max-width: none !important;
+  overflow: visible;
+  padding: 8px 0 !important; /* Add vertical padding for filter inputs */
+  margin: 0 !important;
+  display: grid !important;
+  grid-template-rows: auto !important;
+  min-height: auto !important;
+  box-sizing: border-box !important;
+  grid-column-gap: 0 !important;
+  grid-row-gap: 0 !important;
+  gap: 0 !important;
+  border-bottom: 2px solid var(--slds-g-color-neutral-base-90) !important;
+  box-shadow: none !important;
+  position: relative !important;
+  top: auto !important;
+}
+
+/* Ensure header cells in Account Director Time Series can accommodate filter inputs */
+.account-director-timeseries .table-header .header-cell {
+  min-height: auto !important;
+  padding: 8px 12px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+}
+
+/* Ensure FY 25 header cell in Account Director view matches column width */
+.account-director-timeseries .headers-wrapper .table-header > .header-cell:first-child {
+  width: 120px !important;
+  min-width: 120px !important;
+  max-width: 120px !important;
+  box-sizing: border-box !important;
+}
+
+/* Ensure first column header and hierarchy filter are visible in Account Director Time Series */
+.account-director-timeseries .headers-wrapper .first-column-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-end !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  min-height: 100px !important;
+  overflow: visible !important;
+  padding: 8px 12px !important;
+}
+
+.account-director-timeseries .headers-wrapper .first-column-header > div {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+}
+
+.account-director-timeseries .headers-wrapper .first-column-header input.hierarchy-filter-input,
+.account-director-timeseries .headers-wrapper .first-column-header input[id="hierarchy-filter-input"],
+.account-director-timeseries .headers-wrapper .first-column-header input[name="hierarchy-filter-input"] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  position: relative !important;
+  z-index: 10 !important;
+  height: auto !important;
+  min-height: 24px !important;
+}
+
+.account-director-timeseries .headers-wrapper .first-column-header > div {
+  min-height: 24px !important;
+}
+
+/* Ensure hierarchy filter is visible in Account Manager Time Series */
+.grid-timeseries .first-column-header input.hierarchy-filter-input,
+.grid-timeseries .first-column-header input[id="hierarchy-filter-input"],
+.grid-timeseries .first-column-header input[name="hierarchy-filter-input"] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 24px !important;
+}
+
+/* Time series header centered on screen */
+.grid-timeseries .month-selector-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 12px;
+  min-height: 50px;
+}
+
+.timeseries-header-center {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+}
+
+/* Account Director Time Series specific fix */
+.account-director-timeseries .month-selector-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 12px;
+  min-height: auto;
+  gap: 8px;
+}
+
+.account-director-timeseries .timeseries-header-center {
+  position: relative;
+  left: auto;
+  transform: none;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  order: 1;
+}
+
+.account-director-timeseries .month-headers-row {
+  display: grid;
+  grid-template-columns: 280px 120px repeat(4, 120px) repeat(12, 120px);
+  width: 100%;
+  order: 2;
+  min-width: fit-content;
+}
+
+.account-director-timeseries .month-header {
+  padding: 8px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-neutral-text);
+  background-color: var(--color-surface-gray);
+  border-right: 1px solid var(--color-border-ui-strong);
+}
+
+/* Time Series views use same width settings as Specific Time and Roll-up views */
+/* No width constraints needed - inherits from base .simple-grid */
+
+.simple-grid.account-director-timeseries .table-row {
+  display: grid !important;
+  grid-template-columns: 280px 120px repeat(4, 120px) repeat(12, 120px) !important;
+  grid-template-rows: auto !important;
+  grid-auto-flow: row !important;
+  min-width: fit-content; /* Same as base .table-row */
+  box-sizing: border-box !important;
+  grid-column-gap: 0 !important;
+  grid-row-gap: 0 !important;
+  gap: 0 !important;
+}
+
+/* Account Manager Time Series only - exclude Account Director */
+.simple-grid.grid-timeseries:not(.account-director-timeseries) .table-row {
+  display: grid !important;
+  grid-template-columns: 280px 150px repeat(12, 120px) !important;
+  grid-template-rows: auto !important;
+  grid-auto-flow: row !important;
+  min-width: fit-content; /* Same as base .table-row */
+  box-sizing: border-box !important;
+}
+
+/* Time Series views use same table-content settings as base .table-content */
+
+/* Removed - conflicting rule. The table-header inside headers-wrapper should not include the 280px name column */
+
+
+.month-selector {
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  font-size: 16px;
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--color-neutral-text);
+  cursor: pointer;
+  outline: none;
+}
+
+.month-selector option {
+  font-size: 8px !important;
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  color: var(--color-dark-text) !important;
+  padding: 2px 8px;
+}
+
+.expand-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--color-accent-blue);
+  padding: 2px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.expand-button:hover {
+  background-color: var(--color-accent-glow-soft);
+}
+
+.parent-text {
+  color: var(--color-accent-blue);
+  font-weight: 590;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.parent-text:hover {
+  color: var(--slds-g-color-accent-2);
+}
+
+.child-text {
+  color: var(--color-on-surface-strong);
+  font-weight: 400;
+}
+
+.cell.editable {
+  cursor: pointer;
+  border: 2px solid var(--color-accent-blue);
+  border-radius: 2px;
+}
+
+.cell:not(.name-cell) {
+  justify-content: flex-end;
+}
+
+/* Enhanced styling for frozen elements */
+.name-cell,
+.table-header .name-header {
+  transition: background-color 0.2s ease;
+}
+
+.name-cell:hover {
+  background-color: var(--color-surface-white);
+}
+
+.table-row:hover .name-cell {
+  background-color: var(--color-surface-white);
+}
+
+.table-row:hover {
+  background-color: var(--color-surface-gray);
+}
+
+.table-row:hover .name-cell {
+  background-color: var(--color-surface-gray);
+}
+
+.cell.selected {
+  border: 2px solid var(--slds-g-color-neutral-base-10);
+  box-sizing: border-box;
+}
+
+/* Searchable Dropdown Styles */
+.searchable-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.searchable-dropdown-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.searchable-dropdown-input {
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  font-size: 16px;
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--color-neutral-text);
+  cursor: pointer;
+  outline: none;
+  padding: 4px 8px;
+  min-width: 200px;
+  width: auto;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.searchable-dropdown-input:focus {
+  background: var(--color-surface-white);
+  border: 1px solid var(--color-accent-blue);
+  border-radius: 4px;
+  cursor: text;
+}
+
+.searchable-dropdown-icon {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.searchable-dropdown-container:hover .searchable-dropdown-icon {
+  transform: translateY(2px);
+}
+
+.searchable-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-surface-white);
+  border: 1px solid var(--color-border-ui-strong);
+  border-radius: 6px;
+  box-shadow: var(--slds-g-shadow-3);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  min-width: 250px;
+  max-width: 400px;
+}
+
+/* Fixed positioning is handled via inline styles in the SearchableDropdown component when useFixedPosition is true */
+
+.searchable-dropdown-option {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--color-on-surface-strong);
+  border-bottom: 1px solid var(--color-surface-gray);
+}
+
+.searchable-dropdown-option:last-child {
+  border-bottom: none;
+}
+
+.searchable-dropdown-option:hover {
+  background-color: var(--slds-g-color-neutral-base-95);
+}
+
+.searchable-dropdown-option.selected {
+  background-color: var(--slds-g-color-accent-container-1);
+  font-weight: 600;
+}
+
+.searchable-dropdown-option .searchable-dropdown-option-meta {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--color-neutral-text);
+}
+
+/* KAM View Styles - Salesforce Lightning Design System Tabs */
+.kam-view-container {
+  margin: 0;
+  background-color: transparent;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  border: none;
+}
+
+.kam-view-tabs {
+  display: flex;
+  background-color: var(--color-surface-gray);
+  border-bottom: 1px solid var(--color-border);
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0 1rem;
+}
+
+.kam-view-button {
+  padding: 0.75rem 1rem;
+  border: none;
+  background-color: transparent;
+  color: var(--color-neutral-text);
+  font-size: 0.875rem;
+  font-weight: 400;
+  cursor: pointer;
+  font-family: 'Salesforce Sans', Arial, sans-serif;
+  transition: all 0.15s ease;
+  border-radius: 0;
+  position: relative;
+  min-width: 120px;
+  text-align: center;
+  border-bottom: 2px solid transparent;
+  margin-right: 0.5rem;
+}
+
+.kam-view-button:last-child {
+  margin-right: 0;
+}
+
+.kam-view-button.active {
+  color: var(--color-accent-blue);
+  border-bottom-color: var(--color-accent-blue);
+  font-weight: 700;
+  background-color: transparent;
+}
+
+.kam-view-button:hover:not(.active) {
+  color: var(--color-accent-blue);
+  background-color: var(--color-surface-gray);
+}
+
+.kam-view-button:focus {
+  outline: 2px solid var(--color-accent-blue);
+  outline-offset: -2px;
+  border-radius: 0.25rem;
+}
+
+.kam-view-content {
+  margin: 24px;
+  padding: 1.5rem;
+  background-color: var(--color-surface-white);
+  border-radius: 0.25rem;
+  box-shadow: var(--slds-g-shadow-2);
+  border: 1px solid var(--color-border);
+}
+
+.kam-view-content h2 {
+  color: var(--color-on-surface-strong);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+
+.kam-view-content p {
+  color: var(--color-neutral-text);
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  font-family: 'Salesforce Sans', Arial, sans-serif;
+  line-height: 1.5;
+}
+
+.placeholder-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.placeholder-card {
+  background-color: var(--color-surface-gray);
+  border: 1px solid var(--color-border);
+}
+
+/* SLDS Grouped Combobox Styles */
+.slds-combobox-group {
+  display: flex;
+  align-items: stretch;
+  border-radius: 0.25rem;
+  overflow: visible;
+}
+
+.slds-combobox-group .slds-combobox {
+  flex: 1;
+  position: relative;
+}
+
+.slds-combobox-group .slds-input,
+.slds-combobox-group .slds-combobox__input {
+  height: 2.5rem;
+  border-radius: 0;
+  border-right: none;
+}
+
+.slds-combobox-group .slds-combobox:first-child .slds-combobox__input {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+  border-right: none;
+}
+
+.slds-combobox-group .slds-input:last-child {
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+  border-left: none;
+}
+
+.slds-combobox-group .slds-input:focus,
+.slds-combobox-group .slds-combobox__input:focus {
+  outline: none;
+  border-color: var(--color-accent-blue);
+  box-shadow: 0 0 0 1px var(--color-accent-blue);
+  z-index: 1;
+}
+
+.slds-combobox-group .slds-input:hover,
+.slds-combobox-group .slds-combobox__input:hover {
+  border-color: var(--color-interactive-border);
+}
+
+.slds-dropdown_fluid {
+  width: 100%;
+}
+
+.slds-listbox__option {
+  transition: background-color 0.1s ease;
+}
+
+.slds-listbox__option:hover {
+  background-color: var(--color-surface-gray) !important;
+}
+
+.placeholder-card:hover {
+  border-color: var(--color-accent-blue);
+  background-color: var(--slds-g-color-accent-container-1);
+  box-shadow: var(--slds-g-shadow-2);
+}
+
+.placeholder-card h3 {
+  color: var(--color-on-surface-strong);
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+
+.placeholder-card p {
+  color: var(--color-neutral-text);
+  font-size: 0.875rem;
+  margin: 0;
+  font-family: 'Salesforce Sans', Arial, sans-serif;
+  line-height: 1.4;
+}
+

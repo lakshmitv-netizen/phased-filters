@@ -1,0 +1,303 @@
+/* Category Filter Popover - Same styles as Product Filter Popover */
+.category-filter-popover-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  background: transparent;
+}
+
+.category-filter-popover {
+  position: fixed;
+  width: 320px;
+  max-width: 320px;
+  background-color: var(--slds-g-color-surface-1);
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 0.25rem;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 12%, transparent);
+  z-index: 10001;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Nubbin (Arrow pointing to filter card - pointing right, moved down by 50px) */
+.category-filter-popover-nubbin {
+  position: absolute;
+  top: calc(50% + 50px);
+  right: -8px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 8px solid var(--slds-g-color-surface-1);
+  z-index: 1;
+  filter: drop-shadow(2px 0 2px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 10%, transparent));
+}
+
+.category-filter-popover-nubbin::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  right: -1px;
+  width: 0;
+  height: 0;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-left: 9px solid var(--slds-g-color-surface-1);
+  z-index: -1;
+}
+
+/* Field Section */
+.category-filter-field-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.category-filter-label {
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--slds-g-color-neutral-base-20);
+  margin: 0;
+}
+
+/* Dropdown Wrapper */
+.category-filter-dropdown-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.category-filter-dropdown-trigger {
+  width: 100%;
+  min-height: 36px;
+  padding: 8px 32px 8px 12px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background-color: var(--slds-g-color-surface-1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 12px;
+}
+
+.category-filter-dropdown-trigger.open {
+  border-color: var(--color-accent-blue);
+  box-shadow: 0 0 0 2px rgba(2, 80, 217, 0.1);
+}
+
+.category-filter-dropdown-value {
+  color: var(--slds-g-color-neutral-base-20);
+  flex: 1;
+}
+
+.category-filter-dropdown-icon {
+  position: absolute;
+  right: 12px;
+  width: 16px;
+  height: 16px;
+  color: var(--slds-g-color-border-base-4);
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.category-filter-dropdown-list {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  background-color: var(--slds-g-color-surface-1);
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 12%, transparent);
+  z-index: 10002;
+  overflow: hidden;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.category-filter-dropdown-option {
+  padding: 8px 12px;
+  cursor: pointer;
+  background-color: var(--slds-g-color-surface-1);
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 12px;
+  color: var(--slds-g-color-neutral-base-20);
+  transition: background-color 0.15s;
+  display: flex;
+  align-items: center;
+}
+
+.category-filter-dropdown-option:hover {
+  background-color: var(--slds-g-color-surface-container-1);
+}
+
+.category-filter-dropdown-option.selected {
+  background-color: var(--slds-g-color-surface-container-1);
+  font-weight: 600;
+}
+
+/* Collapsed State - Display Box */
+.category-filter-display-box {
+  padding: 8px 12px;
+  min-height: 36px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background-color: var(--slds-g-color-surface-1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 12px;
+}
+
+.category-filter-display-text-selected {
+  color: var(--slds-g-color-neutral-base-20);
+}
+
+.category-filter-display-text-empty {
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+/* Expanded State Container */
+.category-filter-expanded-container {
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background-color: var(--slds-g-color-surface-1);
+  max-height: 200px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Search Input Section */
+.category-filter-search-section {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-80);
+  flex-shrink: 0;
+  background-color: var(--slds-g-color-surface-1);
+}
+
+.category-filter-search-input {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 12px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  outline: none;
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.category-filter-search-input:focus {
+  border-color: var(--color-accent-blue);
+  box-shadow: 0 0 0 2px rgba(2, 80, 217, 0.1);
+}
+
+/* Scrollable Checkbox List */
+.category-filter-checkbox-list {
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 150px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Empty State */
+.category-filter-empty-state {
+  padding: 20px;
+  text-align: center;
+  color: var(--slds-g-color-neutral-base-40);
+  font-size: 12px;
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* Checkbox Items */
+.category-filter-checkbox-item {
+  padding: 6px 12px;
+  font-size: 12px;
+  color: var(--slds-g-color-neutral-base-10);
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.15s;
+}
+
+.category-filter-checkbox-item:hover {
+  background-color: var(--slds-g-color-surface-container-1);
+}
+
+.category-filter-checkbox-all {
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-80);
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.category-filter-checkbox {
+  margin-right: 8px;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.category-filter-checkbox-label {
+  flex: 1;
+}
+
+/* Action Buttons */
+.category-filter-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding-top: 8px;
+  flex-shrink: 0;
+}
+
+.category-filter-button {
+  padding: 6px 16px;
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid;
+  min-width: 60px;
+}
+
+.category-filter-button-cancel {
+  background-color: var(--slds-g-color-surface-1);
+  border-color: var(--color-accent-blue);
+  color: var(--color-accent-blue);
+  border-radius: 4px;
+}
+
+.category-filter-button-cancel:hover {
+  background-color: var(--color-surface-gray);
+}
+
+.category-filter-button-save {
+  background-color: var(--color-accent-blue);
+  border-color: var(--color-accent-blue);
+  color: var(--color-on-accent);
+  border-radius: 2px;
+}
+
+.category-filter-button-save:hover {
+  background-color: var(--color-primary-blue);
+  border-color: var(--color-primary-blue);
+}
+

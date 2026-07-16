@@ -1,0 +1,233 @@
+/*
+ * Design System Foundation
+ * ────────────────────────────────────────────────────────────────────────────
+ * Layer 1: SLDS color-scale hooks come from the SLDS CSS import in main.tsx
+ *           e.g. --slds-g-color-brand-base-40: #0b5cab
+ *
+ * Layer 2: SLDS 2 semantic UI hooks (defined here — npm pkg only ships scales)
+ *           These map semantics to scale values and enable theming.
+ *
+ * Layer 3: Project aliases (--color-*, --spacing-*, etc.)
+ *           These point to the semantic hooks so every component inherits them
+ *           automatically when the theme is swapped.
+ */
+
+:root {
+
+  /* ── Achromatic neutral scale (global override) ──────────────────────────── */
+  /* True grays — avoids the blue/violet cast of cool-tinted neutrals on large UI fills. */
+  --slds-g-color-neutral-base-100: #ffffff;
+  --slds-g-color-neutral-base-95:  #f3f3f3;
+  --slds-g-color-neutral-base-90:  #e5e5e5;
+  --slds-g-color-neutral-base-80:  #c9c9c9;
+  --slds-g-color-neutral-base-70:  #aeaeae;
+  --slds-g-color-neutral-base-65:  #a3a3a3;
+  --slds-g-color-neutral-base-60:  #969696;
+  --slds-g-color-neutral-base-50:  #747474;
+  --slds-g-color-neutral-base-40:  #5c5c5c;
+  --slds-g-color-neutral-base-20:  #2e2e2e;
+  --slds-g-color-neutral-base-10:  #181818;
+
+  /* ── SLDS 2 Semantic UI Colors ─────────────────────────────────────────── */
+
+  /* Surface & text */
+  --slds-g-color-surface-1:          var(--slds-g-color-neutral-base-100); /* #ffffff */
+  --slds-g-color-surface-2:          var(--slds-g-color-neutral-base-100); /* #ffffff */
+  --slds-g-color-surface-3:          var(--slds-g-color-neutral-base-95);  /* #f3f3f3 */
+  --slds-g-color-surface-container-1: var(--slds-g-color-neutral-base-95); /* #f3f3f3 */
+  --slds-g-color-surface-container-2: var(--slds-g-color-neutral-base-90); /* #e5e5e5 */
+  --slds-g-color-on-surface-1:       var(--slds-g-color-neutral-base-40);  /* #5c5c5c */
+  --slds-g-color-on-surface-2:       var(--slds-g-color-neutral-base-20);  /* #2e2e2e */
+  --slds-g-color-on-surface-3:       var(--slds-g-color-brand-base-15);    /* #03234d */
+  --slds-g-color-border-1:           var(--slds-g-color-neutral-base-65);  /* #a0a0a0 */
+  --slds-g-color-border-2:           var(--slds-g-color-neutral-base-50);  /* #747474 */
+  /* Inverse-2 on default surface — grid multi-cell selection (palette blue 20) */
+  --slds-g-color-border-inverse-2:  var(--slds-g-color-palette-blue-20, #a3d4ff);
+
+  /* Accent / Brand action — Salesforce Cosmos brand blue */
+  --slds-g-color-accent-1:           #0250D9;
+  --slds-g-color-accent-2:           #023a9e; /* hover/active */
+  /* Grid column sort/filter icons — SLDS “electric blue” scale step 40 (from imported palette hooks) */
+  --slds-g-color-accent-2-electric-blue-40: var(--slds-g-color-palette-blue-40);
+  --slds-g-color-accent-container-1: var(--slds-g-color-brand-base-95);    /* #eef4ff */
+  --slds-g-color-accent-container-2: var(--slds-g-color-brand-base-90);    /* #d8e6fe */
+  --slds-g-color-on-accent-1:        var(--slds-g-color-neutral-base-100); /* #ffffff */
+  --slds-g-color-border-accent-1:    #0250D9;
+
+  /* Feedback — Error */
+  --slds-g-color-error-1:            var(--slds-g-color-error-base-40);    /* #ba0517 */
+  --slds-g-color-error-2:            var(--slds-g-color-error-base-50);    /* #ea001e */
+  --slds-g-color-error-container-1:  var(--slds-g-color-error-base-90);    /* #feded8 */
+  --slds-g-color-on-error-1:         var(--slds-g-color-neutral-base-100);
+  --slds-g-color-border-error-1:     var(--slds-g-color-error-base-40);
+
+  /* Feedback — Warning */
+  --slds-g-color-warning-1:          var(--slds-g-color-warning-base-50);  /* #a96404 */
+  --slds-g-color-warning-2:          var(--slds-g-color-warning-base-60);  /* #dd7a01 */
+  --slds-g-color-warning-container-1: var(--slds-g-color-warning-base-90); /* #fedfd0 */
+
+  /* Cell state tokens — from Figma SLDS 2 (npm pkg ships different values) */
+  --slds-g-color-warning-base-90:    #f9e3b6; /* directly edited cell bg   */
+  --slds-g-color-warning-base-95:    #fbf3e0; /* impacted/propagated cell bg */
+  --slds-g-color-on-warning-1:       var(--slds-g-color-neutral-base-100);
+
+  /* Feedback — Success */
+  --slds-g-color-success-1:          var(--slds-g-color-success-base-40);  /* #396547 */
+  --slds-g-color-success-2:          var(--slds-g-color-success-base-60);  /* #3ba755 */
+  --slds-g-color-success-container-1: var(--slds-g-color-success-base-90); /* #cdefc4 */
+  --slds-g-color-on-success-1:       var(--slds-g-color-neutral-base-100);
+
+  /* Feedback — Info */
+  --slds-g-color-info-1:             var(--slds-g-color-palette-blue-50);  /* #0176d3 */
+  --slds-g-color-info-container-1:   var(--slds-g-color-palette-blue-90);  /* #d8e6fe */
+
+  /*
+   * Chart fill: npm SLDS has no yellow-75 step — interpolate for amber data bars.
+   */
+  --slds-g-color-palette-yellow-75: color-mix(in srgb, var(--slds-g-color-palette-yellow-70) 50%, var(--slds-g-color-palette-yellow-80) 50%);
+
+  /* Disabled */
+  --slds-g-color-disabled-1:         var(--slds-g-color-neutral-base-60);  /* #939393 */
+  --slds-g-color-disabled-container-1: var(--slds-g-color-neutral-base-90);/* #e5e5e5 */
+  --slds-g-color-on-disabled-1:      var(--slds-g-color-neutral-base-60);
+
+  /* ── SLDS 2 Typography ─────────────────────────────────────────────────── */
+
+  --slds-g-font-size-1:  10px;
+  --slds-g-font-size-2:  11px;
+  --slds-g-font-size-3:  12px;
+  --slds-g-font-size-4:  13px;  /* base body */
+  --slds-g-font-size-5:  14px;
+  --slds-g-font-size-6:  16px;
+  --slds-g-font-size-7:  20px;
+  --slds-g-font-size-8:  24px;
+  --slds-g-font-size-9:  28px;
+
+  --slds-g-font-weight-1: 100;
+  --slds-g-font-weight-4: 400;
+  --slds-g-font-weight-5: 500;
+  --slds-g-font-weight-6: 600;
+  --slds-g-font-weight-7: 700;
+
+  --slds-g-line-height-1: 16px;
+  --slds-g-line-height-2: 18px;
+  --slds-g-line-height-3: 19px;
+  --slds-g-line-height-4: 22px;
+  --slds-g-line-height-5: 24px;
+
+  /* ── SLDS 2 Spacing (4px base scale) ───────────────────────────────────── */
+
+  --slds-g-spacing-1: 4px;
+  --slds-g-spacing-2: 8px;
+  --slds-g-spacing-3: 12px;
+  --slds-g-spacing-4: 16px;
+  --slds-g-spacing-5: 20px;
+  --slds-g-spacing-6: 24px;
+  --slds-g-spacing-7: 32px;
+  --slds-g-spacing-8: 48px;
+  --slds-g-spacing-9: 56px;
+  --slds-g-spacing-10: 64px;
+
+  /* ── SLDS 2 Borders ─────────────────────────────────────────────────────── */
+
+  --slds-g-radius-border-1:    2px;
+  --slds-g-radius-border-2:    4px;
+  --slds-g-radius-border-3:    8px;
+  --slds-g-radius-border-4:    16px;
+  --slds-g-radius-border-pill: 9999px;
+  --slds-g-radius-circle:      9999px;
+
+  --slds-g-sizing-border-1: 1px;
+  --slds-g-sizing-border-2: 2px;
+  --slds-g-sizing-border-3: 4px;
+
+  /* ── SLDS 2 Shadows ─────────────────────────────────────────────────────── */
+
+  --slds-g-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.07);
+  --slds-g-shadow-2: 0 0 2.9px rgba(0, 0, 0, 0.09), 0 -2.8px 2.9px rgba(0, 0, 0, 0.09), 0 1px 1.2px rgba(0, 0, 0, 0.04);
+  --slds-g-shadow-3: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --slds-g-shadow-4: 0 8px 32px rgba(0, 0, 0, 0.16);
+
+  /* ── Project aliases → SLDS 2 semantic hooks ───────────────────────────── */
+  /* All component CSS uses these; swap the hooks above to re-theme the app   */
+
+  /* Colors */
+  --color-primary-blue:    var(--slds-g-color-accent-1);
+  --color-accent-blue:     var(--slds-g-color-accent-1);
+  --color-dark-text:       var(--slds-g-color-on-surface-3);
+  --color-neutral-text:    var(--slds-g-color-on-surface-1);
+  --color-surface-white:   var(--slds-g-color-surface-1);
+  --color-surface-gray:    var(--slds-g-color-surface-container-1);
+  --color-border:          var(--slds-g-color-border-1);
+  --color-grid-selection-border: var(--slds-g-color-border-inverse-2);
+  --color-on-surface-1:    var(--slds-g-color-on-surface-1);
+  --color-on-surface-2:    var(--slds-g-color-on-surface-2);
+  --color-on-surface-3:    var(--slds-g-color-on-surface-3);
+  --color-on-accent:       var(--slds-g-color-on-accent-1);
+  /* Planning grid: product dimension row / filter icon circle (matches public/product.svg) */
+  --color-dimension-product-icon: #9050E9;
+
+  /* Spacing */
+  --spacing-1:  var(--slds-g-spacing-1);
+  --spacing-2:  var(--slds-g-spacing-2);
+  --spacing-3:  var(--slds-g-spacing-3);
+  --spacing-4:  var(--slds-g-spacing-4);
+  --spacing-5:  var(--slds-g-spacing-5);
+  --spacing-6:  var(--slds-g-spacing-6);
+  --spacing-7:  var(--slds-g-spacing-7);
+  --spacing-8:  var(--slds-g-spacing-8);
+  --spacing-9:  var(--slds-g-spacing-9);
+  --spacing-10: var(--slds-g-spacing-10);
+
+  /* Typography */
+  --font-family-base:    -apple-system, BlinkMacSystemFont, 'SF Pro', 'SF Pro Display', 'Segoe UI', 'Roboto', sans-serif;
+  --font-size-base:      var(--slds-g-font-size-4);  /* 13px */
+  --font-size-1:         var(--slds-g-font-size-5);  /* 14px */
+  --font-size-2:         var(--slds-g-font-size-6);  /* 16px */
+  --font-size-4:         var(--slds-g-font-size-8);  /* 24px */
+  --font-size-5:         var(--slds-g-font-size-9);  /* 28px */
+
+  --line-height-base:    var(--slds-g-line-height-2); /* 18px */
+  --line-height-1:       var(--slds-g-line-height-3); /* 19px */
+  --line-height-2:       var(--slds-g-line-height-4); /* 22px */
+  --line-height-4:       var(--slds-g-line-height-5); /* 24px */
+  --line-height-5:       28px;
+
+  --font-weight-regular:  var(--slds-g-font-weight-4); /* 400 */
+  --font-weight-semibold: var(--slds-g-font-weight-6); /* 600 */
+
+  /** One step above default body (13px), semibold — panel / card titles. */
+  --body-fontScale-1-semibold-font-size: var(--slds-g-font-size-5);
+  --body-fontScale-1-semibold-font-weight: var(--slds-g-font-weight-6);
+  --body-fontScale-1-semibold-line-height: var(--slds-g-line-height-5);
+
+  /* Borders */
+  --border-radius-1:      var(--slds-g-radius-border-3);    /* 8px */
+  --border-radius-2:      var(--slds-g-radius-border-4);    /* 16px */
+  --border-radius-circle: var(--slds-g-radius-border-pill);  /* 9999px */
+  --border-width-1:       var(--slds-g-sizing-border-1);    /* 1px */
+  --border-width-2:       var(--slds-g-sizing-border-2);    /* 2px */
+
+  /* Shadows */
+  --shadow-2: var(--slds-g-shadow-2);
+
+  /* Derived UI (no raw hex in components — use these or hooks above) */
+  --color-overlay-scrim: color-mix(in srgb, var(--slds-g-color-neutral-base-10) 50%, transparent);
+  --color-focus-ring: color-mix(in srgb, var(--slds-g-color-accent-1) 20%, transparent);
+  --color-focus-ring-strong: color-mix(in srgb, var(--slds-g-color-accent-1) 35%, transparent);
+  --color-accent-glow-soft: color-mix(in srgb, var(--slds-g-color-accent-1) 10%, transparent);
+  --color-decorative-wash-1: color-mix(in srgb, var(--slds-g-color-accent-1) 7%, transparent);
+  --color-decorative-wash-2: color-mix(in srgb, var(--slds-g-color-neutral-base-50) 10%, transparent);
+  --color-border-ui-strong: var(--slds-g-color-neutral-base-80);
+  --color-surface-subtle: var(--slds-g-color-neutral-base-95);
+  --color-interactive-border: var(--slds-g-color-neutral-base-50);
+  --color-on-surface-strong: var(--slds-g-color-on-surface-2);
+
+}
+
+/** Typography bundle: `body-fontScale-1-semibold` (see variables in `:root`). */
+.body-fontScale-1-semibold {
+  font-size: var(--body-fontScale-1-semibold-font-size);
+  font-weight: var(--body-fontScale-1-semibold-font-weight);
+  line-height: var(--body-fontScale-1-semibold-line-height);
+}

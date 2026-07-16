@@ -1,0 +1,91 @@
+.request-approval-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--color-overlay-scrim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100050;
+  padding: var(--slds-g-spacing-4, 16px);
+  box-sizing: border-box;
+}
+
+.request-approval-confirm-dialog {
+  background: var(--slds-g-color-surface-1, var(--color-surface-white));
+  border-radius: var(--slds-g-radius-border-2, 8px);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 15%, transparent);
+  width: 100%;
+  max-width: 420px;
+  padding: var(--slds-g-spacing-5, 20px);
+  box-sizing: border-box;
+}
+
+.request-approval-confirm-title {
+  margin: 0 0 var(--slds-g-spacing-3, 12px);
+  font-family: var(--font-family-base);
+  font-size: var(--slds-g-font-size-6, 16px);
+  font-weight: var(--slds-g-font-weight-6, 600);
+  line-height: 1.35;
+  color: var(--slds-g-color-on-surface-2, var(--slds-g-color-neutral-base-10));
+}
+
+.request-approval-confirm-body {
+  margin: 0 0 var(--slds-g-spacing-5, 20px);
+  font-family: var(--font-family-base);
+  font-size: var(--slds-g-font-size-4, 13px);
+  line-height: 1.45;
+  color: var(--slds-g-color-on-surface-1, var(--slds-g-color-neutral-base-40));
+}
+
+.request-approval-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-2, var(--slds-g-spacing-2, 8px));
+  flex-wrap: wrap;
+}
+
+/*
+ * App.css sets `button { background/border/color: none/inherit !important }`.
+ * Match CellDetailsHistoryPanel bulk actions: neutral secondary + brand primary.
+ */
+.request-approval-confirm-btn {
+  font-family: var(--font-family-base) !important;
+  font-size: var(--font-size-base, var(--slds-g-font-size-4, 13px)) !important;
+  font-weight: var(--font-weight-regular, var(--slds-g-font-weight-4, 400)) !important;
+  line-height: 18px !important;
+  padding: 8px 16px !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease !important;
+}
+
+/* Neutral (secondary) — outlined */
+.request-approval-confirm-btn.request-approval-confirm-btn--secondary {
+  background-color: var(--color-surface-white, var(--slds-g-color-surface-1)) !important;
+  border: 1px solid var(--color-border, var(--slds-g-color-border-1)) !important;
+  color: var(--color-dark-text, var(--slds-g-color-on-surface-3)) !important;
+  box-shadow: none !important;
+}
+
+.request-approval-confirm-btn.request-approval-confirm-btn--secondary:hover {
+  background-color: var(--color-surface-gray, var(--slds-g-color-surface-container-1)) !important;
+}
+
+/* Brand (primary) — filled accent */
+.request-approval-confirm-btn.request-approval-confirm-btn--primary {
+  background-color: var(--color-accent-blue, var(--slds-g-color-accent-1)) !important;
+  border: none !important;
+  color: var(--color-on-accent, var(--slds-g-color-on-accent-1)) !important;
+  box-shadow: 0 2px 4px rgba(0, 80, 217, 0.2) !important;
+}
+
+.request-approval-confirm-btn.request-approval-confirm-btn--primary:hover {
+  background-color: var(--slds-g-color-brand-base-30) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px rgba(0, 80, 217, 0.3) !important;
+}
+
+.request-approval-confirm-btn.request-approval-confirm-btn--primary:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 4px rgba(0, 80, 217, 0.2) !important;
+}

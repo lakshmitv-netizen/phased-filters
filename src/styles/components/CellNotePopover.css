@@ -1,0 +1,149 @@
+/* Cell Note Popover */
+.cell-note-popover {
+  background-color: var(--slds-g-color-surface-container-1);
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 15%, transparent);
+  min-width: 300px;
+  max-width: 400px;
+  overflow: hidden;
+  z-index: 10000 !important;
+  position: fixed !important;
+}
+
+.cell-note-popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--slds-g-color-neutral-base-90);
+  background-color: var(--slds-g-color-surface-1);
+}
+
+.cell-note-popover-title {
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+  color: var(--slds-g-color-neutral-base-20);
+  margin: 0;
+}
+
+.cell-note-popover-close {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 4px;
+  color: var(--slds-g-color-neutral-base-40);
+  transition: background-color 0.2s ease;
+}
+
+.cell-note-popover-close:hover {
+  background-color: var(--slds-g-color-surface-container-1);
+}
+
+.cell-note-popover-body {
+  padding: 16px;
+}
+
+.cell-note-popover-input {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px;
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--slds-g-color-neutral-base-20);
+  background-color: var(--slds-g-color-surface-1);
+  border: 1px solid var(--slds-g-color-neutral-base-90);
+  border-radius: 4px;
+  resize: vertical;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+}
+
+.cell-note-popover-input:focus {
+  outline: none;
+  border-color: var(--slds-g-color-brand-base-50);
+  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.1);
+}
+
+.cell-note-popover-input::placeholder {
+  color: var(--slds-g-color-neutral-base-60);
+}
+
+.cell-note-popover-instruction {
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--slds-g-color-neutral-base-40);
+  margin-top: 0;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.cell-note-popover-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  border: 1px solid var(--slds-g-color-neutral-base-40);
+  border-radius: 3px;
+  background-color: var(--slds-g-color-surface-1);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-family-base);
+  color: var(--slds-g-color-neutral-base-40);
+  line-height: 1;
+  min-width: 40px;
+  text-align: center;
+  margin: 0 2px;
+}
+
+.cell-note-popover-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.cell-note-popover-cancel {
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--slds-g-color-neutral-base-40);
+  background: none;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.cell-note-popover-cancel:hover {
+  background-color: var(--slds-g-color-surface-container-1);
+}
+
+.cell-note-popover-save {
+  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--slds-g-color-surface-1);
+  background-color: var(--slds-g-color-brand-base-50);
+  border: none;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.cell-note-popover-save:hover {
+  background-color: var(--slds-g-color-accent-2);
+}
+

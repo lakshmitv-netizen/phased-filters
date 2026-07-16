@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KAM Task Workflows | Forecasting Grid</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      color: #e8e8e8;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    
+    h1 span {
+      color: #4ecdc4;
+      font-weight: 600;
+    }
+    
+    .subtitle {
+      color: #a0a0a0;
+      font-size: 1.1rem;
+    }
+    
+    /* Category Section */
+    .category-section {
+      margin-bottom: 40px;
+    }
+    
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 20px 25px;
+      background: linear-gradient(145deg, rgba(78,205,196,0.15), rgba(78,205,196,0.05));
+      border-radius: 12px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(78,205,196,0.2);
+    }
+    
+    .category-icon {
+      font-size: 1.5rem;
+    }
+    
+    .category-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    
+    .category-count {
+      margin-left: auto;
+      background: rgba(78,205,196,0.2);
+      color: #4ecdc4;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    /* Task Accordion */
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .task-item {
+      background: rgba(255,255,255,0.03);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+    
+    .task-header {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .task-header:hover {
+      background: rgba(255,255,255,0.05);
+    }
+    
+    .task-expand-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 15px;
+      color: #4ecdc4;
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+    
+    .task-item.expanded .task-expand-icon {
+      transform: rotate(90deg);
+    }
+    
+    .task-name {
+      font-size: 0.95rem;
+      color: #e0e0e0;
+      flex: 1;
+    }
+    
+    .task-freq {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-left: 15px;
+    }
+    
+    .freq-daily { background: rgba(78, 205, 196, 0.2); color: #4ecdc4; }
+    .freq-weekly { background: rgba(100, 181, 246, 0.2); color: #64b5f6; }
+    .freq-monthly { background: rgba(186, 104, 200, 0.2); color: #ba68c8; }
+    .freq-adhoc { background: rgba(158, 158, 158, 0.2); color: #bdbdbd; }
+    
+    /* Task Content / Flowchart */
+    .task-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out;
+      background: rgba(0,0,0,0.2);
+    }
+    
+    .task-item.expanded .task-content {
+      max-height: 1000px;
+    }
+    
+    .task-content-inner {
+      padding: 25px;
+    }
+    
+    /* Flowchart Styles */
+    .flowchart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+    
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      width: 100%;
+      max-width: 600px;
+    }
+    
+    .flow-number {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #4ecdc4, #44a08d);
+      color: #1a1a2e;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    
+    .flow-box {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(78,205,196,0.3);
+      border-radius: 10px;
+      padding: 15px 20px;
+    }
+    
+    .flow-action {
+      font-size: 0.9rem;
+      color: #fff;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    
+    .flow-detail {
+      font-size: 0.8rem;
+      color: #a0a0a0;
+    }
+    
+    .flow-location {
+      display: inline-block;
+      background: rgba(78,205,196,0.15);
+      color: #4ecdc4;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      margin-top: 5px;
+    }
+    
+    .flow-arrow {
+      width: 32px;
+      display: flex;
+      justify-content: center;
+      padding: 8px 0;
+    }
+    
+    .flow-arrow svg {
+      width: 20px;
+      height: 20px;
+      color: #4ecdc4;
+    }
+    
+    .flow-arrow-spacer {
+      width: calc(100% - 47px);
+      margin-left: 47px;
+    }
+    
+    /* Result Box */
+    .flow-result {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      width: 100%;
+      max-width: 600px;
+      margin-top: 5px;
+    }
+    
+    .flow-result-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #81c784, #4caf50);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .flow-result-box {
+      flex: 1;
+      background: rgba(76, 175, 80, 0.1);
+      border: 1px solid rgba(76, 175, 80, 0.3);
+      border-radius: 10px;
+      padding: 15px 20px;
+    }
+    
+    .flow-result-text {
+      font-size: 0.9rem;
+      color: #81c784;
+      font-weight: 500;
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: #606060;
+      font-size: 0.85rem;
+    }
+    
+    @media (max-width: 768px) {
+      .flow-box, .flow-result-box {
+        padding: 12px 15px;
+      }
+      .task-header {
+        flex-wrap: wrap;
+      }
+      .task-freq {
+        margin-left: 39px;
+        margin-top: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>KAM Task <span>Workflows</span></h1>
+      <p class="subtitle">Step-by-step GUI actions for each fully supported task</p>
+    </header>
+    
+    <!-- Forecasting & Planning -->
+    <section class="category-section">
+      <div class="category-header">
+        <span class="category-icon">🎯</span>
+        <h2 class="category-title">Forecasting & Planning</h2>
+        <span class="category-count">6 Tasks</span>
+      </div>
+      
+      <div class="task-list">
+        <!-- Task 1 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Update monthly revenue forecasts after customer calls</span>
+            <span class="task-freq freq-daily">Daily</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Navigate to Grid View</div>
+                    <div class="flow-detail">Open Planning & Forecasting FY26 → Click "View Grid"</div>
+                    <span class="flow-location">Record Page</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Locate the Product & Month</div>
+                    <div class="flow-detail">Expand Account → Expand Category → Find product row, scroll to target month column</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Double-click the Revenue Cell</div>
+                    <div class="flow-detail">Cell enters edit mode with cursor</div>
+                    <span class="flow-location">Grid Cell</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Enter New Value</div>
+                    <div class="flow-detail">Type the updated revenue amount based on customer call</div>
+                    <span class="flow-location">Grid Cell</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">5</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Press Enter to Save</div>
+                    <div class="flow-detail">Value is saved, parent rows auto-update via propagation</div>
+                    <span class="flow-location">Grid Cell</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">Revenue forecast updated • Category & Account totals auto-recalculated • Edit history recorded</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Task 2 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Adjust quantity forecasts based on order changes</span>
+            <span class="task-freq freq-daily">Daily</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Open Filters Panel</div>
+                    <div class="flow-detail">Click filter icon in toolbar</div>
+                    <span class="flow-location">Grid Toolbar</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Select "Revenue and Quantity Measures"</div>
+                    <div class="flow-detail">Ensure quantity measures are visible in the grid</div>
+                    <span class="flow-location">Filters Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Navigate to Quantity Row</div>
+                    <div class="flow-detail">Find "Qty Sold" or "Qty Ordered" row for target product</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Double-click & Update Value</div>
+                    <div class="flow-detail">Enter new quantity based on order change</div>
+                    <span class="flow-location">Grid Cell</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">5</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Press Enter</div>
+                    <div class="flow-detail">Quantity saved, hierarchy totals update automatically</div>
+                    <span class="flow-location">Grid Cell</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">Quantity forecast adjusted • Parent totals propagated • Change logged with timestamp</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Task 3 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Apply price increase across product lines</span>
+            <span class="task-freq freq-weekly">Weekly</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Click First Cell in Range</div>
+                    <div class="flow-detail">Click on first product's revenue cell for start month (e.g., April)</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Shift+Click Last Cell</div>
+                    <div class="flow-detail">Hold Shift and click last product's revenue cell for end month (e.g., December)</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Right-click → Mass Update</div>
+                    <div class="flow-detail">Open context menu and select "Mass Update" option</div>
+                    <span class="flow-location">Context Menu</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Select "Increase" & Enter Percentage</div>
+                    <div class="flow-detail">Choose "Increase" operation, enter 5 (for 5% price increase)</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">5</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Click "Apply"</div>
+                    <div class="flow-detail">All selected cells increase by 5%</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">All selected cells increased by 5% • Hierarchy totals auto-updated • Bulk edit logged</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Task 4 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Revise Q4 forecast after contract renewal</span>
+            <span class="task-freq freq-monthly">Monthly</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Open Settings Panel</div>
+                    <div class="flow-detail">Click gear icon in toolbar</div>
+                    <span class="flow-location">Grid Toolbar</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Filter to Q4 Time Period</div>
+                    <div class="flow-detail">Turn off "Show all Periods", set Start: Oct 1, End: Dec 31</div>
+                    <span class="flow-location">Settings Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Select Q4 Cells for Account</div>
+                    <div class="flow-detail">Click Oct cell, Shift+Click Dec cell for account row</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Apply Mass Update</div>
+                    <div class="flow-detail">Right-click → Mass Update → Set new contracted values</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">Q4 forecast revised to match contract • Child products proportionally adjusted</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Task 5 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Add adjustment notes explaining forecast changes</span>
+            <span class="task-freq freq-daily">Daily</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Click on the Changed Cell</div>
+                    <div class="flow-detail">Single-click to select the cell you just edited</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Open History & Updates Panel</div>
+                    <div class="flow-detail">Click the panel icon or it auto-opens on cell selection</div>
+                    <span class="flow-location">Grid Toolbar</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Go to Update Tab</div>
+                    <div class="flow-detail">Click "Update" tab in the panel</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Enter Adjustment Note</div>
+                    <div class="flow-detail">Type explanation in "Adjustment Note" field (e.g., "Customer confirmed order increase")</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">5</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Click "Update"</div>
+                    <div class="flow-detail">Save the adjustment note with the cell</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">Adjustment note saved • Note indicator appears on cell • Visible in edit history</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Task 6 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Lock confirmed contract values</span>
+            <span class="task-freq freq-weekly">Weekly</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Select Cells to Lock</div>
+                    <div class="flow-detail">Click first cell, Shift+Click to select range of confirmed values</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Right-click to Open Context Menu</div>
+                    <div class="flow-detail">Context menu appears with cell actions</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Click "Lock"</div>
+                    <div class="flow-detail">Select Lock option from context menu</div>
+                    <span class="flow-location">Context Menu</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">Cells locked • Lock icon appears • Protected from edits & bulk operations</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Data Analysis & Reporting -->
+    <section class="category-section">
+      <div class="category-header">
+        <span class="category-icon">📊</span>
+        <h2 class="category-title">Data Analysis & Reporting</h2>
+        <span class="category-count">5 Tasks</span>
+      </div>
+      
+      <div class="task-list">
+        <!-- Task 7 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Check which products are trending down</span>
+            <span class="task-freq freq-daily">Daily</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Ensure "Measures / Dimensions x Time" Layout</div>
+                    <div class="flow-detail">Open Settings → Verify time flows across columns</div>
+                    <span class="flow-location">Settings Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Expand to Product Level</div>
+                    <div class="flow-detail">Click "Expand All" or manually expand Account → Category → Products</div>
+                    <span class="flow-location">Settings Panel / Grid</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Scan Revenue Rows Horizontally</div>
+                    <div class="flow-detail">Look across months for each product's revenue trend</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Identify Declining Values</div>
+                    <div class="flow-detail">Note products where recent months show lower values than earlier months</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">Downward trends identified • Can drill into specific products for investigation</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Task 8 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Compare Jan vs Feb performance</span>
+            <span class="task-freq freq-weekly">Weekly</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Open Settings Panel</div>
+                    <div class="flow-detail">Click gear icon</div>
+                    <span class="flow-location">Grid Toolbar</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Filter to Jan-Feb Period</div>
+                    <div class="flow-detail">Turn off "Show all Periods", set Start: Jan 1, End: Feb 28</div>
+                    <span class="flow-location">Settings Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">View Side-by-Side Comparison</div>
+                    <div class="flow-detail">Grid now shows only Jan and Feb columns for easy comparison</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Compare Values at Each Level</div>
+                    <div class="flow-detail">Check Account, Category, and Product rows for Jan vs Feb changes</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">Month-over-month comparison visible • Variances easily identified</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Task 9 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Drill into category to find underperforming SKU</span>
+            <span class="task-freq freq-daily">Daily</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Identify Underperforming Category</div>
+                    <div class="flow-detail">Look at Category-level rows to spot one with lower-than-expected values</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Click Expand Arrow on Category Row</div>
+                    <div class="flow-detail">Click the ▶ icon next to the category name</div>
+                    <span class="flow-location">Grid - Row Header</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">View Product-Level Breakdown</div>
+                    <div class="flow-detail">Child product rows appear, showing individual SKU performance</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Compare Product Values</div>
+                    <div class="flow-detail">Identify which specific SKU is dragging down the category total</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">Root cause identified at SKU level • Can take corrective action on specific product</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Task 10 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Pull YTD revenue for exec meeting</span>
+            <span class="task-freq freq-weekly">Weekly</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Switch to "Time / Dimensions x Measures" Layout</div>
+                    <div class="flow-detail">Open Settings → Select third layout option</div>
+                    <span class="flow-location">Settings Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Collapse to Account Level</div>
+                    <div class="flow-detail">Click "Collapse All" to see account-level totals</div>
+                    <span class="flow-location">Settings Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Locate YTD Row</div>
+                    <div class="flow-detail">Find the row showing year total or sum Jan-current month</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Read Revenue Value</div>
+                    <div class="flow-detail">Account-level YTD revenue displayed for reporting</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">YTD revenue retrieved • Ready for exec presentation</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Task 11 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Identify seasonal patterns in the data</span>
+            <span class="task-freq freq-monthly">Monthly</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Use "Measures / Dimensions x Time" Layout</div>
+                    <div class="flow-detail">Ensure time flows horizontally across columns</div>
+                    <span class="flow-location">Settings Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Enable All Time Periods</div>
+                    <div class="flow-detail">Turn on "Show all Periods" to see Jan-Dec</div>
+                    <span class="flow-location">Settings Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Collapse to Category or Account Level</div>
+                    <div class="flow-detail">Aggregate view makes patterns more visible</div>
+                    <span class="flow-location">Settings Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Scan Row Horizontally</div>
+                    <div class="flow-detail">Look for recurring peaks/dips (e.g., Q4 spike, summer dip)</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">Seasonal patterns identified • Informs future forecasting assumptions</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Accountability & Audit -->
+    <section class="category-section">
+      <div class="category-header">
+        <span class="category-icon">🔍</span>
+        <h2 class="category-title">Accountability & Audit</h2>
+        <span class="category-count">6 Tasks</span>
+      </div>
+      
+      <div class="task-list">
+        <!-- Task 12 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Check who changed the March forecast</span>
+            <span class="task-freq freq-adhoc">As needed</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Click on March Revenue Cell</div>
+                    <div class="flow-detail">Single-click the cell you want to investigate</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">View Cell Popover</div>
+                    <div class="flow-detail">Popover shows last editor and timestamp</div>
+                    <span class="flow-location">Cell Popover</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Click "View Edit History"</div>
+                    <div class="flow-detail">Opens History & Updates panel with full history</div>
+                    <span class="flow-location">Cell Popover</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Review Edit Timeline</div>
+                    <div class="flow-detail">See all changes with user names, timestamps, and delta values</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">Editor identified • Full audit trail visible • Can follow up with specific person</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Task 13 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Review edit history before submitting</span>
+            <span class="task-freq freq-weekly">Weekly</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Open History & Updates Panel</div>
+                    <div class="flow-detail">Click panel icon without selecting any cell</div>
+                    <span class="flow-location">Grid Toolbar</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">View "Recent Changes Across All Cells"</div>
+                    <div class="flow-detail">Panel shows latest edit per cell across entire grid</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Use Filter Icon</div>
+                    <div class="flow-detail">Filter by date range or specific user if needed</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Review Each Change</div>
+                    <div class="flow-detail">Check delta values, adjustment notes, and cell context</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">All changes reviewed • Ready for submission • Anomalies identified</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Task 14 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Document why revenue dropped 10%</span>
+            <span class="task-freq freq-adhoc">As needed</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Click on the Decreased Cell</div>
+                    <div class="flow-detail">Select the cell showing the 10% drop</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Open History & Updates Panel → Update Tab</div>
+                    <div class="flow-detail">Navigate to single cell update view</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Enter Adjustment Note</div>
+                    <div class="flow-detail">Type explanation: "Customer reduced Q2 order due to inventory surplus"</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Click "Update"</div>
+                    <div class="flow-detail">Note is saved and attached to cell</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">Reason documented • Visible to future reviewers • Part of audit trail</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Task 15 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Verify rollups are mathematically correct</span>
+            <span class="task-freq freq-daily">Daily</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Expand a Category</div>
+                    <div class="flow-detail">Click expand arrow to show child products</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Compare Category Total vs Product Sum</div>
+                    <div class="flow-detail">Visually verify that parent = sum of children for a column</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Edit a Child Value</div>
+                    <div class="flow-detail">Change one product's value and observe parent update</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Verify Automatic Propagation</div>
+                    <div class="flow-detail">Category and Account totals should auto-update correctly</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">Rollups verified correct • Mathematical integrity confirmed</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Task 16 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Find when a specific value was last changed</span>
+            <span class="task-freq freq-adhoc">As needed</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Click on Target Cell</div>
+                    <div class="flow-detail">Single-click the cell you're investigating</div>
+                    <span class="flow-location">Grid View</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Check Cell Popover</div>
+                    <div class="flow-detail">Shows "Edited by [Name] • [Timestamp]" if cell has history</div>
+                    <span class="flow-location">Cell Popover</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Click "View Edit History" for Details</div>
+                    <div class="flow-detail">Opens full chronological edit log</div>
+                    <span class="flow-location">Cell Popover</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Find Most Recent Entry</div>
+                    <div class="flow-detail">Top entry shows last change with exact date/time</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">Last change timestamp found • Can correlate with business events</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Task 17 -->
+        <div class="task-item">
+          <div class="task-header" onclick="toggleTask(this)">
+            <svg class="task-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+            <span class="task-name">Add comment thread discussing a change</span>
+            <span class="task-freq freq-daily">Daily</span>
+          </div>
+          <div class="task-content">
+            <div class="task-content-inner">
+              <div class="flowchart">
+                <div class="flow-step">
+                  <div class="flow-number">1</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Open History & Updates Panel (No Cell Selected)</div>
+                    <div class="flow-detail">Deselect any cell, open the panel</div>
+                    <span class="flow-location">Grid Toolbar</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">2</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Go to History Tab</div>
+                    <div class="flow-detail">Comment box appears at bottom of panel</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">3</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Type Comment</div>
+                    <div class="flow-detail">Enter discussion point (e.g., "Need to review Q3 assumptions with Finance")</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">4</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Click "Post"</div>
+                    <div class="flow-detail">Comment added to thread with your initials and timestamp</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-step">
+                  <div class="flow-number">5</div>
+                  <div class="flow-box">
+                    <div class="flow-action">Expand to Reply</div>
+                    <div class="flow-detail">Click expand icon to add replies, building discussion thread</div>
+                    <span class="flow-location">History & Updates Panel</span>
+                  </div>
+                </div>
+                <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+                <div class="flow-result">
+                  <div class="flow-result-icon">✓</div>
+                  <div class="flow-result-box">
+                    <div class="flow-result-text">Comment thread created • Visible to all users • Supports ongoing discussion</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <footer>
+      <p>KAM Task Workflows | Forecasting Grid Prototype | Generated January 2026</p>
+    </footer>
+  </div>
+  
+  <script>
+    function toggleTask(header) {
+      const taskItem = header.parentElement;
+      taskItem.classList.toggle('expanded');
+    }
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KAM Objectives Coverage Analysis | Forecasting Grid</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      color: #e8e8e8;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: #fff;
+      margin-bottom: 10px;
+      letter-spacing: -1px;
+    }
+    
+    h1 span {
+      color: #4ecdc4;
+      font-weight: 600;
+    }
+    
+    .subtitle {
+      color: #a0a0a0;
+      font-size: 1.1rem;
+    }
+    
+    /* Executive Summary */
+    .executive-summary {
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 50px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      margin-top: 30px;
+    }
+    
+    .summary-card {
+      text-align: center;
+      padding: 30px 20px;
+      background: linear-gradient(145deg, rgba(78,205,196,0.1), rgba(78,205,196,0.02));
+      border-radius: 16px;
+      border: 1px solid rgba(78,205,196,0.2);
+    }
+    
+    .summary-card .number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #4ecdc4;
+      line-height: 1;
+    }
+    
+    .summary-card .label {
+      color: #a0a0a0;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+    
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    .section-header h2 {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #fff;
+    }
+    
+    .section-header .icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #4ecdc4, #44a08d);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    
+    /* Objectives Grid */
+    .objectives-section {
+      margin-bottom: 60px;
+    }
+    
+    .objective-category {
+      background: rgba(255,255,255,0.03);
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .category-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    
+    .category-coverage {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .coverage-badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    .coverage-high {
+      background: rgba(76, 175, 80, 0.2);
+      color: #81c784;
+      border: 1px solid rgba(76, 175, 80, 0.3);
+    }
+    
+    .coverage-medium {
+      background: rgba(255, 193, 7, 0.2);
+      color: #ffd54f;
+      border: 1px solid rgba(255, 193, 7, 0.3);
+    }
+    
+    .coverage-low {
+      background: rgba(244, 67, 54, 0.2);
+      color: #ef9a9a;
+      border: 1px solid rgba(244, 67, 54, 0.3);
+    }
+    
+    .coverage-none {
+      background: rgba(158, 158, 158, 0.2);
+      color: #bdbdbd;
+      border: 1px solid rgba(158, 158, 158, 0.3);
+    }
+    
+    /* Objectives List */
+    .objectives-list {
+      display: grid;
+      gap: 15px;
+    }
+    
+    .objective-item {
+      display: grid;
+      grid-template-columns: 1fr 200px 120px;
+      align-items: center;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .objective-name {
+      font-size: 0.95rem;
+      color: #e0e0e0;
+    }
+    
+    .objective-bar {
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .objective-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+    
+    .fill-high { background: linear-gradient(90deg, #4caf50, #81c784); }
+    .fill-medium { background: linear-gradient(90deg, #ff9800, #ffc107); }
+    .fill-low { background: linear-gradient(90deg, #f44336, #ef5350); }
+    .fill-none { background: #616161; }
+    
+    .objective-percent {
+      text-align: right;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    
+    /* Coverage Chart */
+    .chart-section {
+      background: rgba(255,255,255,0.03);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 50px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    
+    .donut-chart-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 80px;
+      flex-wrap: wrap;
+    }
+    
+    .donut-chart {
+      position: relative;
+      width: 250px;
+      height: 250px;
+    }
+    
+    .donut-chart svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+    
+    .donut-chart circle {
+      fill: none;
+      stroke-width: 30;
+    }
+    
+    .donut-bg {
+      stroke: rgba(255,255,255,0.1);
+    }
+    
+    .donut-fill {
+      stroke: #4ecdc4;
+      stroke-linecap: round;
+      transition: stroke-dasharray 1s ease;
+    }
+    
+    .donut-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    
+    .donut-value {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #4ecdc4;
+      line-height: 1;
+    }
+    
+    .donut-label {
+      color: #a0a0a0;
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+    
+    .chart-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+    }
+    
+    .legend-text {
+      color: #e0e0e0;
+      font-size: 0.95rem;
+    }
+    
+    .legend-value {
+      color: #a0a0a0;
+      margin-left: auto;
+      font-weight: 600;
+    }
+    
+    /* Effectiveness Matrix */
+    .matrix-section {
+      margin-bottom: 50px;
+    }
+    
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+    
+    .matrix-card {
+      background: rgba(255,255,255,0.03);
+      border-radius: 16px;
+      padding: 25px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    
+    .matrix-card h4 {
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .matrix-card .rating {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+    
+    .matrix-card .star {
+      width: 20px;
+      height: 20px;
+      color: #ffc107;
+    }
+    
+    .matrix-card .star.empty {
+      color: rgba(255,255,255,0.2);
+    }
+    
+    .matrix-card p {
+      color: #a0a0a0;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    
+    /* Gap Analysis */
+    .gap-section {
+      background: rgba(244, 67, 54, 0.05);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 50px;
+      border: 1px solid rgba(244, 67, 54, 0.2);
+    }
+    
+    .gap-section h2 {
+      color: #ef9a9a;
+    }
+    
+    .gap-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 25px;
+    }
+    
+    .gap-item {
+      display: flex;
+      gap: 15px;
+      padding: 20px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 12px;
+    }
+    
+    .gap-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(244, 67, 54, 0.2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ef9a9a;
+      flex-shrink: 0;
+    }
+    
+    .gap-content h4 {
+      color: #fff;
+      font-size: 0.95rem;
+      margin-bottom: 5px;
+    }
+    
+    .gap-content p {
+      color: #a0a0a0;
+      font-size: 0.85rem;
+    }
+    
+    /* Recommendations */
+    .recommendations {
+      background: linear-gradient(145deg, rgba(78,205,196,0.1), rgba(78,205,196,0.02));
+      border-radius: 20px;
+      padding: 40px;
+      border: 1px solid rgba(78,205,196,0.2);
+    }
+    
+    .recommendations h2 {
+      color: #4ecdc4;
+    }
+    
+    .rec-list {
+      display: grid;
+      gap: 15px;
+      margin-top: 25px;
+    }
+    
+    .rec-item {
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+    }
+    
+    .rec-number {
+      width: 32px;
+      height: 32px;
+      background: #4ecdc4;
+      color: #1a1a2e;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    
+    .rec-content h4 {
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 5px;
+    }
+    
+    .rec-content p {
+      color: #a0a0a0;
+      font-size: 0.9rem;
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: #606060;
+      font-size: 0.85rem;
+    }
+    
+    /* Tasks Section */
+    .tasks-section {
+      margin-bottom: 60px;
+    }
+    
+    .task-category {
+      background: rgba(255,255,255,0.03);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    
+    .task-category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .task-category-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    
+    .task-category-badge {
+      padding: 5px 12px;
+      border-radius: 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .task-badge-high {
+      background: rgba(76, 175, 80, 0.2);
+      color: #81c784;
+      border: 1px solid rgba(76, 175, 80, 0.3);
+    }
+    
+    .task-badge-low {
+      background: rgba(255, 152, 0, 0.2);
+      color: #ffb74d;
+      border: 1px solid rgba(255, 152, 0, 0.3);
+    }
+    
+    .task-badge-none {
+      background: rgba(244, 67, 54, 0.2);
+      color: #ef9a9a;
+      border: 1px solid rgba(244, 67, 54, 0.3);
+    }
+    
+    .task-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .task-table thead th {
+      text-align: left;
+      padding: 10px 15px;
+      color: #a0a0a0;
+      font-weight: 500;
+      font-size: 0.85rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .task-table thead th:nth-child(1) { width: 55%; }
+    .task-table thead th:nth-child(2) { width: 15%; text-align: center; }
+    .task-table thead th:nth-child(3) { width: 30%; text-align: center; }
+    
+    .task-table tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .task-table tbody tr:last-child {
+      border-bottom: none;
+    }
+    
+    .task-table tbody td {
+      padding: 12px 15px;
+      color: #e0e0e0;
+      font-size: 0.9rem;
+    }
+    
+    .task-table tbody td:nth-child(2),
+    .task-table tbody td:nth-child(3) {
+      text-align: center;
+    }
+    
+    .freq-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    
+    .freq-daily {
+      background: rgba(78, 205, 196, 0.2);
+      color: #4ecdc4;
+    }
+    
+    .freq-weekly {
+      background: rgba(100, 181, 246, 0.2);
+      color: #64b5f6;
+    }
+    
+    .freq-monthly {
+      background: rgba(186, 104, 200, 0.2);
+      color: #ba68c8;
+    }
+    
+    .freq-quarterly {
+      background: rgba(255, 183, 77, 0.2);
+      color: #ffb74d;
+    }
+    
+    .freq-adhoc {
+      background: rgba(158, 158, 158, 0.2);
+      color: #bdbdbd;
+    }
+    
+    .support-full {
+      color: #81c784;
+      font-weight: 500;
+    }
+    
+    .support-partial {
+      color: #ffd54f;
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+    
+    .support-none {
+      color: #ef9a9a;
+      font-weight: 500;
+    }
+    
+    /* Task Summary */
+    .task-summary {
+      background: linear-gradient(145deg, rgba(78,205,196,0.08), rgba(78,205,196,0.02));
+      border-radius: 16px;
+      padding: 30px;
+      margin-top: 30px;
+      border: 1px solid rgba(78,205,196,0.15);
+    }
+    
+    .task-summary h3 {
+      color: #fff;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .task-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+    
+    .task-summary-item {
+      text-align: center;
+      padding: 20px 15px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 12px;
+    }
+    
+    .task-summary-number {
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    
+    .task-summary-number.high { color: #81c784; }
+    .task-summary-number.medium { color: #ffd54f; }
+    .task-summary-number.low { color: #ef9a9a; }
+    .task-summary-number.total { color: #4ecdc4; }
+    
+    .task-summary-label {
+      color: #a0a0a0;
+      font-size: 0.85rem;
+    }
+    
+    .task-summary-insight {
+      color: #a0a0a0;
+      font-size: 0.9rem;
+      text-align: center;
+      line-height: 1.6;
+      padding: 20px;
+      background: rgba(0,0,0,0.15);
+      border-radius: 10px;
+    }
+    
+    .task-summary-insight strong {
+      color: #4ecdc4;
+    }
+    
+    .task-summary-insight em {
+      color: #fff;
+      font-style: normal;
+    }
+    
+    @media (max-width: 1024px) {
+      .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .matrix-grid {
+        grid-template-columns: 1fr;
+      }
+      .gap-list {
+        grid-template-columns: 1fr;
+      }
+      .task-summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+      .objective-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .donut-chart-container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>KAM Objectives <span>Coverage Analysis</span></h1>
+      <p class="subtitle">Evaluating how the Forecasting Grid supports Key Account Manager workflows</p>
+    </header>
+    
+    <!-- Executive Summary -->
+    <section class="executive-summary">
+      <div class="section-header">
+        <div class="icon">📊</div>
+        <h2>Executive Summary</h2>
+      </div>
+      <p style="color: #a0a0a0; margin-bottom: 20px;">
+        Analysis of 24 core KAM objectives across 6 functional areas. The Forecasting Grid provides strong coverage 
+        for planning and data management tasks, with opportunities to expand into relationship management and strategic areas.
+      </p>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="number">62%</div>
+          <div class="label">Overall Coverage</div>
+        </div>
+        <div class="summary-card">
+          <div class="number">15</div>
+          <div class="label">Objectives Addressed</div>
+        </div>
+        <div class="summary-card">
+          <div class="number">9</div>
+          <div class="label">Gaps Identified</div>
+        </div>
+        <div class="summary-card">
+          <div class="number">4.2/5</div>
+          <div class="label">Effectiveness Score</div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Coverage Chart -->
+    <section class="chart-section">
+      <div class="section-header">
+        <div class="icon">🎯</div>
+        <h2>Coverage by Objective Category</h2>
+      </div>
+      <div class="donut-chart-container">
+        <div class="donut-chart">
+          <svg viewBox="0 0 200 200">
+            <circle class="donut-bg" cx="100" cy="100" r="70"></circle>
+            <circle class="donut-fill" cx="100" cy="100" r="70" 
+                    stroke-dasharray="273 440"></circle>
+          </svg>
+          <div class="donut-center">
+            <div class="donut-value">62%</div>
+            <div class="donut-label">Total Coverage</div>
+          </div>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item">
+            <div class="legend-color" style="background: #4caf50;"></div>
+            <span class="legend-text">Forecasting & Planning</span>
+            <span class="legend-value">95%</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #81c784;"></div>
+            <span class="legend-text">Data Analysis & Reporting</span>
+            <span class="legend-value">85%</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #ffc107;"></div>
+            <span class="legend-text">Accountability & Audit</span>
+            <span class="legend-value">80%</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #ff9800;"></div>
+            <span class="legend-text">Collaboration & Communication</span>
+            <span class="legend-value">40%</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #f44336;"></div>
+            <span class="legend-text">Relationship Management</span>
+            <span class="legend-value">15%</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #9e9e9e;"></div>
+            <span class="legend-text">Strategic Account Growth</span>
+            <span class="legend-value">10%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Detailed Objectives -->
+    <section class="objectives-section">
+      <div class="section-header">
+        <div class="icon">📋</div>
+        <h2>Detailed Objectives Analysis</h2>
+      </div>
+      
+      <!-- Forecasting & Planning -->
+      <div class="objective-category">
+        <div class="category-header">
+          <span class="category-title">🎯 Forecasting & Planning</span>
+          <div class="category-coverage">
+            <span class="coverage-badge coverage-high">95% Coverage</span>
+          </div>
+        </div>
+        <div class="objectives-list">
+          <div class="objective-item">
+            <span class="objective-name">Create and update revenue forecasts</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-high" style="width: 100%"></div></div>
+            <span class="objective-percent" style="color: #81c784;">100%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Adjust forecasts based on market conditions</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-high" style="width: 95%"></div></div>
+            <span class="objective-percent" style="color: #81c784;">95%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Apply bulk adjustments across products/time</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-high" style="width: 100%"></div></div>
+            <span class="objective-percent" style="color: #81c784;">100%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Maintain forecast accuracy metrics</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-high" style="width: 85%"></div></div>
+            <span class="objective-percent" style="color: #81c784;">85%</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Data Analysis & Reporting -->
+      <div class="objective-category">
+        <div class="category-header">
+          <span class="category-title">📊 Data Analysis & Reporting</span>
+          <div class="category-coverage">
+            <span class="coverage-badge coverage-high">85% Coverage</span>
+          </div>
+        </div>
+        <div class="objectives-list">
+          <div class="objective-item">
+            <span class="objective-name">Analyze trends across time periods</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-high" style="width: 95%"></div></div>
+            <span class="objective-percent" style="color: #81c784;">95%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Drill down from account to product level</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-high" style="width: 100%"></div></div>
+            <span class="objective-percent" style="color: #81c784;">100%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Prepare data for business reviews</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-high" style="width: 90%"></div></div>
+            <span class="objective-percent" style="color: #81c784;">90%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Generate reports for leadership</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-medium" style="width: 55%"></div></div>
+            <span class="objective-percent" style="color: #ffd54f;">55%</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Accountability & Audit -->
+      <div class="objective-category">
+        <div class="category-header">
+          <span class="category-title">🔍 Accountability & Audit</span>
+          <div class="category-coverage">
+            <span class="coverage-badge coverage-high">80% Coverage</span>
+          </div>
+        </div>
+        <div class="objectives-list">
+          <div class="objective-item">
+            <span class="objective-name">Track who changed what and when</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-high" style="width: 100%"></div></div>
+            <span class="objective-percent" style="color: #81c784;">100%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Document reasons for forecast changes</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-high" style="width: 95%"></div></div>
+            <span class="objective-percent" style="color: #81c784;">95%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Maintain data integrity across hierarchy</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-high" style="width: 100%"></div></div>
+            <span class="objective-percent" style="color: #81c784;">100%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Lock critical values from accidental changes</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-medium" style="width: 70%"></div></div>
+            <span class="objective-percent" style="color: #ffd54f;">70%</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Collaboration & Communication -->
+      <div class="objective-category">
+        <div class="category-header">
+          <span class="category-title">🤝 Collaboration & Communication</span>
+          <div class="category-coverage">
+            <span class="coverage-badge coverage-medium">40% Coverage</span>
+          </div>
+        </div>
+        <div class="objectives-list">
+          <div class="objective-item">
+            <span class="objective-name">Share forecast views with stakeholders</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-medium" style="width: 50%"></div></div>
+            <span class="objective-percent" style="color: #ffd54f;">50%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Collaborate on forecast adjustments</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-medium" style="width: 45%"></div></div>
+            <span class="objective-percent" style="color: #ffd54f;">45%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Get approval workflows for changes</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-low" style="width: 20%"></div></div>
+            <span class="objective-percent" style="color: #ef9a9a;">20%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Notify team of significant changes</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-medium" style="width: 45%"></div></div>
+            <span class="objective-percent" style="color: #ffd54f;">45%</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Relationship Management -->
+      <div class="objective-category">
+        <div class="category-header">
+          <span class="category-title">💼 Relationship Management</span>
+          <div class="category-coverage">
+            <span class="coverage-badge coverage-low">15% Coverage</span>
+          </div>
+        </div>
+        <div class="objectives-list">
+          <div class="objective-item">
+            <span class="objective-name">Track customer interactions & meetings</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-none" style="width: 0%"></div></div>
+            <span class="objective-percent" style="color: #bdbdbd;">0%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Manage customer contacts & stakeholders</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-none" style="width: 0%"></div></div>
+            <span class="objective-percent" style="color: #bdbdbd;">0%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Link forecasts to customer commitments</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-medium" style="width: 40%"></div></div>
+            <span class="objective-percent" style="color: #ffd54f;">40%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Track customer health/satisfaction</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-low" style="width: 20%"></div></div>
+            <span class="objective-percent" style="color: #ef9a9a;">20%</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Strategic Account Growth -->
+      <div class="objective-category">
+        <div class="category-header">
+          <span class="category-title">🚀 Strategic Account Growth</span>
+          <div class="category-coverage">
+            <span class="coverage-badge coverage-low">10% Coverage</span>
+          </div>
+        </div>
+        <div class="objectives-list">
+          <div class="objective-item">
+            <span class="objective-name">Identify upsell/cross-sell opportunities</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-low" style="width: 15%"></div></div>
+            <span class="objective-percent" style="color: #ef9a9a;">15%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Plan account expansion strategies</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-none" style="width: 5%"></div></div>
+            <span class="objective-percent" style="color: #bdbdbd;">5%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Compare account performance to goals</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-low" style="width: 20%"></div></div>
+            <span class="objective-percent" style="color: #ef9a9a;">20%</span>
+          </div>
+          <div class="objective-item">
+            <span class="objective-name">Model pricing scenarios & ROI</span>
+            <div class="objective-bar"><div class="objective-bar-fill fill-none" style="width: 0%"></div></div>
+            <span class="objective-percent" style="color: #bdbdbd;">0%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Daily Tasks by Objective -->
+    <section class="tasks-section">
+      <div class="section-header">
+        <div class="icon">📅</div>
+        <h2>Daily KAM Tasks by Objective</h2>
+      </div>
+      <p style="color: #a0a0a0; margin-bottom: 30px;">
+        Breakdown of typical KAM daily/weekly tasks and how well the grid supports each one.
+      </p>
+      
+      <!-- Forecasting & Planning Tasks -->
+      <div class="task-category">
+        <div class="task-category-header">
+          <span class="task-category-title">🎯 Forecasting & Planning Tasks</span>
+          <span class="task-category-badge task-badge-high">6/6 Fully Supported</span>
+        </div>
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Frequency</th>
+              <th>Support</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Update monthly revenue forecasts after customer calls</td>
+              <td><span class="freq-tag freq-daily">Daily</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+            <tr>
+              <td>Adjust quantity forecasts based on order changes</td>
+              <td><span class="freq-tag freq-daily">Daily</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+            <tr>
+              <td>Apply price increase across product lines</td>
+              <td><span class="freq-tag freq-weekly">Weekly</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+            <tr>
+              <td>Revise Q4 forecast after contract renewal</td>
+              <td><span class="freq-tag freq-monthly">Monthly</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+            <tr>
+              <td>Add adjustment notes explaining forecast changes</td>
+              <td><span class="freq-tag freq-daily">Daily</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+            <tr>
+              <td>Lock confirmed contract values</td>
+              <td><span class="freq-tag freq-weekly">Weekly</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Data Analysis & Reporting Tasks -->
+      <div class="task-category">
+        <div class="task-category-header">
+          <span class="task-category-title">📊 Data Analysis & Reporting Tasks</span>
+          <span class="task-category-badge task-badge-high">5/6 Fully Supported</span>
+        </div>
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Frequency</th>
+              <th>Support</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Check which products are trending down</td>
+              <td><span class="freq-tag freq-daily">Daily</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+            <tr>
+              <td>Compare Jan vs Feb performance</td>
+              <td><span class="freq-tag freq-weekly">Weekly</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+            <tr>
+              <td>Drill into category to find underperforming SKU</td>
+              <td><span class="freq-tag freq-daily">Daily</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+            <tr>
+              <td>Prepare QBR deck with account numbers</td>
+              <td><span class="freq-tag freq-monthly">Monthly</span></td>
+              <td><span class="support-partial">⚠️ Partial (no export)</span></td>
+            </tr>
+            <tr>
+              <td>Pull YTD revenue for exec meeting</td>
+              <td><span class="freq-tag freq-weekly">Weekly</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+            <tr>
+              <td>Identify seasonal patterns in the data</td>
+              <td><span class="freq-tag freq-monthly">Monthly</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Accountability & Audit Tasks -->
+      <div class="task-category">
+        <div class="task-category-header">
+          <span class="task-category-title">🔍 Accountability & Audit Tasks</span>
+          <span class="task-category-badge task-badge-high">6/6 Fully Supported</span>
+        </div>
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Frequency</th>
+              <th>Support</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Check who changed the March forecast</td>
+              <td><span class="freq-tag freq-adhoc">As needed</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+            <tr>
+              <td>Review edit history before submitting</td>
+              <td><span class="freq-tag freq-weekly">Weekly</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+            <tr>
+              <td>Document why revenue dropped 10%</td>
+              <td><span class="freq-tag freq-adhoc">As needed</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+            <tr>
+              <td>Verify rollups are mathematically correct</td>
+              <td><span class="freq-tag freq-daily">Daily</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+            <tr>
+              <td>Find when a specific value was last changed</td>
+              <td><span class="freq-tag freq-adhoc">As needed</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+            <tr>
+              <td>Add comment thread discussing a change</td>
+              <td><span class="freq-tag freq-daily">Daily</span></td>
+              <td><span class="support-full">✅ Full</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Collaboration & Communication Tasks -->
+      <div class="task-category">
+        <div class="task-category-header">
+          <span class="task-category-title">🤝 Collaboration & Communication Tasks</span>
+          <span class="task-category-badge task-badge-low">0/6 Fully Supported</span>
+        </div>
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Frequency</th>
+              <th>Support</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Share forecast view with sales ops</td>
+              <td><span class="freq-tag freq-weekly">Weekly</span></td>
+              <td><span class="support-none">❌ Not supported</span></td>
+            </tr>
+            <tr>
+              <td>Email updated numbers to finance</td>
+              <td><span class="freq-tag freq-weekly">Weekly</span></td>
+              <td><span class="support-none">❌ Not supported</span></td>
+            </tr>
+            <tr>
+              <td>Get manager approval on large adjustment</td>
+              <td><span class="freq-tag freq-adhoc">As needed</span></td>
+              <td><span class="support-none">❌ Not supported</span></td>
+            </tr>
+            <tr>
+              <td>Notify team of significant change</td>
+              <td><span class="freq-tag freq-adhoc">As needed</span></td>
+              <td><span class="support-partial">⚠️ Partial (comments only)</span></td>
+            </tr>
+            <tr>
+              <td>Discuss forecast with planning team</td>
+              <td><span class="freq-tag freq-weekly">Weekly</span></td>
+              <td><span class="support-partial">⚠️ Partial (comments)</span></td>
+            </tr>
+            <tr>
+              <td>Export data for customer presentation</td>
+              <td><span class="freq-tag freq-monthly">Monthly</span></td>
+              <td><span class="support-none">❌ Not supported</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Relationship Management Tasks -->
+      <div class="task-category">
+        <div class="task-category-header">
+          <span class="task-category-title">💼 Relationship Management Tasks</span>
+          <span class="task-category-badge task-badge-none">0/6 Fully Supported</span>
+        </div>
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Frequency</th>
+              <th>Support</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Log customer meeting notes</td>
+              <td><span class="freq-tag freq-daily">Daily</span></td>
+              <td><span class="support-none">❌ Not supported</span></td>
+            </tr>
+            <tr>
+              <td>Update customer contact information</td>
+              <td><span class="freq-tag freq-weekly">Weekly</span></td>
+              <td><span class="support-none">❌ Not supported</span></td>
+            </tr>
+            <tr>
+              <td>Track customer sentiment/health score</td>
+              <td><span class="freq-tag freq-weekly">Weekly</span></td>
+              <td><span class="support-none">❌ Not supported</span></td>
+            </tr>
+            <tr>
+              <td>Link forecast to customer commitment</td>
+              <td><span class="freq-tag freq-adhoc">As needed</span></td>
+              <td><span class="support-partial">⚠️ Partial (notes)</span></td>
+            </tr>
+            <tr>
+              <td>Review customer interaction history</td>
+              <td><span class="freq-tag freq-adhoc">Before calls</span></td>
+              <td><span class="support-none">❌ Not supported</span></td>
+            </tr>
+            <tr>
+              <td>Map customer stakeholders/org chart</td>
+              <td><span class="freq-tag freq-monthly">Monthly</span></td>
+              <td><span class="support-none">❌ Not supported</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Strategic Account Growth Tasks -->
+      <div class="task-category">
+        <div class="task-category-header">
+          <span class="task-category-title">🚀 Strategic Account Growth Tasks</span>
+          <span class="task-category-badge task-badge-none">0/6 Fully Supported</span>
+        </div>
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Frequency</th>
+              <th>Support</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Identify products customer isn't buying</td>
+              <td><span class="freq-tag freq-monthly">Monthly</span></td>
+              <td><span class="support-partial">⚠️ Partial</span></td>
+            </tr>
+            <tr>
+              <td>Plan upsell strategy for Q2</td>
+              <td><span class="freq-tag freq-quarterly">Quarterly</span></td>
+              <td><span class="support-none">❌ Not supported</span></td>
+            </tr>
+            <tr>
+              <td>Compare account vs. quota attainment</td>
+              <td><span class="freq-tag freq-weekly">Weekly</span></td>
+              <td><span class="support-none">❌ Not supported</span></td>
+            </tr>
+            <tr>
+              <td>Model "what if we increase price 5%"</td>
+              <td><span class="freq-tag freq-adhoc">As needed</span></td>
+              <td><span class="support-none">❌ Not supported</span></td>
+            </tr>
+            <tr>
+              <td>Calculate ROI for customer proposal</td>
+              <td><span class="freq-tag freq-adhoc">As needed</span></td>
+              <td><span class="support-none">❌ Not supported</span></td>
+            </tr>
+            <tr>
+              <td>Track account growth year-over-year</td>
+              <td><span class="freq-tag freq-monthly">Monthly</span></td>
+              <td><span class="support-partial">⚠️ Partial</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Task Summary -->
+      <div class="task-summary">
+        <h3>Task Coverage Summary</h3>
+        <div class="task-summary-grid">
+          <div class="task-summary-item">
+            <div class="task-summary-number high">17</div>
+            <div class="task-summary-label">Fully Supported</div>
+          </div>
+          <div class="task-summary-item">
+            <div class="task-summary-number medium">5</div>
+            <div class="task-summary-label">Partially Supported</div>
+          </div>
+          <div class="task-summary-item">
+            <div class="task-summary-number low">14</div>
+            <div class="task-summary-label">Not Supported</div>
+          </div>
+          <div class="task-summary-item">
+            <div class="task-summary-number total">47%</div>
+            <div class="task-summary-label">Task Coverage</div>
+          </div>
+        </div>
+        <p class="task-summary-insight">
+          <strong>Key Insight:</strong> The grid excels at the <em>core forecasting workflow</em> (planning, analysis, audit) 
+          but doesn't address the broader KAM role of <em>relationship building</em> and <em>strategic growth</em>. 
+          Daily forecasting tasks are well covered; strategic and relationship tasks require external tools.
+        </p>
+      </div>
+    </section>
+    
+    <!-- Effectiveness Matrix -->
+    <section class="matrix-section">
+      <div class="section-header">
+        <div class="icon">⭐</div>
+        <h2>Effectiveness Matrix</h2>
+      </div>
+      <p style="color: #a0a0a0; margin-bottom: 25px;">
+        How effectively does the grid address each covered objective?
+      </p>
+      <div class="matrix-grid">
+        <div class="matrix-card">
+          <h4>📈 Value Propagation</h4>
+          <div class="rating">
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p>Automatic rollups and drill-downs maintain mathematical consistency. Editing at any level propagates correctly.</p>
+        </div>
+        <div class="matrix-card">
+          <h4>🔄 Layout Flexibility</h4>
+          <div class="rating">
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p>Three layouts serve different analytical needs: trends, roll-ups, and point-in-time snapshots.</p>
+        </div>
+        <div class="matrix-card">
+          <h4>📝 Edit History & Audit</h4>
+          <div class="rating">
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star empty" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p>Comprehensive edit tracking with user, timestamp, delta, and adjustment notes. Comments and replies supported.</p>
+        </div>
+        <div class="matrix-card">
+          <h4>⚡ Mass Updates</h4>
+          <div class="rating">
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star empty" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p>Shift+Click range selection with bulk operations (increase, decrease, set). Respects locked cells.</p>
+        </div>
+        <div class="matrix-card">
+          <h4>🔍 Filtering & Search</h4>
+          <div class="rating">
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star empty" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p>Dimension level filters, time period filters, measure subgroup filters, and date range controls.</p>
+        </div>
+        <div class="matrix-card">
+          <h4>🖱️ User Experience</h4>
+          <div class="rating">
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star empty" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p>Familiar spreadsheet interactions (click, double-click, right-click). Sticky headers. Clear visual indicators.</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Gap Analysis -->
+    <section class="gap-section">
+      <div class="section-header">
+        <div class="icon" style="background: linear-gradient(135deg, #f44336, #e57373);">⚠️</div>
+        <h2>Gap Analysis: What's Missing</h2>
+      </div>
+      <p style="color: #bdbdbd; margin-bottom: 10px;">
+        These KAM objectives are not currently addressed by the Forecasting Grid:
+      </p>
+      <div class="gap-list">
+        <div class="gap-item">
+          <div class="gap-icon">👥</div>
+          <div class="gap-content">
+            <h4>Customer Contact Management</h4>
+            <p>No ability to track customer stakeholders, interactions, or meeting notes within the tool.</p>
+          </div>
+        </div>
+        <div class="gap-item">
+          <div class="gap-icon">✅</div>
+          <div class="gap-content">
+            <h4>Approval Workflows</h4>
+            <p>No formal approval process for forecast changes. Changes are immediate without review gates.</p>
+          </div>
+        </div>
+        <div class="gap-item">
+          <div class="gap-icon">🔔</div>
+          <div class="gap-content">
+            <h4>Notifications & Alerts</h4>
+            <p>No automated alerts for threshold breaches, significant changes, or pending reviews.</p>
+          </div>
+        </div>
+        <div class="gap-item">
+          <div class="gap-icon">📧</div>
+          <div class="gap-content">
+            <h4>Export & Sharing</h4>
+            <p>No built-in export to Excel/PDF or sharing functionality for external stakeholders.</p>
+          </div>
+        </div>
+        <div class="gap-item">
+          <div class="gap-icon">💰</div>
+          <div class="gap-content">
+            <h4>Pricing & ROI Modeling</h4>
+            <p>No scenario planning tools for pricing changes, discounts, or ROI calculations.</p>
+          </div>
+        </div>
+        <div class="gap-item">
+          <div class="gap-icon">🎯</div>
+          <div class="gap-content">
+            <h4>Goal Tracking</h4>
+            <p>No comparison of actuals vs. targets or quota attainment visualization.</p>
+          </div>
+        </div>
+        <div class="gap-item">
+          <div class="gap-icon">📈</div>
+          <div class="gap-content">
+            <h4>Opportunity Integration</h4>
+            <p>No linking of forecasts to CRM opportunities or pipeline data.</p>
+          </div>
+        </div>
+        <div class="gap-item">
+          <div class="gap-icon">🤖</div>
+          <div class="gap-content">
+            <h4>AI-Powered Insights</h4>
+            <p>No predictive analytics, anomaly detection, or AI-driven recommendations.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Recommendations -->
+    <section class="recommendations">
+      <div class="section-header">
+        <div class="icon">💡</div>
+        <h2>Strategic Recommendations</h2>
+      </div>
+      <div class="rec-list">
+        <div class="rec-item">
+          <div class="rec-number">1</div>
+          <div class="rec-content">
+            <h4>Add Export Functionality (Quick Win)</h4>
+            <p>Enable Excel/CSV export and view sharing. High impact, relatively low effort. Would increase Collaboration coverage to 60%.</p>
+          </div>
+        </div>
+        <div class="rec-item">
+          <div class="rec-number">2</div>
+          <div class="rec-content">
+            <h4>Implement Approval Workflows</h4>
+            <p>Add optional review gates for changes above a threshold. Critical for enterprise governance requirements.</p>
+          </div>
+        </div>
+        <div class="rec-item">
+          <div class="rec-number">3</div>
+          <div class="rec-content">
+            <h4>Integrate with CRM Data</h4>
+            <p>Link forecasts to opportunities and account records. Would bridge the Relationship Management gap significantly.</p>
+          </div>
+        </div>
+        <div class="rec-item">
+          <div class="rec-number">4</div>
+          <div class="rec-content">
+            <h4>Add Target vs. Actual Comparison</h4>
+            <p>Show quota/target alongside forecasts. Essential for account performance tracking.</p>
+          </div>
+        </div>
+        <div class="rec-item">
+          <div class="rec-number">5</div>
+          <div class="rec-content">
+            <h4>Consider AI/ML Enhancements (Long-term)</h4>
+            <p>Anomaly detection, forecast suggestions, and trend predictions would differentiate the product.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <footer>
+      <p>KAM Objectives Coverage Analysis | Forecasting Grid Prototype | Generated January 2026</p>
+    </footer>
+  </div>
+</body>
+</html>
+

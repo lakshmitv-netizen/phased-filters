@@ -1,0 +1,175 @@
+.readonly-measures-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-overlay-scrim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999 !important; /* Topmost layer - above everything including page header */
+}
+
+.readonly-measures-modal {
+  background-color: var(--color-surface-white);
+  border-radius: var(--border-radius-1);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 15%, transparent);
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  z-index: 100000 !important; /* Topmost layer - above overlay */
+}
+
+.readonly-measures-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-4) var(--spacing-5);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.readonly-measures-modal-title {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-2);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-2);
+  color: var(--color-on-surface-2);
+  margin: 0;
+}
+
+.readonly-measures-modal-close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: var(--color-neutral-text);
+  border-radius: 4px;
+  transition: background-color 0.15s;
+}
+
+.readonly-measures-modal-close:hover {
+  background-color: var(--color-surface-gray);
+}
+
+.readonly-measures-modal-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.readonly-measures-modal-body {
+  padding: var(--spacing-5);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.readonly-measures-description-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: var(--spacing-4);
+}
+
+.readonly-measures-warning-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--slds-g-color-warning-2);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.readonly-measures-description {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-on-surface-2);
+  margin: 0;
+}
+
+.readonly-measures-table-container {
+  overflow-x: auto;
+}
+
+.readonly-measures-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.readonly-measures-table thead {
+  background-color: var(--color-surface-gray);
+}
+
+.readonly-measures-th-measure,
+.readonly-measures-th-group {
+  padding: var(--spacing-3) var(--spacing-4);
+  text-align: left;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-base);
+  color: var(--color-on-surface-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.readonly-measures-th-measure {
+  width: 60%;
+}
+
+.readonly-measures-th-group {
+  width: 40%;
+}
+
+.readonly-measures-row {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.readonly-measures-row:hover {
+  background-color: var(--color-surface-gray);
+}
+
+.readonly-measures-td-measure,
+.readonly-measures-td-group {
+  padding: var(--spacing-3) var(--spacing-4);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-on-surface-2);
+}
+
+.readonly-measures-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-2);
+  padding: var(--spacing-4) var(--spacing-5);
+  border-top: 1px solid var(--color-border);
+}
+
+.readonly-measures-btn-close {
+  padding: 10px 24px !important;
+  border-radius: 8px !important;
+  font-family: var(--font-family-base) !important;
+  font-size: var(--font-size-base) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  line-height: var(--line-height-base) !important;
+  cursor: pointer !important;
+  transition: all 0.15s !important;
+  border: 1px solid !important;
+  min-width: 100px !important;
+  background-color: var(--slds-g-color-accent-1) !important;
+  color: var(--color-surface-white) !important;
+  border-color: var(--slds-g-color-accent-1) !important;
+}
+
+.readonly-measures-btn-close:hover {
+  background-color: var(--color-primary-blue) !important;
+  border-color: var(--color-primary-blue) !important;
+}

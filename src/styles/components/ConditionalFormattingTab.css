@@ -1,0 +1,2779 @@
+/* ─── Tab shell ───────────────────────────────────────────────────────────────── */
+.cf-tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0;
+}
+
+.cf-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cf-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cf-ds-rule-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 14px;
+  border: 1px solid var(--slds-g-color-neutral-base-80);
+  border-radius: 6px;
+  background: var(--color-surface-white);
+}
+
+.cf-ds-rule-info {
+  min-width: 0;
+}
+
+.cf-ds-rule-title {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--slds-g-color-neutral-base-10);
+}
+
+.cf-ds-rule-subtitle {
+  margin-top: 2px;
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  line-height: 1.35;
+}
+
+.cf-section-label {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-on-surface-2);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cf-rule-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: var(--slds-g-color-accent-1);
+  color: var(--color-surface-white);
+  font-size: 12px !important;
+  font-weight: 600;
+  border-radius: 9px;
+}
+
+.cf-cell-key-badge {
+  font-size: 12px !important;
+  font-weight: 600;
+  color: var(--slds-g-color-accent-1);
+  background: var(--slds-g-color-accent-container-1);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+/* ─── Mode toggle ─────────────────────────────────────────────────────────────── */
+.cf-button-group {
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+.cf-button-group-btn {
+  flex: 1 !important;
+  height: 32px !important;
+  padding: 0 16px !important;
+  border: 1px solid var(--slds-g-color-neutral-base-40) !important;
+  background: var(--color-surface-white) !important;
+  background-color: var(--color-surface-white) !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 13px !important;
+  font-weight: var(--font-weight-semibold) !important;
+  color: var(--color-accent-blue) !important;
+  cursor: pointer !important;
+  position: relative !important;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s !important;
+  line-height: 19px !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.cf-button-group-btn:first-child {
+  border-radius: 9999px 0 0 9999px !important;
+}
+
+.cf-button-group-btn:last-child {
+  border-radius: 0 9999px 9999px 0 !important;
+  margin-left: -1px !important;
+}
+
+.cf-button-group-btn:hover:not(.active) {
+  background: var(--slds-g-color-accent-container-1) !important;
+  background-color: var(--slds-g-color-accent-container-1) !important;
+}
+
+.cf-button-group-btn.active {
+  background: var(--slds-g-color-accent-1) !important;
+  background-color: var(--slds-g-color-accent-1) !important;
+  color: var(--color-surface-white) !important;
+  border-color: var(--slds-g-color-accent-1) !important;
+  border: 1px solid var(--slds-g-color-accent-1) !important;
+  z-index: 1 !important;
+}
+
+/* ─── Notifications ───────────────────────────────────────────────────────────── */
+.cf-warning-notification {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--slds-g-color-warning-container-1);
+  border-left: 3px solid var(--slds-g-color-warning-2);
+  border-radius: 4px;
+}
+
+.cf-warning-icon { flex-shrink: 0; color: var(--slds-g-color-warning-2); margin-top: 1px; }
+
+.cf-warning-text {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  line-height: 17px;
+  color: var(--slds-g-color-warning-1);
+}
+
+.cf-info-notification {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--slds-g-color-accent-container-1);
+  border-left: 3px solid var(--slds-g-color-accent-1);
+  border-radius: 4px;
+}
+
+.cf-info-icon { flex-shrink: 0; color: var(--slds-g-color-accent-1); margin-top: 1px; }
+
+.cf-info-text {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  line-height: 17px;
+  color: var(--slds-g-color-neutral-base-10);
+}
+
+/* ─── Empty state ─────────────────────────────────────────────────────────────── */
+.cf-empty-state {
+  text-align: center;
+  padding: 20px 16px 8px;
+  color: var(--color-neutral-text);
+}
+
+.cf-empty-illustration {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.cf-empty-state p {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.cf-empty-state-subtitle {
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  margin-top: 4px !important;
+}
+
+/* ─── Rules hint ──────────────────────────────────────────────────────────────── */
+.cf-rules-hint {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  line-height: 17px;
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+/* ─── Rules search + filter ────────────────────────────────────────────────── */
+.cf-rules-search-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.cf-rules-search-wrap {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--color-surface-white);
+  border: 1px solid var(--slds-g-color-neutral-base-80);
+  border-radius: 6px;
+  padding: 0 10px;
+  height: 32px;
+  gap: 6px;
+}
+.cf-rules-search-icon { color: var(--slds-g-color-neutral-base-60); flex-shrink: 0; }
+.cf-rules-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 12px;
+  color: var(--slds-g-color-neutral-base-10);
+  background: transparent;
+}
+.cf-rules-search-input::placeholder { color: var(--slds-g-color-neutral-base-60); }
+.cf-rules-search-clear {
+  background: none; border: none; padding: 0; cursor: pointer;
+  color: var(--slds-g-color-neutral-base-60); display: flex; align-items: center;
+}
+.cf-rules-search-clear:hover { color: var(--slds-g-color-neutral-base-50); }
+
+.cf-rules-filter-wrap { position: relative; flex-shrink: 0; }
+.cf-rules-filter-btn {
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  width: 32px; height: 32px;
+  border: 1px solid var(--slds-g-color-neutral-base-80);
+  border-radius: 6px;
+  background: var(--color-surface-white);
+  cursor: pointer;
+  color: var(--slds-g-color-neutral-base-50);
+  transition: border-color 0.15s, background 0.15s;
+}
+.cf-rules-filter-btn:hover { border-color: var(--slds-g-color-neutral-base-60); background: var(--color-surface-gray); }
+.cf-rules-filter-btn.active { border-color: var(--color-accent-blue); color: var(--color-accent-blue); background: var(--slds-g-color-accent-container-1); }
+.cf-rules-filter-dot {
+  position: absolute; top: 5px; right: 5px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--color-accent-blue); border: 1px solid var(--color-surface-white);
+}
+.cf-rules-filter-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 148px;
+  background: var(--color-surface-white);
+  border: 1px solid var(--slds-g-color-neutral-base-80);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+  z-index: 200;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.cf-rules-filter-option {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 10px;
+  border: none; background: none; cursor: pointer;
+  font-size: 12px; color: var(--slds-g-color-neutral-base-10);
+  border-radius: 4px; text-align: left; width: 100%;
+}
+.cf-rules-filter-option:hover { background: var(--slds-g-color-neutral-base-95); }
+.cf-rules-filter-option.selected { color: var(--color-accent-blue); font-weight: 600; }
+
+/* ─── Column search ─────────────────────────────────────────────────────────── */
+.cf-column-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  background: var(--color-surface-white);
+  border: 1px solid var(--color-border, var(--slds-g-color-neutral-base-90));
+  border-radius: 6px;
+  padding: 0 8px;
+  height: 32px;
+  gap: 6px;
+}
+
+.cf-column-search-icon {
+  flex-shrink: 0;
+  color: var(--slds-g-color-neutral-base-60);
+}
+
+.cf-column-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--color-on-surface-1);
+}
+
+.cf-column-search-input::placeholder {
+  color: var(--slds-g-color-neutral-base-60);
+}
+
+.cf-column-search-clear {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  color: var(--slds-g-color-neutral-base-60);
+  border-radius: 50%;
+}
+
+.cf-column-search-clear:hover {
+  background: var(--slds-g-color-surface-container-1);
+  color: var(--slds-g-color-neutral-base-50);
+}
+
+/* ─── Rules list ──────────────────────────────────────────────────────────────── */
+.cf-rules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cf-rule-order-input {
+  width: 36px;
+  height: 28px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-on-surface-2);
+  background: var(--color-surface-white);
+  -moz-appearance: textfield;
+}
+
+.cf-rule-order-input::-webkit-outer-spin-button,
+.cf-rule-order-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.cf-rule-order-input:focus {
+  outline: none;
+  border-color: var(--color-accent-blue);
+}
+
+/* ─── Rule card ───────────────────────────────────────────────────────────────── */
+.cf-rule-item {
+  border: 1px solid var(--slds-g-color-neutral-base-80);
+  border-radius: 6px;
+  background: var(--color-surface-white);
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+
+.cf-rule-item:hover:not(.cf-rule-expanded) {
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 8%, transparent);
+}
+
+.cf-rule-expanded {
+  border-color: var(--slds-g-color-border-base-4);
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 8%, transparent);
+}
+
+.cf-rule-item-new {
+  border-color: var(--slds-g-color-border-base-4);
+}
+
+.cf-rule-header {
+  display: flex;
+  align-items: center;
+  padding: 14px 14px 14px 10px;
+  gap: 8px;
+  cursor: default;
+  background: var(--color-surface-white);
+}
+
+.cf-new-rule-title {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--slds-g-color-accent-1);
+  flex: 1;
+}
+
+.cf-new-rule-delete {
+  margin-left: auto;
+}
+
+/* Toggle */
+.cf-rule-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.cf-rule-toggle-track {
+  width: 30px; height: 17px;
+  background: var(--slds-g-color-neutral-base-80);
+  border-radius: 999px;
+  position: relative;
+  transition: background-color 0.2s;
+}
+.cf-rule-toggle.active .cf-rule-toggle-track { background: var(--slds-g-color-accent-1); }
+.cf-rule-toggle-thumb {
+  width: 13px; height: 13px;
+  background: var(--color-surface-white);
+  border-radius: 50%;
+  position: absolute;
+  left: 2px; top: 2px;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 25%, transparent);
+}
+.cf-rule-toggle.active .cf-rule-toggle-thumb { transform: translateX(13px); }
+
+/* Info */
+.cf-rule-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cf-rule-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cf-rule-name {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--slds-g-color-neutral-base-10);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cf-rule-viz-badge {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 2px 7px;
+  border-radius: 4px;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+}
+/* Color Scale — blue */
+.cf-rule-viz-badge.badge-color-scale {
+  background: var(--slds-g-color-accent-container-1); color: var(--color-accent-blue); border-color: var(--slds-g-color-accent-container-2);
+}
+/* Icons — violet */
+.cf-rule-viz-badge.badge-icon-set {
+  background: var(--slds-g-color-neutral-base-90); color: var(--slds-g-color-neutral-base-40); border-color: var(--slds-g-color-neutral-base-80);
+}
+/* Data Bar — indigo */
+.cf-rule-viz-badge.badge-data-bar {
+  background: var(--slds-g-color-accent-container-1); color: var(--color-accent-blue); border-color: var(--slds-g-color-accent-container-2);
+}
+/* Diverging Bar — amber */
+.cf-rule-viz-badge.badge-div-bar {
+  background: var(--slds-g-color-warning-container-1); color: var(--slds-g-color-warning-1); border-color: var(--slds-g-color-warning-container-1);
+}
+/* Threshold — teal */
+.cf-rule-viz-badge.badge-threshold {
+  background: var(--slds-g-color-success-container-1); color: var(--slds-g-color-success-1); border-color: var(--slds-g-color-success-container-1);
+}
+/* Font — pink */
+.cf-rule-viz-badge.badge-font {
+  background: var(--slds-g-color-error-container-1); color: var(--slds-g-color-error-1); border-color: var(--slds-g-color-error-container-1);
+}
+/* Border — slate */
+.cf-rule-viz-badge.badge-border {
+  background: var(--slds-g-color-neutral-base-95); color: var(--slds-g-color-neutral-base-50); border-color: var(--slds-g-color-neutral-base-80);
+}
+/* Background — cyan */
+.cf-rule-viz-badge.badge-background {
+  background: var(--slds-g-color-info-container-1); color: var(--slds-g-color-info-1); border-color: var(--slds-g-color-info-container-1);
+}
+
+.cf-rule-chips-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.cf-rule-chip {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.cf-rule-chip-scope {
+  color: var(--slds-g-color-neutral-base-20);
+}
+
+.cf-rule-chip-eval {
+  color: var(--slds-g-color-accent-1);
+  background: var(--slds-g-color-accent-container-1);
+  padding: 1px 6px;
+  border-radius: 999px;
+  max-width: unset;
+}
+
+.cf-rule-chip-dot {
+  font-size: 11px;
+  color: var(--slds-g-color-neutral-base-70);
+  flex-shrink: 0;
+}
+
+.cf-rule-description {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+.cf-rule-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cf-rule-badge-row {
+  display: flex;
+  align-items: center;
+}
+
+.cf-rule-meta-row .cf-rule-eval-basis {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cf-viz-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 11px !important;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.cf-viz-badge--colorScale { background: var(--slds-g-color-accent-container-1); color: var(--slds-g-color-brand-base-50); border-color: var(--slds-g-color-accent-container-2); }
+.cf-viz-badge--iconSet { background: var(--slds-g-color-neutral-base-90); color: var(--slds-g-color-neutral-base-40); border-color: var(--slds-g-color-neutral-base-80); }
+.cf-viz-badge--dataBar { background: var(--slds-g-color-info-container-1); color: var(--slds-g-color-info-1); border-color: var(--slds-g-color-info-container-1); }
+.cf-viz-badge--divergingBar { background: var(--slds-g-color-warning-container-1); color: var(--slds-g-color-warning-1); border-color: var(--slds-g-color-warning-container-1); }
+.cf-viz-badge--background { background: var(--slds-g-color-success-container-1); color: var(--slds-g-color-success-1); border-color: var(--slds-g-color-success-container-1); }
+.cf-viz-badge--font { background: var(--slds-g-color-warning-container-1); color: var(--slds-g-color-warning-1); border-color: var(--slds-g-color-warning-container-1); }
+.cf-viz-badge--border { background: var(--slds-g-color-neutral-base-95); color: var(--slds-g-color-neutral-base-40); border-color: var(--slds-g-color-neutral-base-80); }
+
+.cf-rule-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Actions */
+.cf-rule-actions { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
+
+.cf-rule-action-btn {
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--slds-g-color-neutral-base-40);
+  transition: background-color 0.1s, border-color 0.1s, color 0.1s;
+  padding: 0;
+}
+.cf-rule-action-btn:hover:not(:disabled) {
+  background: var(--slds-g-color-surface-container-1);
+  border-color: var(--slds-g-color-border-base-4);
+  color: var(--slds-g-color-neutral-base-10);
+}
+.cf-rule-action-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+.cf-rule-action-btn-delete:hover:not(:disabled) {
+  background: var(--slds-g-color-error-container-1) !important;
+  border-color: var(--slds-g-color-error-2) !important;
+  color: var(--slds-g-color-error-2) !important;
+}
+
+/* Chevron */
+.cf-chevron-btn { color: var(--slds-g-color-neutral-base-40); }
+.cf-chevron-btn svg { transition: transform 0.2s ease; }
+.cf-chevron-open svg { transform: rotate(90deg); }
+
+/* ─── Inline editor ───────────────────────────────────────────────────────────── */
+.cf-rule-editor {
+  border-top: 1px solid var(--slds-g-color-neutral-base-90);
+  background: var(--color-surface-white);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.cf-editor-sect {
+  padding: 10px 14px 10px 42px;
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cf-editor-sect:last-child { border-bottom: none; }
+.cf-editor-sect--tight { gap: 0px; }
+
+
+.cf-editor-sect-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cf-editor-lbl {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  font-weight: 600;
+  color: var(--slds-g-color-neutral-base-20);
+  margin: 0;
+}
+
+/* Shared inputs */
+.cf-editor-input {
+  width: 100%;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background: var(--color-surface-white);
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  color: var(--slds-g-color-neutral-base-10);
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+.cf-editor-input:focus { outline: none; border-color: var(--slds-g-color-accent-1); }
+
+.cf-eval-formula-in {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace !important;
+  font-size: 12px !important;
+  color: var(--slds-g-color-on-surface-3) !important;
+}
+
+/* ── Evaluate-on dropdown ─────────────────────────────────────────────────── */
+.cf-evalbasis-drop {
+  position: relative;
+}
+
+.cf-evalbasis-trigger {
+  width: 100% !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 0 8px !important;
+  border: 1px solid var(--slds-g-color-border-2) !important;
+  border-radius: var(--slds-g-radius-border-2) !important;
+  background: var(--color-surface-white) !important;
+  cursor: pointer;
+  text-align: left;
+  box-sizing: border-box;
+}
+.cf-evalbasis-trigger:focus {
+  outline: 2px solid var(--slds-g-color-accent-1);
+  outline-offset: -1px;
+}
+
+.cf-evalbasis-trigger-label {
+  flex: 1;
+  font-size: var(--slds-g-font-size-3);
+  font-family: var(--font-family-base);
+  color: var(--slds-g-color-on-surface-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cf-evalbasis-chevron {
+  color: var(--slds-g-color-neutral-base-40);
+  flex-shrink: 0;
+}
+
+.cf-evalbasis-menu {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: var(--color-surface-white);
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.14);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cf-evalbasis-option {
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-start !important;
+  gap: 2px;
+  padding: 7px 10px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: none !important;
+  cursor: pointer !important;
+  text-align: left;
+  width: 100%;
+  transition: background 0.1s;
+}
+.cf-evalbasis-option:hover {
+  background: var(--slds-g-color-surface-container-1) !important;
+}
+.cf-evalbasis-option--active {
+  background: var(--slds-g-color-accent-container-1) !important;
+}
+
+.cf-evalbasis-option-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cf-evalbasis-check {
+  color: var(--slds-g-color-accent-1);
+  flex-shrink: 0;
+}
+
+.cf-evalbasis-option-label {
+  font-size: var(--slds-g-font-size-3);
+  font-family: var(--font-family-base);
+  font-weight: var(--slds-g-font-weight-6);
+  color: var(--slds-g-color-on-surface-2);
+  line-height: 1.3;
+}
+.cf-evalbasis-option--active .cf-evalbasis-option-label {
+  color: var(--slds-g-color-accent-1);
+}
+
+.cf-evalbasis-formula {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  line-height: 1.3;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.cf-evalbasis-meta {
+  font-size: 12px !important;
+  font-family: var(--font-family-base);
+  color: var(--slds-g-color-neutral-base-40);
+  line-height: 1.3;
+}
+
+.cf-editor-select {
+  width: 100%;
+  height: 32px;
+  padding: 0 28px 0 8px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background: var(--color-surface-white);
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%23747474' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  color: var(--slds-g-color-neutral-base-10);
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.cf-editor-select:focus { outline: none; border-color: var(--slds-g-color-accent-1); }
+
+.cf-name-input { font-size: 13px; font-weight: 500; }
+.cf-viz-sel { font-weight: 500; }
+
+.cf-editor-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.cf-row-lbl {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  white-space: nowrap;
+}
+
+.cf-range-in { width: 80px; flex: 0 0 80px; }
+
+/* Data bar options */
+.cf-bar-opts { margin-top: 2px; }
+.cf-dir-sel { width: auto; flex: 1; min-width: 110px; }
+.cf-chk-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-10);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.cf-chk-label input[type="checkbox"] { width: 16px; height: 16px; margin: 0; cursor: pointer; accent-color: var(--slds-g-color-accent-1); border-radius: 2px; }
+.cf-bold-chk { margin-left: 4px; }
+
+/* Zone count badge */
+.cf-zone-count {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+/* ─── Color scale dropdown ────────────────────────────────────────────────────── */
+.cf-scale-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.cf-scale-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cf-scale-row-lbl {
+  font-size: var(--slds-g-font-size-3);
+  font-family: var(--font-family-base);
+  color: var(--slds-g-color-on-surface-2);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cf-scale-drop {
+  position: relative;
+  flex: 1;
+}
+
+.cf-scale-direction-btn {
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--slds-g-color-accent-1);
+  border-radius: 4px;
+  background: var(--color-surface-white);
+  color: var(--slds-g-color-accent-1);
+  font-size: 12px !important;
+  font-family: var(--font-family-base);
+  font-weight: var(--slds-g-font-weight-5);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cf-scale-direction-btn:hover {
+  background: var(--slds-g-color-accent-container-1);
+}
+
+.cf-scale-drop-trigger {
+  width: 100%;
+  height: 32px;
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  border: 1px solid var(--slds-g-color-border-2) !important;
+  border-radius: var(--slds-g-radius-border-2) !important;
+  background: var(--color-surface-white) !important;
+  cursor: pointer;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.cf-scale-drop-trigger:focus {
+  outline: 2px solid var(--slds-g-color-accent-1);
+  outline-offset: -1px;
+}
+
+.cf-scale-drop-gradient {
+  display: block;
+  width: 60px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.cf-scale-drop-label {
+  flex: 1;
+  font-size: var(--slds-g-font-size-3);
+  font-family: var(--font-family-base);
+  color: var(--slds-g-color-on-surface-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cf-scale-drop-chevron {
+  color: var(--slds-g-color-neutral-base-40);
+  flex-shrink: 0;
+}
+
+.cf-scale-drop-menu {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: var(--color-surface-white);
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cf-scale-drop-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: background 0.1s;
+}
+
+.cf-scale-drop-option:hover {
+  background: var(--slds-g-color-surface-container-1);
+}
+
+.cf-scale-drop-option--active {
+  background: var(--slds-g-color-accent-container-1) !important;
+  color: var(--slds-g-color-accent-1);
+}
+
+.cf-scale-drop-opt-label {
+  flex: 1;
+  font-size: var(--slds-g-font-size-3);
+  font-family: var(--font-family-base);
+  color: var(--slds-g-color-on-surface-2);
+  white-space: nowrap;
+}
+
+.cf-scale-drop-option--active .cf-scale-drop-opt-label {
+  color: var(--slds-g-color-accent-1);
+  font-weight: var(--slds-g-font-weight-6);
+}
+
+/* ─── Zone builder ────────────────────────────────────────────────────────────── */
+.cf-zone-builder {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cf-zone-list { display: flex; flex-direction: column; gap: 4px; }
+
+.cf-zone-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  width: 100%;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* ── SLDS Color Picker ──────────────────────────────────────────────────── */
+.slds-cp-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.slds-cp-trigger {
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  cursor: pointer;
+  padding: 0;
+  display: block;
+  flex-shrink: 0;
+  transition: box-shadow 0.15s;
+}
+.slds-cp-trigger:hover { box-shadow: 0 0 0 2px rgba(2,80,217,0.25); }
+
+.slds-cp-popover {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 9999;
+  background: var(--color-surface-white);
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+  padding: 10px;
+  width: 192px;
+}
+
+.slds-cp-palette {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 8px;
+}
+
+.slds-cp-row {
+  display: flex;
+  gap: 3px;
+}
+
+.slds-cp-swatch {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  border-radius: 3px !important;
+  border: 2px solid color-mix(in srgb, var(--slds-g-color-neutral-base-10) 12%, transparent) !important;
+  outline: none !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+  transition: transform 0.1s, box-shadow 0.1s !important;
+  display: block !important;
+  box-sizing: border-box !important;
+}
+.slds-cp-swatch:hover { transform: scale(1.15) !important; box-shadow: 0 0 0 2px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 25%, transparent) !important; }
+.slds-cp-swatch--selected { box-shadow: 0 0 0 2px var(--slds-g-color-accent-1) !important; transform: scale(1.1) !important; border-color: var(--color-surface-white) !important; }
+
+.slds-cp-hex-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-top: 1px solid var(--slds-g-color-surface-container-2);
+  padding-top: 8px;
+}
+
+.slds-cp-hex-hash {
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  font-family: var(--font-family-base);
+}
+
+.slds-cp-hex-input {
+  flex: 1;
+  height: 28px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  padding: 0 6px;
+  font-size: 12px !important;
+  font-family: monospace;
+  color: var(--slds-g-color-neutral-base-10);
+  background: var(--color-surface-white);
+  min-width: 0;
+  text-transform: uppercase;
+}
+.slds-cp-hex-input:focus { outline: none; border-color: var(--slds-g-color-accent-1); }
+
+.slds-cp-hex-preview {
+  width: 22px; height: 22px;
+  border-radius: 3px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  flex-shrink: 0;
+}
+
+.cf-zone-icon-preview {
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.cf-emoji-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.cf-emoji-trigger {
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background: var(--color-surface-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+}
+
+.cf-emoji-pop {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 9999;
+  width: 190px;
+  background: var(--color-surface-white);
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+  padding: 8px;
+}
+
+.cf-emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.cf-emoji-swatch {
+  height: 28px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background: var(--color-surface-white);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.cf-emoji-swatch.active {
+  border-color: var(--slds-g-color-accent-1);
+  box-shadow: 0 0 0 1px var(--slds-g-color-accent-1);
+}
+
+.cf-emoji-input {
+  width: 100%;
+  height: 28px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  padding: 0 6px;
+  font-size: 12px !important;
+}
+
+.cf-zone-op {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cf-zone-threshold {
+  width: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 32px;
+  padding: 0 6px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background: var(--color-surface-white);
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-10);
+  box-sizing: border-box;
+}
+.cf-zone-threshold:focus { outline: none; border-color: var(--slds-g-color-accent-1); }
+
+.cf-zone-unit {
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  color: var(--slds-g-color-neutral-base-40);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.cf-zone-catchall {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-50) !important;
+  font-style: italic;
+  flex-shrink: 0;
+  width: auto;
+  white-space: nowrap;
+}
+
+.cf-zone-label-input {
+  flex: 1;
+  height: 32px;
+  min-width: 0;
+  padding: 0 6px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background: var(--color-surface-white);
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-10);
+  box-sizing: border-box;
+}
+.cf-zone-label-input:focus { outline: none; border-color: var(--slds-g-color-accent-1); }
+
+.cf-zone-remove {
+  width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  cursor: pointer;
+  color: var(--slds-g-color-neutral-base-50) !important;
+  flex-shrink: 0;
+  padding: 0;
+  transition: background-color 0.1s, color 0.1s;
+}
+.cf-zone-remove:hover { background: var(--slds-g-color-error-container-1); border-color: var(--slds-g-color-error-2); color: var(--slds-g-color-error-2); }
+
+.cf-zone-remove-placeholder {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.cf-add-zone-btn {
+  align-self: flex-start;
+  padding: 4px 10px;
+  background: none;
+  border: 1px dashed var(--slds-g-color-neutral-base-80);
+  border-radius: 4px;
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-accent-1);
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.cf-add-zone-btn:hover { background: var(--slds-g-color-accent-container-1); border-color: var(--slds-g-color-accent-1); }
+
+/* ─── Cell scope (fixed 3-row selector) ─────────────────────────────────────── */
+.cf-scope-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+.cf-scope-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cf-scope-field-lbl {
+  font-family: var(--font-family-base);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--slds-g-color-neutral-base-40, var(--slds-g-color-neutral-base-60));
+  width: 78px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.cf-scope-time-range {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+.cf-scope-time-sel {
+  flex: 1;
+  height: 28px;
+  padding: 0 6px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background: var(--color-surface-white);
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  color: var(--slds-g-color-neutral-base-10);
+  cursor: pointer;
+}
+.cf-scope-time-sel:focus { outline: none; border-color: var(--slds-g-color-accent-1, var(--color-accent-blue)); }
+.cf-scope-time-arrow {
+  font-size: 12px;
+  color: var(--slds-g-color-neutral-base-50, var(--slds-g-color-neutral-base-60));
+  flex-shrink: 0;
+}
+
+/* ─── Cell scope criteria ─────────────────────────────────────────────────────── */
+.cf-all-badge {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  background: var(--slds-g-color-surface-container-1);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.cf-eval-basis-tag {
+  margin-left: auto;
+  font-family: var(--font-family-base);
+  font-size: 11px !important;
+  font-weight: 600;
+  color: var(--slds-g-color-accent-1);
+  background: var(--slds-g-color-accent-container-1);
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* ── Formula expression ──────────────────────────────────────────────────── */
+.cf-formula-expr {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+  color: var(--slds-g-color-neutral-base-40);
+  line-height: 1.5;
+}
+
+.cf-crit-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+
+.cf-crit-sel {
+  height: 28px;
+  padding: 0 6px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background: var(--color-surface-white);
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-10);
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.cf-crit-sel:focus { outline: none; border-color: var(--slds-g-color-accent-1); }
+
+.cf-crit-field { width: 80px; flex: 0 0 80px; }
+.cf-crit-op { width: 90px; flex: 0 0 90px; }
+
+.cf-crit-remove {
+  width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  cursor: pointer;
+  color: var(--slds-g-color-neutral-base-50) !important;
+  flex-shrink: 0;
+  padding: 0;
+  transition: color 0.1s;
+}
+.cf-crit-remove:hover { color: var(--slds-g-color-error-2); }
+
+.cf-add-crit-btn {
+  align-self: flex-start;
+  padding: 4px 12px;
+  background: var(--color-surface-white) !important;
+  border: 1px solid var(--slds-g-color-accent-1) !important;
+  border-radius: 4px;
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  font-weight: var(--slds-g-font-weight-5);
+  color: var(--slds-g-color-accent-1) !important;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+.cf-add-crit-btn:hover {
+  background: var(--slds-g-color-accent-container-1) !important;
+  border-color: var(--slds-g-color-accent-1) !important;
+}
+
+.cf-scope-mode-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.cf-scope-mode-lbl {
+  margin-bottom: 0 !important;
+}
+
+.cf-scope-mode-select {
+  min-width: 220px;
+  width: 100%;
+}
+
+.cf-manual-scope-count {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-30);
+  line-height: 18px;
+}
+
+/* ─── Formula Editor ──────────────────────────────────────────────────────────── */
+.cf-formula-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cf-fml-field-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
+}
+
+
+.cf-fml-field-label {
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: var(--slds-g-color-neutral-base-40) !important;
+}
+
+/* Mirror-div highlight + transparent textarea */
+.cf-fml-wrap {
+  position: relative;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background: var(--color-surface-white);
+  transition: border-color 0.15s;
+}
+.cf-fml-wrap:focus-within { border-color: var(--slds-g-color-accent-1); }
+
+/* Shared font metrics — MUST match between highlight div and textarea */
+.cf-fml-highlight,
+.cf-fml-ta {
+  font-family: var(--font-family-mono, 'Courier New', monospace) !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  padding: 8px 10px !important;
+  white-space: pre-wrap !important;
+  word-break: break-all !important;
+  box-sizing: border-box !important;
+}
+
+.cf-fml-highlight {
+  position: absolute !important;
+  top: 0 !important; left: 0 !important;
+  width: 100% !important;
+  min-height: 100% !important;
+  pointer-events: none !important;
+  color: var(--slds-g-color-neutral-base-10) !important;
+  overflow: hidden !important;
+  border-radius: 4px !important;
+}
+
+.cf-fml-ta {
+  position: relative !important;
+  width: 100% !important;
+  min-height: 72px !important;
+  color: transparent !important;
+  caret-color: var(--slds-g-color-neutral-base-10) !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  resize: vertical !important;
+  display: block !important;
+  z-index: 1 !important;
+}
+
+/* Token pill inside the highlight div */
+.cf-fml-token {
+  background: var(--slds-g-color-accent-container-2) !important;
+  color: var(--slds-g-color-brand-base-40) !important;
+  padding: 1px 5px !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  font-style: normal !important;
+}
+
+/* Validation status */
+.cf-fml-valid {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  font-weight: 500;
+}
+.cf-fml-valid.ok  { color: var(--slds-g-color-success-2); }
+.cf-fml-valid.err { color: var(--slds-g-color-error-2); }
+
+/* Insert variable row */
+.cf-insert-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.cf-insert-lbl {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  white-space: nowrap;
+}
+
+.cf-insert-menu {
+  position: relative;
+}
+
+.cf-insert-trigger {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  height: 24px !important;
+  padding: 0 8px !important;
+  background: var(--color-surface-white) !important;
+  border: 1px solid var(--slds-g-color-border-base-4) !important;
+  border-radius: 4px !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-10) !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  transition: border-color 0.15s !important;
+}
+.cf-insert-trigger:hover { border-color: var(--slds-g-color-accent-1) !important; color: var(--slds-g-color-accent-1) !important; }
+.cf-insert-trigger.open  { border-color: var(--slds-g-color-accent-1) !important; color: var(--slds-g-color-accent-1) !important; }
+
+.cf-insert-dropdown {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 0;
+  z-index: 1100;
+  min-width: 200px;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--color-surface-white);
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+}
+
+.cf-insert-group {
+  padding: 5px 10px 3px;
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--slds-g-color-neutral-base-50) !important;
+  border-top: 1px solid var(--slds-g-color-surface-container-1);
+}
+.cf-insert-group:first-child { border-top: none; }
+
+.cf-insert-option {
+  display: block !important;
+  width: 100% !important;
+  padding: 6px 12px !important;
+  text-align: left !important;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  font-family: var(--font-family-mono, monospace) !important;
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-10) !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  transition: background-color 0.1s !important;
+}
+.cf-insert-option:hover { background: var(--slds-g-color-accent-container-1) !important; color: var(--slds-g-color-accent-1) !important; }
+
+/* Quick templates */
+/* ─── Formula Library Dropdown ─────────────────────────────────────────────── */
+
+.cf-flib-root {
+  position: relative !important;
+  width: 100% !important;
+}
+
+.cf-flib-trigger {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  height: 30px !important;
+  padding: 0 10px !important;
+  background: var(--color-surface-white) !important;
+  border: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-radius: 5px !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-30) !important;
+  cursor: pointer !important;
+  text-align: left !important;
+  transition: border-color 0.15s !important;
+  box-sizing: border-box !important;
+}
+.cf-flib-trigger:hover,
+.cf-flib-trigger.open {
+  border-color: var(--slds-g-color-accent-1) !important;
+}
+.cf-flib-trigger-label {
+  flex: 1 !important;
+  color: var(--slds-g-color-neutral-base-40) !important;
+}
+
+.cf-flib-dropdown {
+  position: absolute !important;
+  top: calc(100% + 4px) !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 200 !important;
+  background: var(--color-surface-white) !important;
+  border: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 12%, transparent) !important;
+  overflow: hidden !important;
+}
+
+.cf-flib-search-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 7px 10px !important;
+  border-bottom: 1px solid var(--slds-g-color-surface-container-1) !important;
+}
+.cf-flib-search-icon {
+  color: var(--slds-g-color-neutral-base-50) !important;
+  flex-shrink: 0 !important;
+}
+.cf-flib-search-input {
+  flex: 1 !important;
+  border: none !important;
+  outline: none !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-15) !important;
+  background: transparent !important;
+}
+
+.cf-flib-list {
+  max-height: 220px !important;
+  overflow-y: auto !important;
+  padding: 4px 0 !important;
+}
+
+.cf-flib-empty {
+  padding: 12px 12px !important;
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-50) !important;
+  text-align: center !important;
+}
+
+.cf-flib-option {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 2px !important;
+  width: 100% !important;
+  padding: 7px 12px !important;
+  background: none !important;
+  border: none !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  transition: background-color 0.1s !important;
+}
+.cf-flib-option:hover {
+  background: var(--slds-g-color-accent-container-1) !important;
+}
+
+.cf-flib-option-label {
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: var(--slds-g-color-accent-1) !important;
+}
+.cf-flib-option-desc {
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40) !important;
+  line-height: 1.4 !important;
+}
+
+/* Result unit selector */
+
+/* Preview unit label */
+.cf-preview-unit-lbl {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  flex-shrink: 0;
+}
+
+/* ─── Viz Select ──────────────────────────────────────────────────────────────── */
+.cf-viz-select-root {
+  position: relative;
+  width: 100%;
+}
+
+.cf-viz-select-trigger {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  height: 30px !important;
+  padding: 0 10px !important;
+  background: var(--color-surface-white) !important;
+  background-color: var(--color-surface-white) !important;
+  border: 1px solid var(--slds-g-color-border-base-4) !important;
+  border-radius: 4px !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 13px !important;
+  color: var(--slds-g-color-neutral-base-10) !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  text-align: left !important;
+  transition: border-color 0.15s !important;
+}
+.cf-viz-select-trigger:hover { border-color: var(--slds-g-color-border-base-4) !important; }
+.cf-viz-select-trigger.open { border-color: var(--slds-g-color-accent-1) !important; }
+
+.cf-viz-select-dropdown {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  background: var(--color-surface-white);
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 12%, transparent);
+  overflow: hidden;
+}
+
+.cf-viz-select-option {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  padding: 8px 12px !important;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 13px !important;
+  color: var(--slds-g-color-neutral-base-10) !important;
+  cursor: pointer !important;
+  text-align: left !important;
+  transition: background-color 0.1s !important;
+}
+.cf-viz-select-option:hover { background: var(--slds-g-color-surface-container-1) !important; }
+.cf-viz-select-option.selected { background: var(--slds-g-color-accent-container-1) !important; font-weight: 500 !important; }
+
+/* ─── Inline MultiSelect ──────────────────────────────────────────────────────── */
+.cf-ims-root {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.cf-ims-trigger {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 4px !important;
+  width: 100% !important;
+  height: 28px !important;
+  padding: 0 8px !important;
+  background: var(--color-surface-white) !important;
+  background-color: var(--color-surface-white) !important;
+  border: 1px solid var(--slds-g-color-border-base-4) !important;
+  border-radius: 4px !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-10) !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.15s !important;
+}
+.cf-ims-trigger:hover { border-color: var(--slds-g-color-border-base-4) !important; }
+.cf-ims-trigger.open { border-color: var(--slds-g-color-accent-1) !important; }
+
+.cf-ims-label {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--slds-g-color-neutral-base-10);
+}
+.cf-ims-label:empty::before,
+.cf-ims-trigger:has(.cf-ims-label:empty) .cf-ims-label { color: var(--slds-g-color-neutral-base-50) !important; }
+
+.cf-ims-dropdown {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 0;
+  z-index: 999;
+  width: max-content;
+  min-width: 100%;
+  max-width: 220px;
+  max-height: 200px;
+  overflow-y: auto;
+  background: var(--color-surface-white);
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 12%, transparent);
+}
+
+.cf-ims-option {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-10);
+  cursor: pointer;
+  transition: background-color 0.1s;
+}
+.cf-ims-option:hover { background: var(--slds-g-color-surface-container-1); }
+.cf-ims-option.checked { background: var(--slds-g-color-accent-container-1); }
+.cf-ims-option input[type="checkbox"] { width: 16px; height: 16px; margin: 0; cursor: pointer; accent-color: var(--slds-g-color-accent-1); }
+.cf-ims-check { margin-left: auto; color: var(--slds-g-color-accent-1); font-size: 12px !important; font-weight: 600; }
+
+/* ─── Single-condition viz config ─────────────────────────────────────────────── */
+.cf-color-row { align-items: center; gap: 8px; }
+.cf-color-lbl { white-space: nowrap; }
+
+.cf-color-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.cf-color-swatch {
+  width: 28px; height: 28px;
+  border: 1px solid var(--slds-g-color-neutral-base-70);
+  border-radius: 4px;
+  padding: 0; cursor: pointer;
+  box-sizing: border-box;
+}
+.cf-color-hex {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cf-apply-lbl { margin-top: 4px; }
+
+/* Condition row */
+.cf-condition-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: nowrap;
+}
+
+.cf-cond-type-sel {
+  height: 32px;
+  padding: 0 24px 0 6px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background: var(--color-surface-white);
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%23747474' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-10);
+  cursor: pointer;
+  flex-shrink: 0;
+  min-width: 110px;
+}
+.cf-cond-type-sel:focus { outline: none; border-color: var(--slds-g-color-accent-1); }
+
+.cf-cond-val, .cf-cond-n {
+  height: 32px;
+  padding: 0 7px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background: var(--color-surface-white);
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-10);
+  box-sizing: border-box;
+  flex: 1;
+  min-width: 0;
+}
+.cf-cond-val:focus, .cf-cond-n:focus { outline: none; border-color: var(--slds-g-color-accent-1); }
+.cf-cond-n { max-width: 60px; }
+
+.cf-cond-and {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  flex-shrink: 0;
+}
+
+/* Formula row */
+.cf-formula-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+.cf-formula-eq {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 13px;
+  color: var(--slds-g-color-neutral-base-40);
+  flex-shrink: 0;
+}
+.cf-formula-input {
+  flex: 1;
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid var(--slds-g-color-border-base-4);
+  border-radius: 4px;
+  background: var(--color-surface-white);
+  font-family: var(--font-family-mono, monospace);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-10);
+  box-sizing: border-box;
+}
+.cf-formula-input:focus { outline: none; border-color: var(--slds-g-color-accent-1); }
+
+/* ─── Preview ─────────────────────────────────────────────────────────────────── */
+.cf-preview-sect {
+  background: var(--color-surface-white);
+}
+
+.cf-preview-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.cf-preview-test-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 6px;
+  width: 100%;
+}
+
+.cf-preview-test-lbl {
+  color: var(--slds-g-color-neutral-base-20);
+  font-weight: 400 !important;
+  text-align: left;
+  align-self: flex-start;
+}
+
+.cf-preview-input-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.cf-preview-in {
+  width: 100%;
+  font-size: 13px !important;
+}
+
+.cf-preview-cell-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  width: 100%;
+}
+
+.cf-preview-output-lbl {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+.cf-preview-bar-wrap {
+  width: 100%;
+  border: 1px solid var(--slds-g-color-neutral-base-90);
+  border-radius: 6px;
+  background: var(--slds-g-color-surface-1);
+  overflow: hidden;
+}
+
+.cf-preview-cell {
+  min-width: 100px;
+  width: 100%;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  border: 1px solid var(--slds-g-color-neutral-base-90);
+  border-radius: 4px;
+  background: var(--slds-g-color-surface-container-1);
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  color: var(--slds-g-color-neutral-base-10);
+  font-weight: 500;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.cf-preview-zone-lbl {
+  flex-shrink: 0;
+}
+
+.cf-preview-cell.no-match {
+  background: var(--slds-g-color-surface-container-1);
+  color: var(--slds-g-color-neutral-base-50) !important;
+}
+
+.cf-preview-zone-lbl {
+  font-family: var(--font-family-base);
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+}
+
+/* ─── Editor footer ───────────────────────────────────────────────────────────── */
+.cf-editor-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+  padding: 16px 16px 12px !important;
+  margin-top: 8px !important;
+  background: var(--slds-g-color-surface-container-1) !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-90) !important;
+}
+
+.cf-editor-cancel-btn {
+  margin-right: auto !important;
+  height: 32px !important;
+  min-width: 84px !important;
+  padding: 0 16px !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 9999px !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 13px !important;
+  font-weight: var(--font-weight-regular) !important;
+  color: var(--slds-g-color-neutral-base-10) !important;
+  cursor: pointer !important;
+  transition: background-color 0.15s, border-color 0.15s !important;
+}
+.cf-editor-cancel-btn:hover {
+  background: transparent !important;
+  text-decoration: underline;
+}
+
+.cf-editor-preview-btn {
+  height: 32px !important;
+  min-width: 94px !important;
+  padding: 0 16px !important;
+  background: var(--color-surface-white) !important;
+  border: 1px solid var(--slds-g-color-border-base-4) !important;
+  border-radius: 9999px !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 13px !important;
+  font-weight: var(--font-weight-regular) !important;
+  color: var(--slds-g-color-neutral-base-10) !important;
+  cursor: pointer !important;
+  transition: background-color 0.15s, border-color 0.15s !important;
+}
+
+.cf-editor-preview-btn:hover {
+  background: var(--slds-g-color-surface-container-1) !important;
+  border-color: var(--slds-g-color-neutral-base-60) !important;
+}
+
+.cf-editor-save-btn {
+  height: 32px !important;
+  min-width: 110px !important;
+  padding: 0 18px !important;
+  background: var(--slds-g-color-accent-1) !important;
+  border: 1px solid var(--slds-g-color-accent-1) !important;
+  border-radius: 9999px !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 13px !important;
+  font-weight: var(--font-weight-semibold) !important;
+  color: var(--color-surface-white) !important;
+  cursor: pointer !important;
+  transition: background-color 0.15s, border-color 0.15s !important;
+}
+.cf-editor-save-btn:hover {
+  background: var(--slds-g-color-accent-2) !important;
+  border-color: var(--slds-g-color-accent-2) !important;
+}
+
+/* ─── Create button ───────────────────────────────────────────────────────────── */
+.cf-create-rule-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 16px;
+  width: fit-content;
+  min-width: 178px;
+  align-self: center;
+  border: 1px solid var(--slds-g-color-accent-1) !important;
+  border-radius: 9999px !important;
+  background: var(--color-surface-white) !important;
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--slds-g-color-accent-1);
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+  margin-top: 2px;
+}
+.cf-create-rule-btn:hover {
+  background: var(--slds-g-color-accent-container-1);
+  border-color: var(--slds-g-color-accent-1);
+  border-style: solid;
+}
+.cf-create-rule-btn svg { color: var(--slds-g-color-accent-1); flex-shrink: 0; }
+.cf-create-rule-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ─── Admin rules ────────────────────────────────────────────────────────────── */
+
+.cf-rule-admin {
+  background: var(--slds-g-color-surface-container-1) !important;
+  border-color: var(--slds-g-color-neutral-base-90) !important;
+}
+
+.cf-admin-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 1px 6px !important;
+  margin-left: 6px !important;
+  background: var(--slds-g-color-accent-container-1) !important;
+  color: var(--color-dark-text) !important;
+  border: 1px solid var(--slds-g-color-accent-container-2) !important;
+  border-radius: 10px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.03em !important;
+  vertical-align: middle !important;
+}
+
+.cf-admin-lock-inline {
+  display: inline-flex !important;
+  align-items: center !important;
+  margin-left: 4px !important;
+  color: var(--slds-g-color-neutral-base-50) !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
+}
+
+/* ─── Admin Rule Detail panel ─────────────────────────────────────────────────── */
+
+.cf-admin-detail {
+  padding: 12px 14px 14px !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-90) !important;
+  background: var(--slds-g-color-surface-container-1) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+.cf-admin-detail-read-only-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 3px 8px !important;
+  background: var(--slds-g-color-surface-container-1) !important;
+  border: 1px solid var(--slds-g-color-neutral-base-90) !important;
+  border-radius: 12px !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: var(--slds-g-color-neutral-base-40) !important;
+  width: fit-content !important;
+}
+
+.cf-admin-detail-row {
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 8px !important;
+}
+
+.cf-admin-detail-lbl {
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: var(--slds-g-color-neutral-base-40) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  white-space: nowrap !important;
+  min-width: 78px !important;
+  flex-shrink: 0 !important;
+}
+
+.cf-admin-detail-val {
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-15) !important;
+}
+
+.cf-admin-detail-scope {
+  color: var(--slds-g-color-neutral-base-40) !important;
+  font-size: 12px !important;
+}
+
+.cf-admin-detail-formula-row {
+  align-items: flex-start !important;
+}
+
+.cf-admin-detail-formula {
+  display: block !important;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace !important;
+  font-size: 12px !important;
+  color: var(--slds-g-color-brand-base-40) !important;
+  background: var(--slds-g-color-accent-container-1) !important;
+  border: 1px solid var(--slds-g-color-accent-container-2) !important;
+  border-radius: 4px !important;
+  padding: 4px 8px !important;
+  white-space: pre-wrap !important;
+  word-break: break-all !important;
+  line-height: 1.5 !important;
+}
+
+.cf-admin-detail-zones-sect {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+}
+
+.cf-admin-detail-zones {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  padding-left: 2px !important;
+}
+
+.cf-admin-detail-zone {
+  display: flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+}
+
+.cf-admin-detail-zone-swatch {
+  display: inline-block !important;
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 3px !important;
+  border: 1px solid color-mix(in srgb, var(--slds-g-color-neutral-base-10) 12%, transparent) !important;
+  flex-shrink: 0 !important;
+}
+
+.cf-admin-detail-zone-label {
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-30) !important;
+  min-width: 80px !important;
+}
+
+.cf-admin-detail-zone-name {
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-50) !important;
+  font-style: italic !important;
+}
+
+/* ─── Admin detail: live preview ─────────────────────────────────────────────── */
+
+.cf-admin-detail-preview-sect {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  padding: 10px 12px !important;
+  background: var(--color-surface-white) !important;
+  border: 1px solid var(--slds-g-color-neutral-base-90) !important;
+  border-radius: 6px !important;
+}
+
+.cf-admin-detail-preview-hdr {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+}
+
+.cf-admin-detail-preview-input-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+
+.cf-admin-detail-preview-input-lbl {
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40) !important;
+}
+
+.cf-admin-detail-preview-input {
+  width: 60px !important;
+  padding: 3px 6px !important;
+  border: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  border-radius: 4px !important;
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-15) !important;
+  background: var(--color-surface-white) !important;
+  text-align: right !important;
+}
+
+.cf-admin-detail-preview-unit {
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40) !important;
+}
+
+.cf-admin-detail-preview-cell {
+  padding: 4px 0 2px !important;
+}
+
+
+/* ─── Section dividers ───────────────────────────────────────────────────────── */
+
+.cf-rules-section-divider {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 6px 0 4px !important;
+}
+.cf-rules-section-divider::before,
+.cf-rules-section-divider::after {
+  content: '' !important;
+  flex: 1 !important;
+  height: 1px !important;
+  background: var(--slds-g-color-neutral-base-90) !important;
+}
+.cf-rules-section-divider span {
+  font-family: var(--font-family-base) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: var(--slds-g-color-neutral-base-50) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  white-space: nowrap !important;
+}
+
+/* ─── Your-columns empty state (inside createColumns) ───────────────────────── */
+
+.cf-your-columns-empty {
+  padding: 12px 0 4px !important;
+  text-align: center !important;
+}
+.cf-your-columns-empty p {
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40) !important;
+  margin: 0 0 2px !important;
+}
+
+/* ─── Editor hint text ───────────────────────────────────────────────────────── */
+
+.cf-editor-hint {
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40) !important;
+  margin: 0 0 6px !important;
+  line-height: 1.4 !important;
+}
+
+/* ─── Shared simple form fields (creator + edit panel) ──────────────────────── */
+
+.cf-simple-form-fields {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+.cf-simple-field {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+}
+
+.cf-simple-label {
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  font-family: var(--font-family-base) !important;
+  color: var(--slds-g-color-neutral-base-30, var(--slds-g-color-neutral-base-50)) !important;
+  letter-spacing: 0.01em !important;
+}
+
+.cf-simple-label-static {
+  display: inline-block !important;
+}
+
+.cf-simple-required {
+  color: var(--slds-g-color-error-2) !important;
+  font-weight: 700 !important;
+  margin-left: 2px !important;
+}
+
+.cf-simple-input {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  height: 32px !important;
+  padding: 0 10px !important;
+  border: 1px solid var(--slds-g-color-neutral-base-70) !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  font-family: var(--font-family-base) !important;
+  color: var(--slds-g-color-neutral-base-10, var(--color-on-surface-strong)) !important;
+  background: var(--color-surface-white) !important;
+  outline: none !important;
+  transition: border-color 0.15s, box-shadow 0.15s !important;
+}
+
+.cf-simple-input:focus {
+  border-color: var(--slds-g-color-accent-1, var(--color-accent-blue)) !important;
+  box-shadow: 0 0 0 2px rgba(2, 80, 217, 0.2) !important;
+}
+
+.cf-simple-input::placeholder {
+  color: var(--slds-g-color-neutral-base-50, var(--slds-g-color-neutral-base-60)) !important;
+}
+
+.cf-simple-select {
+  cursor: pointer !important;
+  appearance: auto !important;
+  padding: 0 8px !important;
+}
+
+/* ─── Color swatches ─────────────────────────────────────────────────────────── */
+
+.cf-color-swatches {
+  display: flex !important;
+  gap: 7px !important;
+  flex-wrap: wrap !important;
+}
+
+/* Preset highlight swatches (simple rule creator) — scoped so native color input keeps .cf-color-wrap rules */
+.cf-color-swatches .cf-color-swatch {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 5px !important;
+  border: 1px solid rgba(17, 24, 39, 0.22) !important;
+  background-color: var(--swatch-bg) !important;
+  background-clip: padding-box !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  transition: transform 0.1s, border-color 0.1s, box-shadow 0.1s !important;
+  outline: none !important;
+}
+
+.cf-color-swatches .cf-color-swatch:hover {
+  transform: scale(1.15) !important;
+  border-color: rgba(17, 24, 39, 0.35) !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.18) !important;
+}
+
+.cf-color-swatches .cf-color-swatch-selected {
+  border: 2px solid var(--color-on-surface-strong) !important;
+  box-shadow: 0 0 0 1px rgba(31, 41, 55, 0.35) !important;
+  transform: scale(1.1) !important;
+}
+
+/* Color dot shown on collapsed rule card */
+.cf-simple-rule-color-dot {
+  display: inline-block !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  border: 1px solid color-mix(in srgb, var(--slds-g-color-neutral-base-10) 12%, transparent) !important;
+  flex-shrink: 0 !important;
+}
+
+/* ─── Simple Rule Creator ────────────────────────────────────────────────────── */
+
+.cf-simple-creator {
+  background: var(--color-surface-white) !important;
+  border: 1px solid var(--slds-g-color-neutral-base-75) !important;
+  border-radius: 8px !important;
+  padding: 0 !important;
+  margin-bottom: 12px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Form fields area: var(--color-surface-white) */
+.cf-simple-creator > .cf-simple-form-fields {
+  padding: 14px 14px 16px !important;
+  background: var(--color-surface-white) !important;
+}
+
+.cf-simple-creator-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+  padding: 12px 14px 14px !important;
+  margin: 0 !important;
+  background: var(--slds-g-color-neutral-base-95, var(--slds-g-color-neutral-base-95)) !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-85, var(--slds-g-color-neutral-base-90)) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+
+.cf-simple-creator-add-btn {
+  height: 30px !important;
+  padding: 0 16px !important;
+  border-radius: 9999px !important;
+  border: none !important;
+  background: var(--slds-g-color-accent-1, var(--color-accent-blue)) !important;
+  color: var(--slds-g-color-on-accent-1, var(--color-surface-white)) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  font-family: var(--font-family-base) !important;
+  cursor: pointer !important;
+  transition: background 0.15s, opacity 0.15s !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+.cf-simple-creator-add-btn:hover:not(:disabled) {
+  background: var(--slds-g-color-accent-2) !important;
+}
+
+.cf-simple-creator-add-btn:disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+}
+
+/* ─── Simple Rule Card (user-created rules) ─────────────────────────────────── */
+
+.cf-simple-rule-item {
+  transition: opacity 0.15s !important;
+}
+
+.cf-simple-rule-item.cf-rule-inactive {
+  opacity: 0.55 !important;
+}
+
+.cf-simple-rule-swatch {
+  display: inline-block !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 2px !important;
+  background-color: var(--slds-g-color-error-container-1) !important;
+  border: 1px solid var(--slds-g-color-error-container-1) !important;
+  margin-right: 3px !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
+}
+
+.cf-simple-rule-delete-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 26px !important;
+  height: 26px !important;
+  border-radius: 5px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  color: var(--slds-g-color-neutral-base-50, var(--slds-g-color-neutral-base-60)) !important;
+  cursor: pointer !important;
+  transition: background 0.12s, color 0.12s, border-color 0.12s !important;
+  flex-shrink: 0 !important;
+  margin-left: 4px !important;
+}
+
+.cf-simple-rule-delete-btn:hover {
+  background: var(--slds-g-color-error-container-1) !important;
+  color: var(--slds-g-color-error-2) !important;
+  border-color: var(--slds-g-color-error-container-1) !important;
+}
+
+/* ─── New Rule button (next to Rules header) ─────────────────────────────────── */
+
+.cf-rules-section-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.cf-new-rule-btn {
+  height: 26px !important;
+  padding: 0 12px !important;
+  border-radius: 9999px !important;
+  border: 1px solid var(--slds-g-color-accent-1, var(--color-accent-blue)) !important;
+  background: transparent !important;
+  color: var(--slds-g-color-accent-1, var(--color-accent-blue)) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  font-family: var(--font-family-base) !important;
+  cursor: pointer !important;
+  transition: background 0.12s, color 0.12s !important;
+  white-space: nowrap !important;
+}
+
+.cf-new-rule-btn:hover:not(:disabled) {
+  background: var(--slds-g-color-accent-1, var(--color-accent-blue)) !important;
+  color: var(--slds-g-color-on-accent-1, var(--color-surface-white)) !important;
+}
+
+.cf-new-rule-btn:disabled {
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
+}
+
+/* ─── Edit body (expanded rule card) ─────────────────────────────────────────── */
+
+.cf-simple-edit-body {
+  padding: 12px 14px 16px 36px !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-90, var(--slds-g-color-neutral-base-90)) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  background: var(--color-surface-white) !important;
+}
+
+/* Footer bar: grey strip, clearly separated from var(--color-surface-white) form */
+.cf-simple-edit-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+  padding: 12px 14px 14px 14px !important;
+  margin: 0 !important;
+  border-top: 1px solid var(--slds-g-color-neutral-base-85, var(--slds-g-color-neutral-base-90)) !important;
+  background: var(--slds-g-color-neutral-base-95, var(--slds-g-color-neutral-base-95)) !important;
+  box-shadow: 0 -2px 6px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 4%, transparent) !important;
+}
+
+.cf-simple-edit-footer-right {
+  display: flex !important;
+  gap: 8px !important;
+  align-items: center !important;
+  margin-left: auto !important;
+}
+
+.cf-simple-delete-btn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  height: 28px !important;
+  padding: 0 10px !important;
+  border-radius: 6px !important;
+  border: 1px solid var(--slds-g-color-error-container-1) !important;
+  background: var(--slds-g-color-error-container-1) !important;
+  color: var(--slds-g-color-error-2) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  font-family: var(--font-family-base) !important;
+  cursor: pointer !important;
+  transition: background 0.12s, border-color 0.12s !important;
+}
+
+.cf-simple-delete-btn:hover {
+  background: var(--slds-g-color-error-container-1) !important;
+  border-color: var(--slds-g-color-error-2) !important;
+}
+
+.cf-simple-cancel-btn {
+  height: 28px !important;
+  padding: 0 14px !important;
+  border-radius: 9999px !important;
+  border: 1px solid var(--slds-g-color-neutral-base-80) !important;
+  background: var(--color-surface-white) !important;
+  color: var(--slds-g-color-neutral-base-30, var(--color-on-surface-strong)) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  font-family: var(--font-family-base) !important;
+  cursor: pointer !important;
+  transition: background 0.12s !important;
+}
+
+.cf-simple-cancel-btn:hover {
+  background: var(--slds-g-color-neutral-base-95) !important;
+}
+
+.cf-simple-save-btn {
+  height: 28px !important;
+  padding: 0 16px !important;
+  border-radius: 9999px !important;
+  border: none !important;
+  background: var(--slds-g-color-accent-1, var(--color-accent-blue)) !important;
+  color: var(--slds-g-color-on-accent-1, var(--color-surface-white)) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  font-family: var(--font-family-base) !important;
+  cursor: pointer !important;
+  transition: background 0.15s, opacity 0.15s !important;
+}
+
+.cf-simple-save-btn:hover:not(:disabled) {
+  background: var(--slds-g-color-accent-2) !important;
+}
+
+.cf-simple-save-btn:disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+}
+
+/* Color scale merge (Rules section) */
+.cf-color-scale-merge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  margin: 0;
+  border: 1px solid var(--slds-g-color-neutral-base-85, var(--slds-g-color-neutral-base-90));
+  border-radius: 6px;
+  background: var(--slds-g-color-surface-1, var(--color-surface-gray));
+  cursor: pointer;
+  font-family: var(--font-family-base);
+}
+
+.cf-color-scale-merge-row--disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.cf-color-scale-merge-checkbox {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--slds-g-color-accent-1, var(--color-accent-blue));
+  flex-shrink: 0;
+  cursor: inherit;
+}
+
+.cf-color-scale-merge-title {
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--slds-g-color-on-surface-3, var(--color-on-surface-strong));
+}

@@ -1,0 +1,99 @@
+/* Cell Context Menu - Figma SLDS Style */
+.cell-context-menu {
+  position: fixed;
+  z-index: 10000;
+  min-width: 200px;
+  background-color: var(--color-surface-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.09), 
+              0 3px 3px rgba(0, 0, 0, 0.09), 
+              0 -1px 2px color-mix(in srgb, var(--slds-g-color-neutral-base-10) 4%, transparent);
+  padding: var(--spacing-1) 0;
+  font-family: var(--font-family-base);
+}
+
+.cell-context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-base);
+  color: var(--color-on-surface-2);
+  text-align: left;
+  transition: background-color 0.1s ease;
+}
+
+.cell-context-menu-item:hover:not(.disabled) {
+  background-color: var(--color-surface-gray);
+}
+
+.cell-context-menu-item:active:not(.disabled) {
+  background-color: var(--slds-g-color-neutral-base-90);
+}
+
+.cell-context-menu-item.disabled {
+  color: var(--slds-g-color-neutral-base-50) !important;
+  cursor: not-allowed;
+}
+
+.cell-context-menu-item.disabled .cell-context-menu-icon {
+  color: var(--slds-g-color-neutral-base-50) !important;
+}
+
+.cell-context-menu-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--color-neutral-text);
+}
+
+.cell-context-menu-item:hover:not(.disabled) .cell-context-menu-icon {
+  color: var(--color-primary-blue);
+}
+
+.cell-context-menu-label {
+  flex: 1;
+}
+
+.cell-context-menu-shortcut {
+  font-size: 12px !important;
+  color: var(--color-neutral-text);
+  margin-left: auto;
+}
+
+.cell-context-menu-hint {
+  font-size: 12px !important;
+  color: var(--color-neutral-text);
+  font-weight: 400;
+}
+
+.cell-context-menu-separator {
+  height: 1px;
+  background-color: var(--color-border);
+  margin: var(--spacing-1) 0;
+}
+
+/* Animation */
+.cell-context-menu {
+  animation: contextMenuFadeIn 0.12s ease-out;
+}
+
+@keyframes contextMenuFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+

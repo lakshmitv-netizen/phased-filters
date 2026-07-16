@@ -1,0 +1,186 @@
+/* Salesforce Lightning–style Path (aligned with Figma ⚡ Path — SLDS hooks) */
+
+.salesforce-path {
+  --salesforce-path-row-height: 40px;
+  display: flex;
+  align-items: center;
+  gap: var(--slds-g-spacing-2);
+  width: 100%;
+  max-width: 100%;
+}
+
+.salesforce-path__nav {
+  flex: 1;
+  min-width: 0;
+  /* Breathing room before the first step (e.g. Draft) */
+  padding-left: var(--slds-g-spacing-3);
+}
+
+.salesforce-path__track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  width: 100%;
+  min-height: var(--salesforce-path-row-height);
+  border-radius: var(--slds-g-radius-border-4, 20px);
+  overflow: hidden;
+  background-color: transparent;
+}
+
+.salesforce-path__segment {
+  flex: 1 1 0;
+  min-width: 72px;
+  height: var(--salesforce-path-row-height);
+  min-height: var(--salesforce-path-row-height);
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  margin: 0;
+  padding: 0 var(--slds-g-spacing-2) 0 var(--slds-g-spacing-4);
+  position: relative;
+  font-size: var(--slds-g-font-size-4, 13px);
+  line-height: 18px;
+  font-weight: var(--slds-g-font-weight-4, 400);
+  color: var(--slds-g-color-on-surface-2);
+  background-color: var(--slds-g-color-surface-container-2);
+}
+
+.salesforce-path__segment:not(:first-child) {
+  margin-left: -13px;
+  padding-left: calc(var(--slds-g-spacing-4) + 10px);
+}
+
+.salesforce-path__segment--solo {
+  margin-left: 0 !important;
+  padding-left: var(--slds-g-spacing-4) !important;
+  padding-right: var(--slds-g-spacing-4) !important;
+  border-radius: var(--slds-g-radius-border-pill, 9999px);
+}
+
+.salesforce-path__segment--current {
+  background-color: var(--slds-g-color-on-surface-3);
+  color: var(--slds-g-color-on-accent-1);
+  font-weight: var(--slds-g-font-weight-6, 600);
+}
+
+/* Completed steps — custom mint fill per design */
+.salesforce-path__segment--complete {
+  background-color: var(--slds-g-color-success-container-1);
+  color: var(--slds-g-color-on-surface-3);
+}
+
+.salesforce-path__segment--incomplete {
+  background-color: var(--slds-g-color-surface-container-2);
+  color: var(--slds-g-color-on-surface-2);
+}
+
+.salesforce-path__segment-button {
+  flex: 1 1 auto;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  cursor: pointer;
+  border-radius: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.salesforce-path__segment-button:focus-visible {
+  outline: 2px solid var(--slds-g-color-border-accent-1);
+  outline-offset: -2px;
+  z-index: 2;
+}
+
+.salesforce-path__segment--target-selected {
+  box-shadow: inset 0 0 0 2px var(--slds-g-color-accent-1);
+  z-index: 8;
+}
+
+.salesforce-path__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  max-width: 100%;
+  padding: 0 var(--slds-g-spacing-1);
+  pointer-events: none;
+}
+
+/* Brand button — overrides global `button { background/color: … !important }` in App.css */
+.salesforce-path__mark-complete {
+  flex-shrink: 0 !important;
+  margin-right: var(--slds-g-spacing-4) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: var(--slds-g-spacing-2) !important;
+  min-height: var(--salesforce-path-row-height, 40px) !important;
+  height: var(--salesforce-path-row-height, 40px) !important;
+  max-height: var(--salesforce-path-row-height, 40px) !important;
+  padding: var(--slds-g-spacing-2) var(--slds-g-spacing-6) !important;
+  box-sizing: border-box !important;
+  /* Blue brand fill + pill — !important beats App.css button reset */
+  background: var(--slds-g-color-accent-1) !important;
+  background-color: var(--slds-g-color-accent-1) !important;
+  color: var(--slds-g-color-on-accent-1) !important;
+  border: 1px solid var(--slds-g-color-border-accent-1) !important;
+  border-radius: var(--slds-g-radius-border-pill, 9999px) !important;
+  font-size: var(--slds-g-font-size-5, 14px) !important;
+  font-weight: var(--slds-g-font-weight-6, 600) !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0 !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  box-shadow: 0 1px 2px rgba(2, 80, 217, 0.25) !important;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease !important;
+}
+
+.salesforce-path__mark-complete:hover {
+  background: var(--slds-g-color-accent-2) !important;
+  background-color: var(--slds-g-color-accent-2) !important;
+  color: var(--slds-g-color-on-accent-1) !important;
+  border-color: var(--slds-g-color-accent-2) !important;
+  box-shadow: 0 2px 6px rgba(2, 80, 217, 0.35) !important;
+}
+
+.salesforce-path__mark-complete:active {
+  background: var(--slds-g-color-accent-2) !important;
+  background-color: var(--slds-g-color-accent-2) !important;
+  color: var(--slds-g-color-on-accent-1) !important;
+  box-shadow: 0 1px 2px rgba(2, 80, 217, 0.2) !important;
+}
+
+.salesforce-path__mark-complete:focus-visible {
+  outline: 2px solid var(--slds-g-color-border-accent-1) !important;
+  outline-offset: 2px !important;
+}
+
+.salesforce-path__mark-icon {
+  width: 14px !important;
+  height: 14px !important;
+  flex-shrink: 0 !important;
+  color: inherit !important;
+  stroke: currentColor !important;
+}
+
+@media (max-width: 768px) {
+  .salesforce-path {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .salesforce-path__mark-complete {
+    width: 100% !important;
+  }
+}

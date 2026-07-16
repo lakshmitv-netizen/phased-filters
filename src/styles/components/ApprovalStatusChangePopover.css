@@ -1,0 +1,37 @@
+/* Status pill used inside the approval hover popover header */
+.ascp-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px !important;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 10px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ascp-pill--approved              { background: var(--slds-g-color-success-container-1); color: var(--slds-g-color-success-1); }
+.ascp-pill--approvedWithCondition { background: var(--slds-g-color-warning-container-1); color: var(--slds-g-color-warning-1); }
+.ascp-pill--rejected              { background: var(--slds-g-color-error-container-1); color: var(--slds-g-color-error-1); }
+.ascp-pill--pending               { background: var(--slds-g-color-warning-container-1); color: var(--slds-g-color-warning-1); }
+
+/* "Awaiting: Finance, Supply Chain" secondary line in pending state */
+.ascp-waiting-label {
+  font-size: 12px !important;
+  color: var(--slds-g-color-neutral-base-40);
+  font-weight: 400;
+}
+
+.ascp-summary-line {
+  margin-top: 6px;
+  margin-left: 42px;
+  font-size: 12px;
+  color: var(--slds-g-color-neutral-base-40);
+  line-height: 1.4;
+}
+
+.ascp-summary-line strong {
+  color: var(--slds-g-color-neutral-base-20);
+  font-weight: 600;
+}
