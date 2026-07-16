@@ -3960,6 +3960,17 @@ const GridRowComponent: React.FC<GridRowProps> = ({
       ? `${row.name || ''} (${row.children?.length ?? 0})`
       : row.name || '';
 
+  // Level name shown as a small subscript beneath each dimension row's label in the
+  // frozen first column (e.g. "Account", "Region", "SKU"), so each row's level is
+  // identifiable without a separate icon/column. Measures and helper rows are excluded.
+  const dimensionLevelSubscript =
+    row.type === 'account' ||
+    row.type === 'category' ||
+    row.type === 'product' ||
+    isDeepDimensionType(row.type)
+      ? getDimensionLevelName(row.type)
+      : undefined;
+
   return (
     <>
       <tr
@@ -4016,6 +4027,22 @@ const GridRowComponent: React.FC<GridRowProps> = ({
                   rowNameColumnDisplay
                 )}
               </span>
+              {dimensionLevelSubscript && (
+                <span
+                  style={{
+                    fontSize: '10px',
+                    color: 'var(--slds-g-color-neutral-base-50, #747474)',
+                    marginTop: '1px',
+                    fontWeight: 400,
+                    lineHeight: 1.1,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {dimensionLevelSubscript}
+                </span>
+              )}
               {/* Show measure group name for measures with groupContext */}
               {row.type === 'measure' && row.groupContext && (
                 <span style={{ 
