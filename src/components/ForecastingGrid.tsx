@@ -3662,12 +3662,14 @@ const ForecastingGrid: React.FC = () => {
     hasQuickFilters: false,
     columnFilters: new Map(),
   });
-  // Default: parent totals + edit disaggregation apply to VISIBLE children only.
-  // The grid banner's "Include even filtered out children" toggle flips both to full hierarchy.
-  const [parentTotalsRollupMode, setParentTotalsRollupMode] = useState<ParentTotalsRollupMode>('visibleOnly');
+  // Totals always roll up over the FULL hierarchy — parent totals include rows hidden
+  // by filters (shown + hidden). Edits disaggregate across all children too, so totals
+  // stay consistent after edits. The Calculation Scope control has been removed; parents
+  // with filtered-out descendants surface an orange dot instead.
+  const [parentTotalsRollupMode, setParentTotalsRollupMode] = useState<ParentTotalsRollupMode>('fullHierarchy');
   const [propagateIntoNoMatchRows, setPropagateIntoNoMatchRows] = useState(false);
   const [measureEditDisaggregateToVisibleChildrenOnly, setMeasureEditDisaggregateToVisibleChildrenOnly] =
-    useState(true);
+    useState(false);
   const [panelKey, setPanelKey] = useState(0); // Key to force panel remount when switching tabs
   const [isCellHistoryApprovalView, setIsCellHistoryApprovalView] = useState(false);
   const [bulkActionPreselect, setBulkActionPreselect] = useState<string | null>(null);
@@ -4594,32 +4596,9 @@ const ForecastingGrid: React.FC = () => {
   // Search state
   const [gridSearch, setGridSearch] = useState<string>('');
 
-  const showHierarchicalParentTotalsHint = useMemo(() => {
-    const fullDimensionLevels = new Set(dimensionSchemeIds);
-    const searchActive = gridSearch.trim().length > 0;
-    const filtersPanelActive = activeFilterCount > 0;
-    const dimensionLevelsHide =
-      selectedDimensionLevels.size < fullDimensionLevels.size ||
-      [...fullDimensionLevels].some((id) => !selectedDimensionLevels.has(id));
-    const globalSortFlattens =
-      (globalSortConfig.criteria?.length ?? 0) > 0 && !globalSortConfig.preserveHierarchy;
-
-    return (
-      filtersPanelActive ||
-      searchActive ||
-      dimensionLevelsHide ||
-      globalSortFlattens ||
-      hierarchyRowHidingFromGrid.hasColumnFilters ||
-      hierarchyRowHidingFromGrid.hasQuickFilters
-    );
-  }, [
-    activeFilterCount,
-    gridSearch,
-    selectedDimensionLevels,
-    globalSortConfig.criteria,
-    globalSortConfig.preserveHierarchy,
-    hierarchyRowHidingFromGrid,
-  ]);
+  // Calculation Scope UI removed: totals always roll up over the full hierarchy, so the
+  // inline scope badge and the "totals scope" notification banner are no longer shown.
+  const showHierarchicalParentTotalsHint = false;
 
   /** Generate column filter summary */
   const columnFilterSummary = useMemo(() => {

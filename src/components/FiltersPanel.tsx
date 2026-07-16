@@ -2054,65 +2054,6 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
         )}
       </div>
 
-      {/* Calculation Scope (collapsible) */}
-      <div className={`filters-scope-section${isScopeSectionOpen ? ' filters-scope-section--open' : ''}`}>
-        <button
-          type="button"
-          className="filters-scope-section__header"
-          aria-expanded={isScopeSectionOpen}
-          onClick={() => setIsScopeSectionOpen(v => !v)}
-        >
-          <svg
-            className="filters-scope-section__chevron"
-            viewBox="0 0 16 16"
-            width="14"
-            height="14"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <span className="filters-scope-section__title">Calculation Scope</span>
-          <span className={`filters-scope-section__badge${scopeIsEverything ? ' filters-scope-section__badge--warning' : ''}`}>
-            {scopeIsEverything ? 'All rows' : 'Only Visible Rows'}
-          </span>
-        </button>
-        {isScopeSectionOpen && (
-          <div className="filters-scope-options" role="radiogroup" aria-label="Calculation scope">
-            <label className={`filters-scope-radio${!scopeIsEverything ? ' filters-scope-radio--selected' : ''}`}>
-              <input
-                type="radio"
-                name="calc-scope"
-                className="filters-scope-radio__input"
-                checked={!scopeIsEverything}
-                onChange={() => applyScope(false)}
-              />
-              <span className="filters-scope-radio__body">
-                <span className="filters-scope-radio__title">Only Visible Rows</span>
-                <span className="filters-scope-radio__desc">
-                  Totals &amp; edits apply to the visible rows only. Rows outside your filter are never changed.
-                </span>
-              </span>
-            </label>
-            <label className={`filters-scope-radio${scopeIsEverything ? ' filters-scope-radio--selected' : ''}`}>
-              <input
-                type="radio"
-                name="calc-scope"
-                className="filters-scope-radio__input"
-                checked={scopeIsEverything}
-                onChange={() => applyScope(true)}
-              />
-              <span className="filters-scope-radio__body">
-                <span className="filters-scope-radio__title filters-scope-radio__title--warning">All rows</span>
-                <span className="filters-scope-radio__desc">
-                  Totals roll up over all children and edits spread to every child row — including ones hidden by your filters.
-                </span>
-              </span>
-            </label>
-          </div>
-        )}
-      </div>
-
       <div className="filters-panel-scroll">
 
       {/* Section 1: Filters — Basic/Advanced filter editor */}
@@ -2130,7 +2071,6 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
         </button>
         {!filtersCollapsed && (
           <div className="filters-accordion-body">
-            {tipSaveBanner}
             {filterEditorBody}
           </div>
         )}
