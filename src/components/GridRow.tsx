@@ -4151,9 +4151,9 @@ const GridRowComponent: React.FC<GridRowProps> = ({
                   {hiddenImmediateChildCount > 0 && (
                     <>
                       {' \u2022 '}
-                      <HiddenChildrenInfo text="This total is calculated over all children, including filtered-out ones." />
+                      <HiddenChildrenInfo text="Aggregation includes all children, even those hidden by filters." />
                       {' '}
-                      Total incl. {hiddenImmediateChildCount} filtered
+                      Incl. {hiddenImmediateChildCount} filtered
                     </>
                   )}
                 </span>
