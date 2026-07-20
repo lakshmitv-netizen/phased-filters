@@ -1095,8 +1095,8 @@ const LEVEL_COLOR_MAP: Record<string, { color: string; bg: string; icon: React.R
 };
 
 /**
- * Small blue info icon with an SLDS-style tooltip, used to explain that a parent row's
- * total may not equal the sum of its visible children when some children are filtered out.
+ * Small amber warning icon with an SLDS-style tooltip, used to flag that a parent row's
+ * total is calculated over all children — including ones hidden by the current filters.
  * The tooltip renders via a portal so it isn't clipped by the frozen cell's overflow.
  */
 const HiddenChildrenInfo: React.FC<{ text: string }> = ({ text }) => {
@@ -1106,7 +1106,7 @@ const HiddenChildrenInfo: React.FC<{ text: string }> = ({ text }) => {
     const el = ref.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
-    setPos({ top: r.bottom + 8, left: r.left + r.width / 2 });
+    setPos({ top: r.top - 8, left: r.left + r.width / 2 });
   };
   const hide = () => setPos(null);
   return (
@@ -1123,12 +1123,12 @@ const HiddenChildrenInfo: React.FC<{ text: string }> = ({ text }) => {
         display: 'inline-flex',
         alignItems: 'center',
         verticalAlign: 'middle',
-        color: 'var(--slds-g-color-brand-base-30, #0176d3)',
+        color: 'var(--slds-g-color-warning-base-60, #ef8c00)',
         outline: 'none',
       }}
     >
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 4.4a1.35 1.35 0 110 2.7 1.35 1.35 0 010-2.7zM13.5 17.4h-3v-1.25h.75v-3.3h-.75V11.6h2.25v4.55h.75v1.25z" />
+        <path d="M12 2.5a1.6 1.6 0 011.4.82l8.3 14.4a1.6 1.6 0 01-1.4 2.38H3.7a1.6 1.6 0 01-1.4-2.38l8.3-14.4A1.6 1.6 0 0112 2.5zm0 5.6a1.15 1.15 0 00-1.15 1.23l.3 4.35a.86.86 0 001.7 0l.3-4.35A1.15 1.15 0 0012 8.1zm0 8.1a1.15 1.15 0 100 2.3 1.15 1.15 0 000-2.3z" />
       </svg>
       {pos &&
         createPortal(
@@ -1138,7 +1138,7 @@ const HiddenChildrenInfo: React.FC<{ text: string }> = ({ text }) => {
               position: 'fixed',
               top: pos.top,
               left: pos.left,
-              transform: 'translateX(-50%)',
+              transform: 'translate(-50%, -100%)',
               background: 'var(--slds-g-color-brand-base-30, #0176d3)',
               color: '#ffffff',
               fontSize: '12px',
@@ -1158,7 +1158,7 @@ const HiddenChildrenInfo: React.FC<{ text: string }> = ({ text }) => {
               aria-hidden="true"
               style={{
                 position: 'absolute',
-                top: '-5px',
+                bottom: '-5px',
                 left: '50%',
                 transform: 'translateX(-50%) rotate(45deg)',
                 width: '10px',
@@ -4151,10 +4151,9 @@ const GridRowComponent: React.FC<GridRowProps> = ({
                   {hiddenImmediateChildCount > 0 && (
                     <>
                       {' \u2022 '}
-                      {hiddenImmediateChildCount}{' '}
-                      {hiddenImmediateChildCount === 1 ? 'child' : 'children'} filtered out
+                      <HiddenChildrenInfo text="This total is calculated over all children, including filtered-out ones." />
                       {' '}
-                      <HiddenChildrenInfo text="Total still includes filtered-out children." />
+                      Total incl. {hiddenImmediateChildCount} filtered
                     </>
                   )}
                 </span>
