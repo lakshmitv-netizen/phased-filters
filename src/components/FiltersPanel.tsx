@@ -1822,17 +1822,7 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
 
             {/* Measure categories */}
             <div className="filters-basic-group">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                <span className="filters-basic-label" style={{ marginBottom: 0 }}>Measure Categories</span>
-                <a
-                  href="#"
-                  className="settings-link"
-                  style={{ marginBottom: 0 }}
-                  onClick={(e) => { e.preventDefault(); setIsReorderModalOpen(true); }}
-                >
-                  Configure Measures
-                </a>
-              </div>
+              <span className="filters-basic-label">Measure Categories</span>
               <div className="settings-dropdown-wrapper" ref={measureSubgroupDropdownRef}>
                 <div
                   className={`settings-dropdown-trigger ${isMeasureSubgroupDropdownOpen ? 'open' : ''}`}
