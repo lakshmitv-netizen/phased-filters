@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { MeasureData, GridRow, ParentTotalsRollupMode } from '../types';
 
 import UnifiedFilterPopover from './UnifiedFilterPopover';
@@ -22,14 +23,17 @@ export interface DimensionFilterField {
   type: string;
   rowType: string;
   name: string;
+  /** The hierarchy this level belongs to (e.g. "Account Hierarchy" / "Product Hierarchy"),
+   * used to group the dimension filters into sections. */
+  hierarchy: string;
 }
 
 const getDimensionFilterFields = (industry: IndustryType | null): DimensionFilterField[] =>
   getDimensionScheme(industry).map((lvl) => {
-    if (lvl.id === 'account') return { type: 'account', rowType: 'account', name: 'Accounts' };
-    if (lvl.id === 'category') return { type: 'category', rowType: 'category', name: 'Category' };
-    if (lvl.id === 'product') return { type: 'products', rowType: 'product', name: 'Products' };
-    return { type: lvl.id, rowType: lvl.id, name: lvl.name };
+    if (lvl.id === 'account') return { type: 'account', rowType: 'account', name: 'Accounts', hierarchy: lvl.hierarchy };
+    if (lvl.id === 'category') return { type: 'category', rowType: 'category', name: 'Category', hierarchy: lvl.hierarchy };
+    if (lvl.id === 'product') return { type: 'products', rowType: 'product', name: 'Products', hierarchy: lvl.hierarchy };
+    return { type: lvl.id, rowType: lvl.id, name: lvl.name, hierarchy: lvl.hierarchy };
   });
 
 // ── Predefined filter sets (intent-driven presets) ──────────────────────────────
@@ -148,7 +152,93 @@ interface BasicFilterMultiSelectProps {
   options: string[];
   selected: Set<string>;
   onChange: (values: string[]) => void;
+  /**
+   * When true, an empty selection is treated as "all options checked" (the default
+   * "All" state renders every checkbox ticked). Used for Measures so that picking a
+   * measure category auto-checks its measures and the user filters down by unchecking.
+   */
+  treatEmptyAsAll?: boolean;
 }
+
+/**
+ * Small blue info icon with an SLDS-style tooltip (rendered via a portal so it isn't
+ * clipped by the panel's overflow). Used next to filter labels to explain behavior.
+ */
+const LabelInfoTooltip: React.FC<{ text: string }> = ({ text }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+  const show = () => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    setPos({ top: r.top - 8, left: r.left + r.width / 2 });
+  };
+  const hide = () => setPos(null);
+  return (
+    <span
+      ref={ref}
+      onMouseEnter={show}
+      onMouseLeave={hide}
+      onFocus={show}
+      onBlur={hide}
+      tabIndex={0}
+      role="img"
+      aria-label={text}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        verticalAlign: 'middle',
+        marginLeft: '4px',
+        color: 'var(--slds-g-color-brand-base-30, #0176d3)',
+        outline: 'none',
+        cursor: 'default',
+      }}
+    >
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 4.4a1.35 1.35 0 110 2.7 1.35 1.35 0 010-2.7zM13.5 17.4h-3v-1.25h.75v-3.3h-.75V11.6h2.25v4.55h.75v1.25z" />
+      </svg>
+      {pos &&
+        createPortal(
+          <div
+            role="tooltip"
+            style={{
+              position: 'fixed',
+              top: pos.top,
+              left: pos.left,
+              transform: 'translate(-50%, -100%)',
+              background: 'var(--slds-g-color-brand-base-30, #0176d3)',
+              color: '#ffffff',
+              fontSize: '12px',
+              fontWeight: 400,
+              lineHeight: 1.35,
+              padding: '8px 10px',
+              borderRadius: '6px',
+              maxWidth: '240px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+              zIndex: 10001,
+              whiteSpace: 'normal',
+              pointerEvents: 'none',
+            }}
+          >
+            {text}
+            <span
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                bottom: '-5px',
+                left: '50%',
+                transform: 'translateX(-50%) rotate(45deg)',
+                width: '10px',
+                height: '10px',
+                background: 'var(--slds-g-color-brand-base-30, #0176d3)',
+              }}
+            />
+          </div>,
+          document.body,
+        )}
+    </span>
+  );
+};
 
 /** Comma-separated values in filter state; empty selection = no filter (All). */
 const BasicFilterMultiSelect: React.FC<BasicFilterMultiSelectProps> = ({
@@ -157,6 +247,7 @@ const BasicFilterMultiSelect: React.FC<BasicFilterMultiSelectProps> = ({
   options,
   selected,
   onChange,
+  treatEmptyAsAll = false,
 }) => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -178,9 +269,24 @@ const BasicFilterMultiSelect: React.FC<BasicFilterMultiSelectProps> = ({
     ? options.filter(o => o.toLowerCase().includes(query.trim().toLowerCase()))
     : options;
 
+  // When treatEmptyAsAll is on, an empty selection means "everything checked" — so the
+  // rendered/checkbox state derives from the full option list rather than the raw `selected`.
+  const allChecked = treatEmptyAsAll && selected.size === 0;
+  const effectiveSelected = allChecked ? new Set(options) : selected;
+
   const allCheckboxRef = useRef<HTMLInputElement>(null);
-  const allFilteredSelected = filteredOptions.length > 0 && filteredOptions.every(o => selected.has(o));
-  const someFilteredSelected = filteredOptions.some(o => selected.has(o));
+  const allFilteredSelected = filteredOptions.length > 0 && filteredOptions.every(o => effectiveSelected.has(o));
+  const someFilteredSelected = filteredOptions.some(o => effectiveSelected.has(o));
+
+  // Normalize a next selection: under treatEmptyAsAll, "all options selected" collapses
+  // back to empty so the control reads "All" and stays consistent with the filter model.
+  const emitSelection = (next: Set<string>) => {
+    if (treatEmptyAsAll && options.length > 0 && next.size === options.length && options.every(o => next.has(o))) {
+      onChange([]);
+    } else {
+      onChange(Array.from(next));
+    }
+  };
 
   useEffect(() => {
     if (allCheckboxRef.current) {
@@ -190,10 +296,10 @@ const BasicFilterMultiSelect: React.FC<BasicFilterMultiSelectProps> = ({
 
   // "All" checkbox: select / deselect every option currently shown (respects the search term).
   const toggleAllFiltered = () => {
-    const next = new Set(selected);
+    const next = new Set(effectiveSelected);
     if (allFilteredSelected) filteredOptions.forEach(o => next.delete(o));
     else filteredOptions.forEach(o => next.add(o));
-    onChange(Array.from(next));
+    emitSelection(next);
   };
 
   const onKeyDown = useCallback((e: React.KeyboardEvent) => {
@@ -201,20 +307,22 @@ const BasicFilterMultiSelect: React.FC<BasicFilterMultiSelectProps> = ({
   }, []);
 
   const toggleOption = (opt: string) => {
-    const next = new Set(selected);
+    const next = new Set(effectiveSelected);
     if (next.has(opt)) next.delete(opt);
     else next.add(opt);
-    onChange(Array.from(next));
+    emitSelection(next);
   };
 
   const summary =
     selected.size === 0
       ? 'All'
-      : selected.size === 1
-        ? Array.from(selected)[0]
-        : selected.size === 2
-          ? `${Array.from(selected)[0]}, ${Array.from(selected)[1]}`
-          : `${selected.size} selected`;
+      : options.length > 0 && selected.size === options.length && options.every(o => selected.has(o))
+        ? 'All'
+        : selected.size === 1
+          ? Array.from(selected)[0]
+          : selected.size === 2
+            ? `${Array.from(selected)[0]}, ${Array.from(selected)[1]}`
+            : `${selected.size} selected`;
 
   return (
     <div
@@ -274,7 +382,7 @@ const BasicFilterMultiSelect: React.FC<BasicFilterMultiSelectProps> = ({
                 <label key={opt} className="filters-basic-ms-option">
                   <input
                     type="checkbox"
-                    checked={selected.has(opt)}
+                    checked={effectiveSelected.has(opt)}
                     onChange={() => toggleOption(opt)}
                   />
                   <span className="filters-basic-ms-option-label">{opt}</span>
@@ -380,6 +488,26 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
   // the apply engine, and the editor's Field picker.
   const dimFields = useMemo(() => getDimensionFilterFields(industry), [industry]);
   const dimFieldTypes = useMemo(() => new Set(dimFields.map((d) => d.type)), [dimFields]);
+  // Group dimension filters into collapsible sections by hierarchy (Account vs Product),
+  // preserving their order in the scheme.
+  const dimSections = useMemo(() => {
+    const groups: { hierarchy: string; fields: DimensionFilterField[] }[] = [];
+    dimFields.forEach((df) => {
+      const last = groups[groups.length - 1];
+      if (last && last.hierarchy === df.hierarchy) last.fields.push(df);
+      else groups.push({ hierarchy: df.hierarchy, fields: [df] });
+    });
+    return groups;
+  }, [dimFields]);
+  const [collapsedDimSections, setCollapsedDimSections] = useState<Set<string>>(new Set());
+  const toggleDimSection = useCallback((hierarchy: string) => {
+    setCollapsedDimSections((prev) => {
+      const next = new Set(prev);
+      if (next.has(hierarchy)) next.delete(hierarchy);
+      else next.add(hierarchy);
+      return next;
+    });
+  }, []);
   const nameForDimType = useCallback(
     (type: string) => dimFields.find((d) => d.type === type)?.name ?? type,
     [dimFields],
@@ -416,6 +544,15 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
 
   const getMeasureSubgroupSelectedCount = () => measureSubgroups.size;
 
+  const allMeasureSubgroupsSelected =
+    effectiveSubgroupOptions.length > 0 &&
+    effectiveSubgroupOptions.every((o) => measureSubgroups.has(o.value));
+
+  const toggleAllMeasureSubgroups = () => {
+    if (allMeasureSubgroupsSelected) onMeasureSubgroupChange?.(new Set());
+    else onMeasureSubgroupChange?.(new Set(effectiveSubgroupOptions.map((o) => o.value)));
+  };
+
   const toggleMeasureSubgroup = (subgroupValue: string) => {
     const newSet = new Set(measureSubgroups);
     if (newSet.has(subgroupValue)) newSet.delete(subgroupValue);
@@ -423,14 +560,12 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
     onMeasureSubgroupChange?.(newSet);
   };
 
+  // Model A: every measure is always loaded, so the "of N" total counts ALL measures
+  // (both categories) regardless of which categories are currently selected.
   const totalMeasuresAvailable = useMemo(() => {
-    let total = 0;
     const currentIndustry = industry || 'manufacturing';
-    if (measureSubgroups.has('Revenue & Quantity Measures')) total += getMockData(currentIndustry).length;
-    if (measureSubgroups.has('Adjustment Measures')) total += adjustmentMeasuresData.length;
-    if (total === 0) total = getMockData(currentIndustry).length;
-    return total;
-  }, [measureSubgroups, industry]);
+    return getMockData(currentIndustry).length + adjustmentMeasuresData.length;
+  }, [industry]);
 
   useEffect(() => {
     if (!isMeasureSubgroupDropdownOpen) return;
@@ -1105,16 +1240,12 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
         if (row.children) walk(row.children);
       });
     };
-    const subgroup = selectedMeasureSubgroup;
-    const filterByCategory =
-      subgroup != null && subgroup.size > 0
-        ? (m: MeasureData) =>
-            !m.groupContext || subgroup.has(m.groupContext)
-        : () => true;
-
+    // Model A: the Measures dropdown lists EVERY loaded measure, regardless of which
+    // measure categories are selected. Category selection only checks/unchecks measures
+    // (via visibleMeasureIds); it never removes them from the list.
     data.forEach(m => {
       const label = m.name?.trim() || m.id;
-      if (label && filterByCategory(m)) measureNames.add(label);
+      if (label) measureNames.add(label);
       walk(m.children || []);
     });
     const optionsByType: Record<string, string[]> = {};
@@ -1123,7 +1254,29 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
       basicMeasureFilterOptions: Array.from(measureNames).sort(),
       optionsByType,
     };
-  }, [data, selectedMeasureSubgroup]);
+  }, [data]);
+
+  // Model A: the Measures dropdown reflects grid visibility (visibleMeasureIds) directly.
+  // Checked = measures currently shown on the grid; toggling a measure flips its visibility.
+  // Measure categories drive this same visibility set (bulk toggle) upstream.
+  const visibleMeasureNames = useMemo(() => {
+    const s = new Set<string>();
+    measures.forEach(m => {
+      const label = m.name?.trim() || m.id;
+      if (label && visibleMeasureIds.has(m.id)) s.add(label);
+    });
+    return s;
+  }, [measures, visibleMeasureIds]);
+
+  const handleVisibleMeasuresChange = useCallback((names: string[]) => {
+    const nameSet = new Set(names);
+    const nextVisible = new Set<string>();
+    measures.forEach(m => {
+      const label = m.name?.trim() || m.id;
+      if (label && nameSet.has(label)) nextVisible.add(m.id);
+    });
+    onMeasuresReorder?.(measures, nextVisible);
+  }, [measures, onMeasuresReorder]);
 
   // Cascading (dependent) options: each dimension level only lists members that are children
   // of the members currently selected in its ancestor levels — a deduped union across selected
@@ -1837,6 +1990,12 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
                 </div>
                 {isMeasureSubgroupDropdownOpen && (
                   <div className="settings-dropdown-list settings-dimension-dropdown">
+                    <div className="settings-dropdown-checkbox-option" onClick={toggleAllMeasureSubgroups}>
+                      <div className={`settings-checkbox-wrapper ${allMeasureSubgroupsSelected ? 'checked' : ''}`}>
+                        {allMeasureSubgroupsSelected && <svg className="settings-checkbox-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>}
+                      </div>
+                      <span className="settings-dropdown-checkbox-label">All</span>
+                    </div>
                     {effectiveSubgroupOptions.map((option, index) => {
                       const isSelected = measureSubgroups.has(option.value);
                       return (
@@ -1865,28 +2024,61 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
                 id="basic-measures"
                 labelId="basic-measures-label"
                 options={basicMeasureFilterOptions}
-                selected={getBasicSelected('measures')}
-                onChange={vals => updateBasicMultiFilter('measures', 'basic-measures', vals)}
+                selected={visibleMeasureNames}
+                onChange={handleVisibleMeasuresChange}
               />
             </div>
 
-            {/* One multiselect per dimension level in this grid's scheme */}
-            {dimFields.map((df) => (
-              <div className="filters-basic-group" key={df.type}>
-                <span className="filters-basic-label" id={`basic-${df.type}-label`}>{df.name}</span>
-                <BasicFilterMultiSelect
-                  id={`basic-${df.type}`}
-                  labelId={`basic-${df.type}-label`}
-                  options={optionsForDimField(df)}
-                  selected={getBasicSelected(df.type)}
-                  onChange={vals => updateBasicMultiFilter(df.type, `basic-${df.type}`, vals)}
-                />
-              </div>
-            ))}
+            {/* Dimension filters, grouped into collapsible sections by hierarchy
+                (Account Hierarchy vs Product Hierarchy); constituents are indented. */}
+            {dimSections.map((section) => {
+              const collapsed = collapsedDimSections.has(section.hierarchy);
+              return (
+                <div className="filters-dim-section" key={section.hierarchy}>
+                  <button
+                    type="button"
+                    className="filters-basic-section-header filters-dim-section-toggle"
+                    aria-expanded={!collapsed}
+                    onClick={() => toggleDimSection(section.hierarchy)}
+                  >
+                    <svg
+                      className={`filters-dim-section-chevron${collapsed ? ' collapsed' : ''}`}
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    {section.hierarchy}
+                  </button>
+                  {!collapsed && (
+                    <div className="filters-dim-section-body">
+                      {section.fields.map((df) => (
+                        <div className="filters-basic-group" key={df.type}>
+                          <span className="filters-basic-label" id={`basic-${df.type}-label`}>{df.name}</span>
+                          <BasicFilterMultiSelect
+                            id={`basic-${df.type}`}
+                            labelId={`basic-${df.type}-label`}
+                            options={optionsForDimField(df)}
+                            selected={getBasicSelected(df.type)}
+                            onChange={vals => updateBasicMultiFilter(df.type, `basic-${df.type}`, vals)}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
 
             {/* Time Range */}
-            <div className="filters-basic-group">
-              <label className="filters-basic-label">Time Period</label>
+            <div className="filters-basic-group filters-basic-group--separated">
+              <label className="filters-basic-label">
+                Time Period
+                <LabelInfoTooltip text="Filters by the lowest time granularity selected." />
+              </label>
               <div className="filters-basic-time-row">
                 <div className="filters-basic-time-field">
                   <span className="filters-basic-time-lbl">From</span>

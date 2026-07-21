@@ -1853,6 +1853,12 @@
   gap: var(--slds-g-spacing-2);
 }
 
+/* Thin grey separator above a group (e.g. the Time Period section). */
+.filters-basic-group--separated {
+  padding-top: var(--slds-g-spacing-4, 16px);
+  border-top: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+}
+
 .filters-basic-label {
   display: block;
   font-size: var(--slds-g-font-size-3);
@@ -1860,6 +1866,59 @@
   color: var(--slds-g-color-on-surface-2);
   user-select: none;
   margin-bottom: 2px;
+}
+
+/* Collapsible section grouping dimension filters by hierarchy (Account vs Product). */
+.filters-dim-section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Section header separating dimension filters by hierarchy (Account vs Product).
+   Follows the Figma "panel-header" component: Inter Bold 14px, on-surface text (#181818),
+   14px down chevron, 8px gap, no background or divider. */
+.filters-basic-section-header {
+  font-size: var(--slds-g-font-size-3, 0.875rem); /* 14px */
+  line-height: normal;
+  font-weight: var(--slds-g-font-weight-7, 700);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--slds-g-color-on-surface-1, #181818);
+  user-select: none;
+}
+
+/* Header rendered as a full-width toggle button with a light grey background. */
+.filters-dim-section-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--slds-g-spacing-2, 8px);
+  width: 100%;
+  /* App.css applies a global button reset with !important, so re-assert with !important. */
+  background: var(--slds-g-color-neutral-base-95, #f3f3f3) !important;
+  border: none;
+  border-radius: var(--slds-g-radius-border-2, 6px);
+  padding: var(--slds-g-spacing-2, 8px) var(--slds-g-spacing-3, 12px);
+  margin-top: var(--slds-g-spacing-1, 4px);
+  cursor: pointer;
+  text-align: left;
+}
+
+.filters-dim-section-chevron {
+  flex: 0 0 auto;
+  color: var(--slds-g-color-on-surface-1, #181818);
+  transition: transform 0.15s ease;
+}
+
+.filters-dim-section-chevron.collapsed {
+  transform: rotate(-90deg);
+}
+
+/* Constituents indented under their section title. */
+.filters-dim-section-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--slds-g-spacing-4, 16px);
+  padding: var(--slds-g-spacing-4, 16px) 0 var(--slds-g-spacing-2, 8px) var(--slds-g-spacing-4, 16px);
 }
 
 /* Calculation Scope collapsible section */

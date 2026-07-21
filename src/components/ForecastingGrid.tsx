@@ -3373,9 +3373,14 @@ const ForecastingGrid: React.FC = () => {
 
     const currentIndustryKey = industry || 'manufacturing';
 
+    // Model A: ALWAYS load every measure (all categories) into the grid data, so the
+    // Measures filter can list all of them. "Measure Categories" act as a bulk VISIBILITY
+    // toggle (via visibleMeasureIds) rather than gating which measures are loaded — a
+    // measure from an unselected category stays in the list, just unchecked/hidden.
+    const selectedCategoryMeasureIds = new Set<string>(); // measures in a currently-selected category
+
     if (isConfigIndustry(currentIndustryKey)) {
       // Config-driven grid: the plan config's subsets act as measure categories.
-      // Include measures belonging to any selected subset (default: all subsets).
       const cats = getConfigMeasureCategories(currentIndustryKey);
       const currentData = getMockData(currentIndustryKey);
       const dataWithHistory = applyInitialEditHistoryToData(currentData);
@@ -3384,31 +3389,30 @@ const ForecastingGrid: React.FC = () => {
         if (!byName.has(m.name)) byName.set(m.name, m);
       });
 
-      const selectedCats = cats.filter((c) => selectedMeasureSubgroup.has(c.name));
-      const catsToUse = selectedCats.length > 0 ? selectedCats : cats;
-      catsToUse.forEach((cat) => {
+      // Load EVERY config category's measures (not just the selected ones); track which
+      // belong to a selected category so we can set their visibility.
+      cats.forEach((cat) => {
         cat.measures.forEach((name) => {
           const m = byName.get(name);
-          if (m && !measureMap.has(m.id)) {
+          if (!m) return;
+          if (!measureMap.has(m.id)) {
             measureMap.set(m.id, m);
             allMeasureIds.push(m.id);
           }
+          if (selectedMeasureSubgroup.has(cat.name)) selectedCategoryMeasureIds.add(m.id);
         });
       });
 
-      // The "Adjustment Measures" category is synthetic for config grids (its measures
-      // aren't in the config's own measure list), so pull those rows from the shared
-      // adjustment dataset when that subset is selected.
-      if (selectedMeasureSubgroup.has('Adjustment Measures')) {
-        getAdjustmentMeasuresData(industry).forEach((measure: MeasureData) => {
-          if (!measureMap.has(measure.id)) {
-            measureMap.set(measure.id, measure);
-            allMeasureIds.push(measure.id);
-          }
-        });
-      }
+      // The synthetic "Adjustment Measures" category — always loaded, visible when selected.
+      getAdjustmentMeasuresData(industry).forEach((measure: MeasureData) => {
+        if (!measureMap.has(measure.id)) {
+          measureMap.set(measure.id, measure);
+          allMeasureIds.push(measure.id);
+        }
+        if (selectedMeasureSubgroup.has('Adjustment Measures')) selectedCategoryMeasureIds.add(measure.id);
+      });
 
-      // Fallback: config has no subsets, or none matched — show every config measure.
+      // Fallback: config exposed no measures at all — load every config measure.
       if (measureMap.size === 0) {
         dataWithHistory.forEach((m: MeasureData) => {
           measureMap.set(m.id, m);
@@ -3416,98 +3420,60 @@ const ForecastingGrid: React.FC = () => {
         });
       }
     } else {
-      // Check if both groups are selected
-      const bothGroupsSelected = selectedMeasureSubgroup.has('Adjustment Measures') &&
-                                 selectedMeasureSubgroup.has('Revenue & Quantity Measures');
-
-      // Process shared measures first when both groups are selected
-      if (bothGroupsSelected) {
-        sharedMeasureIds.forEach(measureId => {
-          // Get the selected context for this measure (default to Adjustment Measures - read-only)
-          const selectedContext = measureGroupContext.get(measureId) || 'Adjustment Measures';
-
-          // Get measure data from the appropriate source
-          const currentData = getMockData(currentIndustryKey);
-          const dataWithHistory = applyInitialEditHistoryToData(currentData);
-          const rqMeasure = dataWithHistory.find((m: MeasureData) => m.id === measureId);
-          const adjMeasure = getAdjustmentMeasuresData(industry).find((m: MeasureData) => m.id === measureId);
-
-          // Use the selected context version
-          const sourceMeasure = selectedContext === 'Adjustment Measures' ? adjMeasure : rqMeasure;
-          if (sourceMeasure) {
-            const measureWithGroup = {
-              ...sourceMeasure,
-              groupContext: selectedContext
-            };
-            sharedMeasures.push(measureWithGroup as MeasureData);
-          }
-        });
-      }
-
-      // Add Revenue & Quantity Measures if selected
-      if (selectedMeasureSubgroup.has('Revenue & Quantity Measures')) {
+      // Revenue & Quantity Measures — always loaded; visible when its category is selected.
+      {
         const currentData = getMockData(currentIndustryKey);
         const dataWithHistory = applyInitialEditHistoryToData(currentData);
-
         dataWithHistory.forEach((measure: MeasureData) => {
-          measureMap.set(measure.id, measure);
-          allMeasureIds.push(measure.id);
-        });
-      }
-
-      // Add Adjustment Measures if selected (use the variant whose hierarchy matches
-      // this grid's dimension scheme so the deep grid can expand these measures).
-      if (selectedMeasureSubgroup.has('Adjustment Measures')) {
-        getAdjustmentMeasuresData(industry).forEach((measure: MeasureData) => {
-          // Add if not already present
           if (!measureMap.has(measure.id)) {
             measureMap.set(measure.id, measure);
             allMeasureIds.push(measure.id);
           }
+          if (selectedMeasureSubgroup.has('Revenue & Quantity Measures')) selectedCategoryMeasureIds.add(measure.id);
         });
       }
+
+      // Adjustment Measures — always loaded (variant whose hierarchy matches this grid's
+      // dimension scheme); visible when its category is selected.
+      getAdjustmentMeasuresData(industry).forEach((measure: MeasureData) => {
+        if (!measureMap.has(measure.id)) {
+          measureMap.set(measure.id, measure);
+          allMeasureIds.push(measure.id);
+        }
+        if (selectedMeasureSubgroup.has('Adjustment Measures')) selectedCategoryMeasureIds.add(measure.id);
+      });
     }
 
     // Add shared measures first (at the top), then other measures
     combinedData.push(...sharedMeasures);
     combinedData.push(...Array.from(measureMap.values()));
-    
+
     // Update allMeasureIds to include shared measures at the start
     const finalMeasureIds = [...sharedMeasures.map(m => m.id), ...allMeasureIds];
 
-      // If no subgroups selected, default to Revenue & Quantity Measures
     if (combinedData.length === 0) {
-      const currentIndustry = industry || 'manufacturing';
-      const currentData = getMockData(currentIndustry);
+      const currentData = getMockData(currentIndustryKey);
       const dataWithHistory = applyInitialEditHistoryToData(currentData);
       combinedData.push(...dataWithHistory);
       finalMeasureIds.push(...currentData.map((m: MeasureData) => m.id));
     }
 
-    // Detect newly added measures
+    // Visibility follows the selected categories (bulk toggle); nothing selected = nothing visible.
+    const nextVisibleMeasureIds = new Set(selectedCategoryMeasureIds);
+
+    // Detect newly added measures (for the appear animation).
     const currentMeasureIds = new Set(finalMeasureIds);
     const prevMeasureIds = prevMeasureIdsRef.current;
     const newlyAdded = finalMeasureIds.filter(id => !prevMeasureIds.has(id));
-    
+
+    // Always load the full measure set into the grid data so the Measures filter can list
+    // every measure (Model A). Another effect (industry/session) may have replaced `data`
+    // with a subset, so we can't skip this — re-assert the complete set here. Measure
+    // Categories then drive visibility (below) rather than which measures are loaded.
     setOriginalData(combinedData);
     setData(combinedData);
-    // Every measure that belongs to a selected subset shows by default. Measures from a
-    // newly-checked subset appear automatically; measures that were already present keep their
-    // current visibility, so anything the user explicitly hid via "Configure Measures" stays hidden.
-    setVisibleMeasureIds(prev => {
-      const next = new Set<string>();
-      finalMeasureIds.forEach(id => {
-        if (!prevMeasureIds.has(id)) {
-          // Newly added (a freshly-checked subset, or first load) → visible by default.
-          next.add(id);
-        } else if (prev.has(id)) {
-          // Already-present measure → respect the user's current show/hide choice.
-          next.add(id);
-        }
-      });
-      return next.size > 0 ? next : new Set(finalMeasureIds);
-    });
-    
+    setVisibleMeasureIds(nextVisibleMeasureIds);
+
     // Update previous measure IDs
     prevMeasureIdsRef.current = currentMeasureIds;
     
