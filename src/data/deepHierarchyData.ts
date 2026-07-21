@@ -101,17 +101,20 @@ function nameForLevel(def: LevelDef, index: number): string {
   return `${def.names[0]} ${index + 1}`;
 }
 
-// Children per level, tapering from wide at the top to narrow at the bottom. A flat 8–10
-// children at every one of the 10 levels divides each parent's value by ~9 ten times over,
-// so leaf rows round to 0 within a few levels. Fewer children at the deeper levels keeps the
-// division gentle enough that even the child-most (Part) rows carry meaningful numbers, while
-// the top levels stay wide so the hierarchy still reads as rich.
+// Children per level: a FIXED count per level (min === max), tapering from wide at the top to
+// narrow at the bottom. Two reasons for a fixed (not ranged) count:
+//   1. A flat 8–10 children across all 10 levels divides each parent's value ~9x ten times
+//      over, collapsing leaf rows to 0; tapering keeps deep rows non-zero.
+//   2. A UNIFORM count means every parent at a level has exactly the members the Filters panel
+//      advertises (DEEP_LEVEL_OPTIONS below). If the count varied per parent, the dropdown
+//      would list names some parents lack, so selecting one would filter all of that parent's
+//      children out and its chevron would open to an empty set.
 const LEVEL_CHILD_COUNTS: Array<[number, number]> = [
-  [6, 7], // 0: Global Account Group
-  [5, 6], // 1: Strategic Account Group
-  [5, 6], // 2: Segment
-  [3, 4], // 3: Sold-to
-  [2, 3], // 4: Ship-to
+  [6, 6], // 0: Global Account Group
+  [5, 5], // 1: Strategic Account Group
+  [5, 5], // 2: Segment
+  [4, 4], // 3: Sold-to
+  [3, 3], // 4: Ship-to
   [2, 2], // 5: Company
   [2, 2], // 6: Business Unit
   [2, 2], // 7: Product Family
