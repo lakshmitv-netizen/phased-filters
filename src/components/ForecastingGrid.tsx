@@ -5670,17 +5670,13 @@ const ForecastingGrid: React.FC = () => {
               setIsAlertsOpen(false);
             }}
             onCellEdited={(rowId, periodKey) => {
-              // Reflect the edit: focus the Charts panel on the edited row and snap
-              // the composition breakdown to the edited time period.
-              setChartsFocusRowId(rowId);
-              setChartsFocusPeriod(periodKey);
-              setChartsFocusPeriodSignal((s) => s + 1);
-              setIsChartsOpen(true);
-              setIsSettingsOpen(false);
-              setIsFiltersOpen(false);
-              setIsSortPanelOpen(false);
-              setIsCellDetailsHistoryOpen(false);
-              setIsAlertsOpen(false);
+              // Do NOT auto-open the Charts panel on edit. If it's already open, keep it
+              // focused on the edited row and snap the breakdown to the edited period.
+              if (isChartsOpen) {
+                setChartsFocusRowId(rowId);
+                setChartsFocusPeriod(periodKey);
+                setChartsFocusPeriodSignal((s) => s + 1);
+              }
             }}
             initialFocusedCell={mapToHierarchicalFocus(dimensionsTimeGridFocusRef.current)}
             onFocusedCellChange={(focus) => { 
