@@ -348,7 +348,6 @@ const ForecastingGrid: React.FC = () => {
     planStatus === 'Submitted' &&
     planSubmittedByUserId != null &&
     planSubmittedByUserId === currentUser.id;
-  const [selectedMeasureSubgroup, setSelectedMeasureSubgroup] = useState<Set<string>>(new Set(['Revenue & Quantity Measures', 'Adjustment Measures']));
   const [selectedLayoutState, setSelectedLayoutState] = useState<string>('Measures / Dimensions x Time');
   
   // Get data based on current industry, default to manufacturing if not set
@@ -369,6 +368,56 @@ const ForecastingGrid: React.FC = () => {
     sessionMatchesIndustry ? cloneMeasureData(session.originalData) : industryData
   );
   const [visibleMeasureIds, setVisibleMeasureIds] = useState<Set<string>>(new Set(DEFAULT_VISIBLE_MEASURE_IDS));
+
+  // Model A: measure visibility (visibleMeasureIds) is the single source of truth for which
+  // measures show. "Measure Categories" are DERIVED from visibility — a category is selected
+  // when at least one of its measures is visible. So checking a measure whose category is off
+  // automatically turns that category on (and shows the measure) without expanding to the
+  // whole category; toggling a category bulk-adds/removes all its measures' visibility.
+  const categoryMeasureIds = useMemo(() => {
+    const map = new Map<string, string[]>();
+    const ind = industry || 'manufacturing';
+    const adjIds = getAdjustmentMeasuresData(industry).map((m) => m.id);
+    if (isConfigIndustry(ind)) {
+      const byName = new Map<string, string>();
+      getMockData(ind).forEach((m) => { if (!byName.has(m.name)) byName.set(m.name, m.id); });
+      getConfigMeasureCategories(ind).forEach((cat) => {
+        map.set(
+          cat.name,
+          cat.measures.map((n) => byName.get(n)).filter((id): id is string => !!id),
+        );
+      });
+      map.set('Adjustment Measures', adjIds);
+    } else {
+      map.set('Revenue & Quantity Measures', getMockData(ind).map((m) => m.id));
+      map.set('Adjustment Measures', adjIds);
+    }
+    return map;
+  }, [industry]);
+
+  const selectedMeasureSubgroup = useMemo(() => {
+    const selected = new Set<string>();
+    categoryMeasureIds.forEach((ids, cat) => {
+      if (ids.some((id) => visibleMeasureIds.has(id))) selected.add(cat);
+    });
+    return selected;
+  }, [categoryMeasureIds, visibleMeasureIds]);
+
+  // Category dropdown handler: bulk add/remove a category's measures from visibility when it
+  // is (de)selected. `newSubgroup` is the desired category selection from the panel.
+  const handleMeasureSubgroupChange = useCallback((newSubgroup: Set<string>) => {
+    setVisibleMeasureIds((prev) => {
+      const next = new Set(prev);
+      categoryMeasureIds.forEach((ids, cat) => {
+        const wantSelected = newSubgroup.has(cat);
+        const isSelected = ids.some((id) => prev.has(id));
+        if (wantSelected && !isSelected) ids.forEach((id) => next.add(id));
+        else if (!wantSelected && isSelected) ids.forEach((id) => next.delete(id));
+      });
+      return next;
+    });
+  }, [categoryMeasureIds]);
+
   // Measures whose cells auto-lock after an edit (configured in the Reorder Measures modal)
   const [autoLockMeasureIds, setAutoLockMeasureIds] = useState<Set<string>>(new Set());
   const autoLockMeasureIdsRef = useRef<Set<string>>(autoLockMeasureIds);
@@ -706,17 +755,9 @@ const ForecastingGrid: React.FC = () => {
     setPlanWideApprovalSubmitted(false);
   }, [industry, session]);
 
-  // Default the selected measure categories to match the industry: config grids
-  // pre-select all of their subsets; standard grids use Revenue & Quantity Measures.
-  useEffect(() => {
-    const ind = industry || 'manufacturing';
-    if (isConfigIndustry(ind)) {
-      const names = getConfigMeasureCategories(ind).map((c) => c.name);
-      setSelectedMeasureSubgroup(new Set(names.length > 0 ? names : ['Revenue & Quantity Measures']));
-    } else {
-      setSelectedMeasureSubgroup(new Set(['Revenue & Quantity Measures', 'Adjustment Measures']));
-    }
-  }, [industry]);
+  // Note: selected measure categories are DERIVED from visibleMeasureIds (see above), so
+  // there's no separate "default categories" effect — the load effect below makes every
+  // measure visible by default, which reads as all categories selected.
   
   // Helper function to calculate all cells in a range between two cell keys
   const calculateCellRange = useCallback((startCellKey: string, endCellKey: string): string[] => {
@@ -3374,11 +3415,8 @@ const ForecastingGrid: React.FC = () => {
     const currentIndustryKey = industry || 'manufacturing';
 
     // Model A: ALWAYS load every measure (all categories) into the grid data, so the
-    // Measures filter can list all of them. "Measure Categories" act as a bulk VISIBILITY
-    // toggle (via visibleMeasureIds) rather than gating which measures are loaded — a
-    // measure from an unselected category stays in the list, just unchecked/hidden.
-    const selectedCategoryMeasureIds = new Set<string>(); // measures in a currently-selected category
-
+    // Measures filter can list all of them. Which measures are *visible* is driven by
+    // visibleMeasureIds (Measure Categories are derived from it), not by what's loaded.
     if (isConfigIndustry(currentIndustryKey)) {
       // Config-driven grid: the plan config's subsets act as measure categories.
       const cats = getConfigMeasureCategories(currentIndustryKey);
@@ -3389,8 +3427,7 @@ const ForecastingGrid: React.FC = () => {
         if (!byName.has(m.name)) byName.set(m.name, m);
       });
 
-      // Load EVERY config category's measures (not just the selected ones); track which
-      // belong to a selected category so we can set their visibility.
+      // Load EVERY config category's measures.
       cats.forEach((cat) => {
         cat.measures.forEach((name) => {
           const m = byName.get(name);
@@ -3399,17 +3436,15 @@ const ForecastingGrid: React.FC = () => {
             measureMap.set(m.id, m);
             allMeasureIds.push(m.id);
           }
-          if (selectedMeasureSubgroup.has(cat.name)) selectedCategoryMeasureIds.add(m.id);
         });
       });
 
-      // The synthetic "Adjustment Measures" category — always loaded, visible when selected.
+      // The synthetic "Adjustment Measures" category — always loaded.
       getAdjustmentMeasuresData(industry).forEach((measure: MeasureData) => {
         if (!measureMap.has(measure.id)) {
           measureMap.set(measure.id, measure);
           allMeasureIds.push(measure.id);
         }
-        if (selectedMeasureSubgroup.has('Adjustment Measures')) selectedCategoryMeasureIds.add(measure.id);
       });
 
       // Fallback: config exposed no measures at all — load every config measure.
@@ -3420,7 +3455,7 @@ const ForecastingGrid: React.FC = () => {
         });
       }
     } else {
-      // Revenue & Quantity Measures — always loaded; visible when its category is selected.
+      // Revenue & Quantity Measures — always loaded.
       {
         const currentData = getMockData(currentIndustryKey);
         const dataWithHistory = applyInitialEditHistoryToData(currentData);
@@ -3429,18 +3464,16 @@ const ForecastingGrid: React.FC = () => {
             measureMap.set(measure.id, measure);
             allMeasureIds.push(measure.id);
           }
-          if (selectedMeasureSubgroup.has('Revenue & Quantity Measures')) selectedCategoryMeasureIds.add(measure.id);
         });
       }
 
       // Adjustment Measures — always loaded (variant whose hierarchy matches this grid's
-      // dimension scheme); visible when its category is selected.
+      // dimension scheme).
       getAdjustmentMeasuresData(industry).forEach((measure: MeasureData) => {
         if (!measureMap.has(measure.id)) {
           measureMap.set(measure.id, measure);
           allMeasureIds.push(measure.id);
         }
-        if (selectedMeasureSubgroup.has('Adjustment Measures')) selectedCategoryMeasureIds.add(measure.id);
       });
     }
 
@@ -3458,21 +3491,23 @@ const ForecastingGrid: React.FC = () => {
       finalMeasureIds.push(...currentData.map((m: MeasureData) => m.id));
     }
 
-    // Visibility follows the selected categories (bulk toggle); nothing selected = nothing visible.
-    const nextVisibleMeasureIds = new Set(selectedCategoryMeasureIds);
-
-    // Detect newly added measures (for the appear animation).
+    // Detect newly added measures (for the appear animation) and whether the loaded set changed.
     const currentMeasureIds = new Set(finalMeasureIds);
     const prevMeasureIds = prevMeasureIdsRef.current;
     const newlyAdded = finalMeasureIds.filter(id => !prevMeasureIds.has(id));
+    const measureSetChanged =
+      currentMeasureIds.size !== prevMeasureIds.size ||
+      finalMeasureIds.some(id => !prevMeasureIds.has(id));
 
-    // Always load the full measure set into the grid data so the Measures filter can list
-    // every measure (Model A). Another effect (industry/session) may have replaced `data`
-    // with a subset, so we can't skip this — re-assert the complete set here. Measure
-    // Categories then drive visibility (below) rather than which measures are loaded.
+    // Always re-assert the complete measure set into the grid data (another effect may have
+    // replaced `data` with a subset). On a genuine set change (mount / industry switch), make
+    // every measure visible by default — which reads as all categories selected. Otherwise
+    // leave visibility alone so the user's category/measure choices are preserved.
     setOriginalData(combinedData);
     setData(combinedData);
-    setVisibleMeasureIds(nextVisibleMeasureIds);
+    if (measureSetChanged) {
+      setVisibleMeasureIds(new Set(finalMeasureIds));
+    }
 
     // Update previous measure IDs
     prevMeasureIdsRef.current = currentMeasureIds;
@@ -3497,7 +3532,7 @@ const ForecastingGrid: React.FC = () => {
         }
       }, 100);
     }
-  }, [selectedMeasureSubgroup, applyInitialEditHistoryToData, industry, measureGroupContext, sharedMeasureIds]);
+  }, [applyInitialEditHistoryToData, industry, measureGroupContext, sharedMeasureIds]);
 
   // Handle measure reordering
   const handleMeasuresReorder = useCallback((orderedMeasures: MeasureData[], visibleIds: Set<string>, autoLockIds?: Set<string>) => {
@@ -5509,7 +5544,7 @@ const ForecastingGrid: React.FC = () => {
           onConfigure={() => setIsQuickAccessModalOpen(true)}
           onClose={() => setShowQuickAccessToolbar(false)}
           selectedMeasureSubgroup={selectedMeasureSubgroup}
-          onMeasureSubgroupChange={setSelectedMeasureSubgroup}
+          onMeasureSubgroupChange={handleMeasureSubgroupChange}
           measures={data}
           visibleMeasureIds={visibleMeasureIds}
           onMeasuresReorder={handleMeasuresReorder}
@@ -5728,7 +5763,7 @@ const ForecastingGrid: React.FC = () => {
             }}
             readonlyMeasureIds={readonlyMeasureIds}
             isAdjustmentGroupSelected={selectedMeasureSubgroup.has('Adjustment Measures')}
-            onMeasureGroupChange={setSelectedMeasureSubgroup}
+            onMeasureGroupChange={handleMeasureSubgroupChange}
             measureGroupContext={measureGroupContext}
             onMeasureGroupContextChange={(measureId: string, groupContext: string) => {
               setMeasureGroupContext(prev => {
@@ -5839,7 +5874,7 @@ const ForecastingGrid: React.FC = () => {
           onExpandAllRows={handleExpandAllRows}
           onCollapseAllRows={handleCollapseAllRows}
           selectedMeasureSubgroup={selectedMeasureSubgroup}
-          onMeasureSubgroupChange={setSelectedMeasureSubgroup}
+          onMeasureSubgroupChange={handleMeasureSubgroupChange}
           selectedLayout={selectedLayoutState}
           onLayoutChange={handleLayoutChange}
           measures={data}
@@ -5919,7 +5954,7 @@ const ForecastingGrid: React.FC = () => {
           isOpen={isFiltersOpen}
           onClose={() => setIsFiltersOpen(false)}
           selectedMeasureSubgroup={selectedMeasureSubgroup}
-          onMeasureSubgroupChange={setSelectedMeasureSubgroup}
+          onMeasureSubgroupChange={handleMeasureSubgroupChange}
           selectedDimensionLevels={selectedDimensionLevels}
           onDimensionLevelsChange={handleDimensionLevelsChange}
           data={originalData}

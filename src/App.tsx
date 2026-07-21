@@ -38,7 +38,7 @@ const GridPage: React.FC = () => (
 const useHashRouter = import.meta.env.VITE_ROUTER === 'hash';
 const Router = useHashRouter ? HashRouter : BrowserRouter;
 const routerProps = useHashRouter ? {} : { basename: import.meta.env.BASE_URL };
-const homeRoute = (import.meta.env.VITE_HOME_ROUTE as string) || '/home/grid-264';
+const homeRoute = (import.meta.env.VITE_HOME_ROUTE as string) || '/home/manufacturing-deep';
 
 function App() {
   console.log('App component rendering');
