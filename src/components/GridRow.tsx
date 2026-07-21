@@ -24,6 +24,10 @@ const PENDING_SUBMISSION_EDIT_TOOLTIP =
 const PLAN_REVIEW_REQUESTER_TOOLTIP =
   'You cannot edit this plan while approval is in progress.';
 
+/** Tooltip when a cell is locked because a filter hides some of its children. */
+const FILTER_LOCK_TOOLTIP =
+  'Not editable while a filter is applied — edit at the filtered level instead.';
+
 /** True when this cell is pending approval and the current user may not edit the value (requester / non-approver). Approvers on the request and override-unlock still edit. */
 function pendingSubmissionLocksPlanningValueCell(
   approval: ApprovalRequest | undefined,
@@ -1095,8 +1099,8 @@ const LEVEL_COLOR_MAP: Record<string, { color: string; bg: string; icon: React.R
 };
 
 /**
- * Small amber warning icon with an SLDS-style tooltip, used to flag that a parent row's
- * total is calculated over all children — including ones hidden by the current filters.
+ * Small blue info icon with an SLDS-style tooltip, used to note that a row's
+ * aggregation includes all children — including ones hidden by the current filters.
  * The tooltip renders via a portal so it isn't clipped by the frozen cell's overflow.
  */
 const HiddenChildrenInfo: React.FC<{ text: string }> = ({ text }) => {
@@ -1123,12 +1127,12 @@ const HiddenChildrenInfo: React.FC<{ text: string }> = ({ text }) => {
         display: 'inline-flex',
         alignItems: 'center',
         verticalAlign: 'middle',
-        color: 'var(--slds-g-color-warning-base-60, #ef8c00)',
+        color: 'var(--slds-g-color-brand-base-30, #0176d3)',
         outline: 'none',
       }}
     >
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M12 2.5a1.6 1.6 0 011.4.82l8.3 14.4a1.6 1.6 0 01-1.4 2.38H3.7a1.6 1.6 0 01-1.4-2.38l8.3-14.4A1.6 1.6 0 0112 2.5zm0 5.6a1.15 1.15 0 00-1.15 1.23l.3 4.35a.86.86 0 001.7 0l.3-4.35A1.15 1.15 0 0012 8.1zm0 8.1a1.15 1.15 0 100 2.3 1.15 1.15 0 000-2.3z" />
+        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 4.4a1.35 1.35 0 110 2.7 1.35 1.35 0 010-2.7zM13.5 17.4h-3v-1.25h.75v-3.3h-.75V11.6h2.25v4.55h.75v1.25z" />
       </svg>
       {pos &&
         createPortal(
@@ -1454,6 +1458,37 @@ const GridRowComponent: React.FC<GridRowProps> = ({
     return Math.max(hiddenById, fullChildren.length - visible.length, 0);
   }, [data, parentTotalsRollupMode, rollupValueSourceData, row.children, row.id, row.type, fullMeasureChildCount]);
 
+  /**
+   * Asif's edit-locking rule: a node is editable only if its ENTIRE subtree is
+   * unfiltered. If a filter has hidden a descendant anywhere below this row — at
+   * this row's own child boundary or deeper — then this row is an "ancestor of a
+   * filtered level" and its value cells become read-only (rendered with the
+   * existing striped read-only texture). The deepest filtered node itself (whose
+   * own children are all present) stays editable.
+   */
+  const isAncestorOfFilteredRow = React.useMemo(() => {
+    if (parentTotalsRollupMode === 'columnFilterBuckets') return false;
+    // This row's own child boundary (covers account/category/product, deep/Acme
+    // levels, and measures via fullMeasureChildCount).
+    if (hiddenImmediateChildCount > 0) return true;
+    const structureSource =
+      rollupValueSourceData && rollupValueSourceData.length > 0 ? rollupValueSourceData : data;
+    if (!structureSource?.length) return false;
+    const descHasHiddenKids = (node: GridRowType): boolean => {
+      const full = findRowById(node.id, structureSource);
+      const fullKids = (full?.children ?? []).filter((c) => c.type !== 'filterSummary');
+      const visKids = (node.children ?? []).filter((c) => c.type !== 'filterSummary');
+      if (fullKids.length > 0) {
+        const visIds = new Set(visKids.map((c) => c.id));
+        if (fullKids.some((c) => !visIds.has(c.id))) return true;
+        if (fullKids.length > visKids.length) return true;
+      }
+      return visKids.some(descHasHiddenKids);
+    };
+    const visChildren = (row.children ?? []).filter((c) => c.type !== 'filterSummary');
+    return visChildren.some(descHasHiddenKids);
+  }, [data, parentTotalsRollupMode, rollupValueSourceData, row, hiddenImmediateChildCount]);
+
   const noMatchBranchScratchedOut = React.useMemo(() => {
     if (parentTotalsRollupMode !== 'columnFilterBuckets' || propagateIntoNoMatchRows !== false) {
       return false;
@@ -1603,6 +1638,9 @@ const GridRowComponent: React.FC<GridRowProps> = ({
   const pendingNavRef = useRef<'left' | 'right' | 'down' | null>(null);
   const [hoveredCell, setHoveredCell] = useState<keyof GridRowType['values'] | null>(null);
   const [focusedCellKey, setFocusedCellKey] = useState<string | null>(null);
+  // Instant cursor-following hint shown when hovering a cell that is locked
+  // because a filter hides some of its children (native title is too slow).
+  const [filterLockHint, setFilterLockHint] = useState<{ x: number; y: number } | null>(null);
   const [showReadonlyWarning, setShowReadonlyWarning] = useState(false);
   const [warningPopoverPosition, setWarningPopoverPosition] = useState<{ top: number; left: number } | null>(null);
   const warningIconRef = useRef<HTMLButtonElement>(null);
@@ -3610,7 +3648,8 @@ const GridRowComponent: React.FC<GridRowProps> = ({
       !isReadonlyMeasure &&
       !isAdjustmentGroupCell &&
       !isFilterSummaryReadonly &&
-      !noMatchBranchScratchedOut;
+      !noMatchBranchScratchedOut &&
+      !isAncestorOfFilteredRow;
     const isEditable = baseValueEditable && !isPlanReviewLockActive && !pendingApprovalLocksValueCell;
     const planReviewRequesterLockActive =
       planReviewRequesterStripes === true && isPlanReviewLockActive;
@@ -3622,7 +3661,9 @@ const GridRowComponent: React.FC<GridRowProps> = ({
           ? 'not-allowed'
           : (isPlanReviewLockActive && baseValueEditable)
             ? 'not-allowed'
-            : 'default';
+            : isAncestorOfFilteredRow
+              ? 'not-allowed'
+              : 'default';
     const valueCellTitle =
       pendingApprovalLocksValueCell && baseValueEditable
         ? PENDING_SUBMISSION_EDIT_TOOLTIP
@@ -4080,6 +4121,29 @@ const GridRowComponent: React.FC<GridRowProps> = ({
 
   return (
     <>
+      {filterLockHint && createPortal(
+        <div
+          style={{
+            position: 'fixed',
+            top: filterLockHint.y + 18,
+            left: filterLockHint.x + 14,
+            zIndex: 100000,
+            pointerEvents: 'none',
+            maxWidth: '240px',
+            padding: '6px 10px',
+            borderRadius: '6px',
+            background: 'var(--slds-g-color-neutral-base-30, #444)',
+            color: '#fff',
+            fontSize: '12px',
+            lineHeight: 1.35,
+            boxShadow: 'var(--slds-g-shadow-3, 0 2px 8px rgba(0,0,0,0.25))',
+            whiteSpace: 'normal',
+          }}
+        >
+          {FILTER_LOCK_TOOLTIP}
+        </div>,
+        document.body
+      )}
       <tr
         {...rowA11y}
         className={`grid-row ${row.type === 'measure' ? 'measure-row' : ''} ${isFilteredOutMutedRow || isFilterBucketNoMatchMutedRow || noMatchBranchScratchedOut ? 'grid-row-filtered-out-dimension' : ''} ${isActualMeasureRow ? 'readonly-measure-row-actual' : ''} ${isDimensionUnderReadonlyMeasure ? 'readonly-dimension-row' : ''} ${isNewlyAdded ? 'newly-added-measure' : ''} ${showFilterDot ? 'row-has-descendants-column-filter' : ''}`}
@@ -4151,9 +4215,9 @@ const GridRowComponent: React.FC<GridRowProps> = ({
                   {hiddenImmediateChildCount > 0 && (
                     <>
                       {' \u2022 '}
-                      <HiddenChildrenInfo text="Aggregation includes all children, even those hidden by filters." />
-                      {' '}
                       Incl. {hiddenImmediateChildCount} filtered
+                      {' '}
+                      <HiddenChildrenInfo text="Aggregation includes all children, even those hidden by filters." />
                     </>
                   )}
                 </span>
@@ -4872,15 +4936,18 @@ const GridRowComponent: React.FC<GridRowProps> = ({
               ? row.filteredOutDimension
               : row.type;
           
-          // Apply striped texture to dimension cells under readonly measures or adjustment group
-          const shouldShowTexture = isDimensionUnderReadonlyMeasure || isAdjustmentGroupCell;
+          // Apply striped texture to dimension cells under readonly measures or adjustment
+          // group, and to ancestors of a filtered row (their totals are locked while filtered).
+          const shouldShowTexture =
+            isDimensionUnderReadonlyMeasure || isAdjustmentGroupCell || isAncestorOfFilteredRow;
           const baseValueEditable =
             onCellChange &&
             !isCellLocked &&
             !isReadonlyMeasureCell &&
             !isAdjustmentGroupCell &&
             !isFilterSummaryReadonly &&
-            !noMatchBranchScratchedOut;
+            !noMatchBranchScratchedOut &&
+            !isAncestorOfFilteredRow;
           const isEditable = baseValueEditable && !isPlanReviewLock && !pendingApprovalLocksCellTd;
           const reviewLockHover = isPlanReviewLock && baseValueEditable;
           const pendingSubmissionHoverTd = pendingApprovalLocksCellTd && baseValueEditable;
@@ -4996,7 +5063,7 @@ const GridRowComponent: React.FC<GridRowProps> = ({
             !pendingApprovalLocksCellTd;
 
           // Shared className computation for the Actual cell
-          const actualCellClassName = `grid-cell cell-value-cell ${hasCfActive ? 'cell-cf-active' : ''} ${cfHasBg ? 'cell-cf-has-bg' : ''} ${cfHasGradient ? 'cell-cf-has-gradient' : ''} ${cfHasColor ? 'cell-cf-has-color' : ''} ${cfHasBorder ? 'cell-cf-has-border' : ''} ${isFocused ? 'cell-focused' : ''} ${valueCellTextureClass} ${!isCellRead && finalHasNote && !isSavedImpacted ? 'cell-has-note' : ''} ${isCellRead ? 'cell-marked-read' : ''} ${selectedCells.has(cellKey) ? 'cell-selected' : ''} ${showFillHandleForActualCell ? 'cell-has-fill-handle' : ''} ${(() => {
+          const actualCellClassName = `grid-cell cell-value-cell ${hasCfActive ? 'cell-cf-active' : ''} ${cfHasBg ? 'cell-cf-has-bg' : ''} ${cfHasGradient ? 'cell-cf-has-gradient' : ''} ${cfHasColor ? 'cell-cf-has-color' : ''} ${cfHasBorder ? 'cell-cf-has-border' : ''} ${isFocused ? 'cell-focused' : ''} ${valueCellTextureClass} ${isAncestorOfFilteredRow ? 'cell-filter-locked' : ''} ${!isCellRead && finalHasNote && !isSavedImpacted ? 'cell-has-note' : ''} ${isCellRead ? 'cell-marked-read' : ''} ${selectedCells.has(cellKey) ? 'cell-selected' : ''} ${showFillHandleForActualCell ? 'cell-has-fill-handle' : ''} ${(() => {
                 if (isCellRead) return '';
                 const cellKeyForCheck = `${row.id}-${key}`;
                 const editedOriginalValue = isDesignSystemRulesEnabled ? editedCells?.get(cellKeyForCheck) : undefined;
@@ -5028,15 +5095,19 @@ const GridRowComponent: React.FC<GridRowProps> = ({
               position: 'relative' as const,
               ...(hasCfActive ? cfResult!.style : {}),
               ...(cfCssVars as React.CSSProperties),
-              ...((reviewLockHover || pendingSubmissionHoverTd || planReviewRequesterHoverTd)
+              ...((reviewLockHover || pendingSubmissionHoverTd || planReviewRequesterHoverTd || isAncestorOfFilteredRow)
                 ? { cursor: 'not-allowed' as const }
                 : {}),
             },
             ref: (el: HTMLTableCellElement | null) => { if (el && cellRefs) cellRefs.current.set(cellKey, el); },
             className: actualCellClassName,
             tabIndex: isEditable || (isPlanReviewLock && baseValueEditable) || pendingSubmissionHoverTd ? 0 : -1,
-            onMouseMove: (_e: React.MouseEvent) => { if (onCellMouseMove) onCellMouseMove(cellKey); },
+            onMouseMove: (e: React.MouseEvent) => {
+              if (onCellMouseMove) onCellMouseMove(cellKey);
+              if (isAncestorOfFilteredRow) setFilterLockHint({ x: e.clientX, y: e.clientY });
+            },
             onMouseEnter: (e: React.MouseEvent<HTMLTableCellElement>) => {
+              if (isAncestorOfFilteredRow) setFilterLockHint({ x: e.clientX, y: e.clientY });
               if (isEditable) setHoveredCell(key);
                 if (onCellFocusWithHistory && canShowEditInfoOnHover && !editingCell && !isCellRead) {
                   const focusCellKey = `${row.id}-${key}`;
@@ -5065,6 +5136,7 @@ const GridRowComponent: React.FC<GridRowProps> = ({
             },
             onMouseLeave: (e: React.MouseEvent) => {
                 const relatedTarget = e.relatedTarget as HTMLElement;
+              if (isAncestorOfFilteredRow) setFilterLockHint(null);
               if (!relatedTarget || !relatedTarget.closest('svg')) setHoveredCell(null);
               if (onCellFocusWithHistory && (!relatedTarget || !relatedTarget.closest('.cell-edit-info-popover'))) onCellFocusWithHistory('', null);
             },
@@ -5782,13 +5854,16 @@ const GridRowComponent: React.FC<GridRowProps> = ({
                     <td
                       {...gridCellA11y}
                       key={`${cellKey}-${sc.id}`}
-                      className={`grid-cell cell-value-cell sub-col-value-td ${isLastSubCol ? 'sub-col-last-in-group' : ''} ${isLastColumnGroup && isLastSubCol ? 'sub-col-last-column-group' : ''} ${subColTextureClass} ${targetAchievementTone}`}
+                      className={`grid-cell cell-value-cell sub-col-value-td ${isLastSubCol ? 'sub-col-last-in-group' : ''} ${isLastColumnGroup && isLastSubCol ? 'sub-col-last-column-group' : ''} ${subColTextureClass} ${isAncestorOfFilteredRow ? 'cell-filter-locked' : ''} ${targetAchievementTone}`}
                       style={{
                         minWidth: `${columnWidth}px`,
                         width: `${columnWidth}px`,
                         color: isYoYOrMoM || isTargetAchievement ? 'inherit' : color,
-                        ...(planReviewRequesterHoverTd ? { cursor: 'not-allowed' as const } : {}),
+                        ...(planReviewRequesterHoverTd || isAncestorOfFilteredRow ? { cursor: 'not-allowed' as const } : {}),
                       }}
+                      onMouseEnter={isAncestorOfFilteredRow ? (e) => setFilterLockHint({ x: e.clientX, y: e.clientY }) : undefined}
+                      onMouseMove={isAncestorOfFilteredRow ? (e) => setFilterLockHint({ x: e.clientX, y: e.clientY }) : undefined}
+                      onMouseLeave={isAncestorOfFilteredRow ? () => setFilterLockHint(null) : undefined}
                       title={planReviewRequesterHoverTd ? PLAN_REVIEW_REQUESTER_TOOLTIP : undefined}
                     >
                       {isYoYOrMoM ? (

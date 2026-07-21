@@ -2102,6 +2102,45 @@ button.chevron-icon {
   cursor: default !important;
 }
 
+/* When a filter-locked (read-only) cell is also edited or impacted, the
+   edited/impacted background wins the `background` cascade and hides the
+   stripes. Re-draw the stripes as part of the cell BACKGROUND layered over the
+   edited/impacted colour, so both states are visible while the value text and
+   delta arrow stay fully readable on the topmost layer. */
+.cell-value-cell.cell-readonly-texture.edited-cell,
+.grid-row.measure-row .cell-value-cell.cell-readonly-texture.edited-cell {
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 3px,
+      var(--slds-g-color-neutral-base-90) 3px,
+      var(--slds-g-color-neutral-base-90) 5px
+    ),
+    var(--slds-g-color-palette-yellow-90) !important;
+}
+
+.cell-value-cell.cell-readonly-texture.impacted-cell,
+.grid-row.measure-row .cell-value-cell.cell-readonly-texture.impacted-cell {
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 3px,
+      var(--slds-g-color-neutral-base-90) 3px,
+      var(--slds-g-color-neutral-base-90) 5px
+    ),
+    var(--slds-g-color-palette-yellow-95) !important;
+}
+
+/* Cells locked because a filter hides some children: show the not-allowed
+   cursor (overrides the shared read-only texture's default cursor). The "why"
+   text is provided via the cell's native title tooltip. */
+.cell-value-cell.cell-filter-locked,
+.cell-value-cell.cell-filter-locked .cell-value {
+  cursor: not-allowed !important;
+}
+
 /* Lighter, wider-spaced stripes when plan submitter views grid during Submitted review */
 .cell-plan-review-requester-texture {
   background:
