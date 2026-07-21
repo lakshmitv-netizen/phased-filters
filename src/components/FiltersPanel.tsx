@@ -10,7 +10,7 @@ import { useIndustry } from '../contexts/IndustryContext';
 import type { IndustryType } from '../contexts/IndustryContext';
 import { getDimensionScheme } from '../data/dimensionSchemes';
 import { isConfigIndustry, getConfigMeasureCategories } from '../data/planConfigGridData';
-import { DEEP_LEVEL_OPTIONS, buildFilteredDeepTree } from '../data/deepHierarchyData';
+import { DEEP_LEVEL_OPTIONS, buildFilteredDeepTree, deepCascadedOptions } from '../data/deepHierarchyData';
 import '../styles/components/FiltersPanel.css';
 
 // A dimension "filter field" for the current grid scheme. `type` is the Filter.type stored
@@ -1317,17 +1317,32 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
     return result;
   }, [data, dimFields, filters]);
 
+  // Selections per deep-hierarchy level (rowType -> chosen member names), from the active filters.
+  const deepSelectionsByRowType = useMemo(() => {
+    const sel = new Map<string, Set<string>>();
+    dimFields.forEach((df) => {
+      const f = filters.find((fi) => fi.type === df.type);
+      const val = f?.value;
+      if (!val || val === 'Equals All' || val === 'All' || val.includes('|')) return;
+      const s = new Set(val.split(',').map((v) => v.trim()).filter(Boolean));
+      if (s.size > 0) sel.set(df.rowType, s);
+    });
+    return sel;
+  }, [dimFields, filters]);
+
   const optionsForDimField = useCallback(
     (field: DimensionFilterField): string[] => {
-      // Deep hierarchy grid: rows are generated lazily, so the live tree (and thus the
-      // cascaded/materialized option scans) misses members in branches the user hasn't
-      // expanded — which showed "No options". Use the static per-level pool instead so every
-      // dimension dropdown is always fully populated.
+      // Deep hierarchy grid: rows are generated lazily, so scanning the live (partial) tree misses
+      // members in unexpanded branches. Regenerate the cascaded options deterministically instead,
+      // narrowed to what's reachable under the selected ancestor levels; fall back to the full pool.
       const deepPool = DEEP_LEVEL_OPTIONS[field.rowType];
-      if (deepPool) return deepPool;
+      if (deepPool) {
+        const cascaded = deepCascadedOptions(deepSelectionsByRowType, field.rowType);
+        return cascaded.length > 0 ? cascaded : deepPool;
+      }
       return cascadedOptionsByType[field.rowType] ?? optionsByType[field.rowType] ?? [];
     },
-    [cascadedOptionsByType, optionsByType],
+    [cascadedOptionsByType, optionsByType, deepSelectionsByRowType],
   );
 
   // Basic filter: get selected values for a given type from filters state

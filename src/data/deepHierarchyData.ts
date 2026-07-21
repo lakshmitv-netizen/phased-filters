@@ -96,9 +96,14 @@ function canGenerateChildren(type: RowType): boolean {
   return idx !== undefined && idx < LEVELS.length - 1;
 }
 
-function nameForLevel(def: LevelDef, index: number): string {
-  if (index < def.names.length) return def.names[index];
-  return `${def.names[0]} ${index + 1}`;
+// Extract a node's measure-independent DIMENSION PATH from its id. Ids look like
+// `measure-sa-qty-0_2-1_5-...`, where each `${childIdx}_${i}` segment records the child index `i`
+// chosen at that level. The path is the sequence of those `i` values, so the same tree position
+// yields the same path (and thus the same names) across every measure.
+function pathFromParentId(parentId: string): number[] {
+  const segs = parentId.match(/\d+_\d+/g);
+  if (!segs) return [];
+  return segs.map((s) => parseInt(s.split('_')[1], 10));
 }
 
 // Children per level: a FIXED count per level (min === max), tapering from wide at the top to
@@ -122,21 +127,78 @@ const LEVEL_CHILD_COUNTS: Array<[number, number]> = [
   [2, 2], // 9: Part
 ];
 
-/** How many children a node gets at a given level, chosen deterministically from its id. */
-function childCountFor(parentId: string, childIdx: number): number {
-  const [min, max] = LEVEL_CHILD_COUNTS[childIdx] ?? [2, 3];
-  const span = max - min + 1;
-  return min + Math.floor(seededRandom(`${parentId}-count`) * span);
+/**
+ * Deterministic child names for one parent, derived from the parent's dimension path (so they're
+ * the same across measures). The key property: SIBLING parents never share the same set of
+ * children. Each parent is assigned a contiguous block of its level's name pool; the block index
+ * shifts by the parent's own index among its siblings, so adjacent siblings get different,
+ * non-overlapping blocks (e.g. "Transmission Family" and "Driveline Family" get different
+ * commodities). Names can still recur across DIFFERENT branches, which is realistic.
+ *
+ * `parentPath` is the parent's dimension path (length === childIdx); pass [] for the root.
+ */
+export function deepChildNames(parentPath: number[], childIdx: number): string[] {
+  const def = LEVELS[childIdx];
+  if (!def) return [];
+  const pool = def.names;
+  const n = Math.min(LEVEL_CHILD_COUNTS[childIdx]?.[0] ?? pool.length, pool.length);
+  const ancestor = parentPath.length ? parentPath.slice(0, -1).join('.') : 'root';
+  const last = parentPath.length ? parentPath[parentPath.length - 1] : 0;
+  const base = Math.floor(seededRandom(`deepname:${childIdx}:${ancestor}`) * pool.length);
+  const blocks = Math.floor(pool.length / n);
+  const out: string[] = [];
+  if (blocks >= 2) {
+    // Pool big enough for disjoint blocks → sibling sets never overlap.
+    const start = ((((base % blocks) + last) % blocks) + blocks) % blocks * n;
+    for (let i = 0; i < n; i++) out.push(pool[(start + i) % pool.length]);
+  } else {
+    // Small pool: rotate by a per-parent offset so sibling sets still differ (may overlap).
+    const start = (((base + last) % pool.length) + pool.length) % pool.length;
+    for (let i = 0; i < n; i++) out.push(pool[(start + i) % pool.length]);
+  }
+  return out;
 }
 
-// Static per-level option pools (rowType -> member names) for the Filters panel. The deep grid
-// materializes rows lazily (only expanded branches exist), so scanning the live tree misses
-// members that were never expanded and dropdowns show "No options". These pools list every
-// name that can appear at each level (bounded by that level's max child count), so the filter
-// dropdowns are always fully populated regardless of what the user has expanded.
-export const DEEP_LEVEL_OPTIONS: Record<string, string[]> = LEVELS.reduce((acc, def, idx) => {
-  const max = LEVEL_CHILD_COUNTS[idx]?.[1] ?? def.names.length;
-  acc[def.type] = def.names.slice(0, Math.min(max, def.names.length));
+/**
+ * Cascaded option names for `targetType`, honoring the current selections on ANCESTOR levels.
+ * The deep grid is lazy, so we can't scan a live tree; instead we regenerate names deterministically
+ * from the root, descending only through members selected at each ancestor level, and collect the
+ * distinct names produced at the target level. Stops early once the whole pool is covered.
+ */
+export function deepCascadedOptions(
+  selectionsByRowType: Map<string, Set<string>>,
+  targetType: string,
+): string[] {
+  const targetIdx = LEVEL_INDEX_BY_TYPE[targetType];
+  if (targetIdx === undefined) return [];
+  const pool = LEVELS[targetIdx].names;
+  const seen = new Set<string>();
+
+  const dfs = (parentPath: number[], level: number): void => {
+    if (seen.size >= pool.length) return;
+    const names = deepChildNames(parentPath, level);
+    if (level === targetIdx) {
+      names.forEach((nm) => seen.add(nm));
+      return;
+    }
+    const sel = selectionsByRowType.get(LEVELS[level].type);
+    names.forEach((nm, i) => {
+      if (sel && sel.size > 0 && !sel.has(nm)) return;
+      dfs([...parentPath, i], level + 1);
+    });
+  };
+  dfs([], 0);
+
+  return Array.from(seen).sort((a, b) => pool.indexOf(a) - pool.indexOf(b));
+}
+
+// Full per-level option pools (rowType -> every member name that can appear at that level). The
+// deep grid materializes rows lazily, so scanning the live tree would miss members in unexpanded
+// branches. Since children names are now assigned per-parent from the whole pool, the complete set
+// of possible names at a level is the entire pool. `deepCascadedOptions` narrows this to the
+// members reachable under the currently-selected ancestors; this serves as the un-cascaded fallback.
+export const DEEP_LEVEL_OPTIONS: Record<string, string[]> = LEVELS.reduce((acc, def) => {
+  acc[def.type] = def.names;
   return acc;
 }, {} as Record<string, string[]>);
 
@@ -170,13 +232,14 @@ function disaggregate(parent: ValueBag, n: number, seedBase: string): ValueBag[]
 function generateChildrenAtLevel(parentId: string, parentValues: ValueBag, childIdx: number): GridRow[] {
   if (childIdx < 0 || childIdx >= LEVELS.length) return [];
   const def = LEVELS[childIdx];
-  const n = childCountFor(parentId, childIdx);
+  const names = deepChildNames(pathFromParentId(parentId), childIdx);
+  const n = names.length;
   const bags = disaggregate(parentValues, n, `${parentId}-dis`);
   const children: GridRow[] = [];
   for (let i = 0; i < n; i++) {
     children.push({
       id: `${parentId}-${childIdx}_${i}`,
-      name: nameForLevel(def, i),
+      name: names[i],
       parentId,
       level: childIdx + 1,
       type: def.type,
