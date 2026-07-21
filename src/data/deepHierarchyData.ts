@@ -255,6 +255,49 @@ export function buildDeepHierarchy(measureId: string, measureBase: number): Grid
   return roots.map((root) => ({ ...root, children: generateChildren(root) }));
 }
 
+/**
+ * Build a dimension-filtered deep tree by REGENERATING (deterministically) only the branches
+ * whose members match the given per-level selections, down to the deepest selected level.
+ *
+ * Why this exists: the deep grid materializes rows lazily, so pruning the live (partial) tree
+ * would drop any filter set on a level that hasn't been expanded yet — collapsing branches to
+ * empty. Because generation is deterministic (seeded from ids + the parent's values), we can
+ * rebuild exactly the matching branches on demand instead. Kept nodes retain their FULL values
+ * (so parent totals still include filtered-out children), and one extra level below the deepest
+ * selected level is materialized so expander chevrons render; deeper levels grow lazily.
+ *
+ * `selectionsByRowType` maps a level's rowType (e.g. 'acct-soldto') to the set of selected member
+ * names. Levels with no entry keep all their children.
+ */
+export function buildFilteredDeepTree(
+  measures: MeasureData[],
+  selectionsByRowType: Map<string, Set<string>>,
+): MeasureData[] {
+  let deepestSelectedIdx = -1;
+  LEVELS.forEach((lvl, i) => {
+    if (selectionsByRowType.has(lvl.type)) deepestSelectedIdx = Math.max(deepestSelectedIdx, i);
+  });
+  if (deepestSelectedIdx < 0) return measures;
+
+  const buildChildren = (parentId: string, parentValues: ValueBag, childIdx: number): GridRow[] => {
+    if (childIdx >= LEVELS.length) return [];
+    const generated = generateChildrenAtLevel(parentId, parentValues, childIdx);
+    const sel = selectionsByRowType.get(LEVELS[childIdx].type);
+    const kept = sel ? generated.filter((c) => sel.has(c.name)) : generated;
+    if (childIdx < deepestSelectedIdx) {
+      return kept.map((c) => ({ ...c, children: buildChildren(c.id, c.values, childIdx + 1) }));
+    }
+    // Deepest selected level reached: materialize one more level so chevrons render; below here
+    // there's no filter, so keep every child. Deeper levels grow lazily via ensureDeepChildren.
+    return kept.map((c) => ({ ...c, children: generateChildren(c) }));
+  };
+
+  return measures.map((m) => ({
+    ...m,
+    children: buildChildren(m.id, (m as unknown as GridRow).values, 0),
+  }));
+}
+
 // Bases are the measure's monthly value at the very top, which gets disaggregated down the
 // 10-level tree. They're deliberately large so that after the (tapered) per-level splits the
 // child-most Part rows still carry meaningful, multi-digit numbers instead of collapsing to 0.

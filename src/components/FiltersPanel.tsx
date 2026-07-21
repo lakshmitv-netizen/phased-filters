@@ -10,7 +10,7 @@ import { useIndustry } from '../contexts/IndustryContext';
 import type { IndustryType } from '../contexts/IndustryContext';
 import { getDimensionScheme } from '../data/dimensionSchemes';
 import { isConfigIndustry, getConfigMeasureCategories } from '../data/planConfigGridData';
-import { DEEP_LEVEL_OPTIONS } from '../data/deepHierarchyData';
+import { DEEP_LEVEL_OPTIONS, buildFilteredDeepTree } from '../data/deepHierarchyData';
 import '../styles/components/FiltersPanel.css';
 
 // A dimension "filter field" for the current grid scheme. `type` is the Filter.type stored
@@ -1787,13 +1787,42 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
 
     // 2. Filter by each dimension level in this grid's scheme (by name, or by a measure
     //    value / Top-N / Bottom-N). AND logic across levels.
-    for (const df of dimFields) {
-      const { values, operator } = resolveDimensionFilter(df.type, df.rowType, filtered, srcFilters);
-      if (values) {
-        filtered = filtered.map(measure => ({
-          ...measure,
-          children: filterByDimensionType(measure.children || [], df.rowType, values, operator),
-        }));
+    //    Deep (lazily-generated) grid: the live tree is only partially materialized, so generic
+    //    pruning would drop deep-level filters entirely (no rows of that type exist yet) and
+    //    collapse branches to empty. Instead, regenerate just the matching branches down to the
+    //    deepest selected level. (Name/"equals" selections only — Top-N etc. fall back to prune.)
+    const isDeepGrid = dimFields.length > 0 && !!DEEP_LEVEL_OPTIONS[dimFields[0].rowType];
+    if (isDeepGrid) {
+      const selections = new Map<string, Set<string>>();
+      let hasUnsupportedOp = false;
+      for (const df of dimFields) {
+        const { values, operator } = resolveDimensionFilter(df.type, df.rowType, filtered, srcFilters);
+        if (!values || values.length === 0) continue;
+        if (operator && operator !== 'equals') { hasUnsupportedOp = true; break; }
+        selections.set(df.rowType, new Set(values));
+      }
+      if (!hasUnsupportedOp && selections.size > 0) {
+        filtered = buildFilteredDeepTree(filtered, selections);
+      } else if (hasUnsupportedOp) {
+        for (const df of dimFields) {
+          const { values, operator } = resolveDimensionFilter(df.type, df.rowType, filtered, srcFilters);
+          if (values) {
+            filtered = filtered.map(measure => ({
+              ...measure,
+              children: filterByDimensionType(measure.children || [], df.rowType, values, operator),
+            }));
+          }
+        }
+      }
+    } else {
+      for (const df of dimFields) {
+        const { values, operator } = resolveDimensionFilter(df.type, df.rowType, filtered, srcFilters);
+        if (values) {
+          filtered = filtered.map(measure => ({
+            ...measure,
+            children: filterByDimensionType(measure.children || [], df.rowType, values, operator),
+          }));
+        }
       }
     }
 
