@@ -144,7 +144,12 @@ export function deepChildNames(parentPath: number[], childIdx: number): string[]
   const n = Math.min(LEVEL_CHILD_COUNTS[childIdx]?.[0] ?? pool.length, pool.length);
   const ancestor = parentPath.length ? parentPath.slice(0, -1).join('.') : 'root';
   const last = parentPath.length ? parentPath[parentPath.length - 1] : 0;
-  const base = Math.floor(seededRandom(`deepname:${childIdx}:${ancestor}`) * pool.length);
+  // The root has a single parent (no siblings), so start at the pool's natural order — this keeps
+  // the top level as the original Acme Partners / MagnaDrive / Globex / Initech / ... list. Deeper
+  // levels use a per-ancestor offset so sibling parents get different blocks.
+  const base = parentPath.length
+    ? Math.floor(seededRandom(`deepname:${childIdx}:${ancestor}`) * pool.length)
+    : 0;
   const blocks = Math.floor(pool.length / n);
   const out: string[] = [];
   if (blocks >= 2) {
