@@ -101,9 +101,29 @@ function nameForLevel(def: LevelDef, index: number): string {
   return `${def.names[0]} ${index + 1}`;
 }
 
-/** How many children a node gets: 8, 9, or 10, chosen deterministically from its id. */
-function childCountFor(parentId: string): number {
-  return 8 + Math.floor(seededRandom(`${parentId}-count`) * 3);
+// Children per level, tapering from wide at the top to narrow at the bottom. A flat 8–10
+// children at every one of the 10 levels divides each parent's value by ~9 ten times over,
+// so leaf rows round to 0 within a few levels. Fewer children at the deeper levels keeps the
+// division gentle enough that even the child-most (Part) rows carry meaningful numbers, while
+// the top levels stay wide so the hierarchy still reads as rich.
+const LEVEL_CHILD_COUNTS: Array<[number, number]> = [
+  [6, 7], // 0: Global Account Group
+  [5, 6], // 1: Strategic Account Group
+  [5, 6], // 2: Segment
+  [3, 4], // 3: Sold-to
+  [2, 3], // 4: Ship-to
+  [2, 2], // 5: Company
+  [2, 2], // 6: Business Unit
+  [2, 2], // 7: Product Family
+  [2, 2], // 8: Commodity
+  [2, 2], // 9: Part
+];
+
+/** How many children a node gets at a given level, chosen deterministically from its id. */
+function childCountFor(parentId: string, childIdx: number): number {
+  const [min, max] = LEVEL_CHILD_COUNTS[childIdx] ?? [2, 3];
+  const span = max - min + 1;
+  return min + Math.floor(seededRandom(`${parentId}-count`) * span);
 }
 
 /**
@@ -136,7 +156,7 @@ function disaggregate(parent: ValueBag, n: number, seedBase: string): ValueBag[]
 function generateChildrenAtLevel(parentId: string, parentValues: ValueBag, childIdx: number): GridRow[] {
   if (childIdx < 0 || childIdx >= LEVELS.length) return [];
   const def = LEVELS[childIdx];
-  const n = childCountFor(parentId);
+  const n = childCountFor(parentId, childIdx);
   const bags = disaggregate(parentValues, n, `${parentId}-dis`);
   const children: GridRow[] = [];
   for (let i = 0; i < n; i++) {
@@ -221,17 +241,20 @@ export function buildDeepHierarchy(measureId: string, measureBase: number): Grid
   return roots.map((root) => ({ ...root, children: generateChildren(root) }));
 }
 
+// Bases are the measure's monthly value at the very top, which gets disaggregated down the
+// 10-level tree. They're deliberately large so that after the (tapered) per-level splits the
+// child-most Part rows still carry meaningful, multi-digit numbers instead of collapsing to 0.
 const MEASURES: { id: string; name: string; base: number }[] = [
-  { id: 'measure-sa-qty',        name: 'Sales Agreement Quantity (No.s)',      base: 800 },
-  { id: 'measure-sa-rev',        name: 'Sales Agreement Revenue',              base: 80000 },
-  { id: 'measure-opp-qty',       name: 'Opportunity Quantity (No.s)',          base: 1200 },
-  { id: 'measure-opp-rev',       name: 'Opportunity Revenue',                  base: 120000 },
-  { id: 'measure-order-qty',     name: 'Order Quantity (No.s)',                base: 950 },
-  { id: 'measure-order-rev',     name: 'Order Revenue',                        base: 95000 },
-  { id: 'measure-ly-order-qty',  name: 'Last Year Order Quantity (No.s)',      base: 750 },
-  { id: 'measure-ly-order-rev',  name: 'Last Years Order Revenue',             base: 75000 },
-  { id: 'measure-forecast-qty',  name: 'Forecasted Quantity (No.s)',           base: 1000 },
-  { id: 'measure-forecast-rev',  name: 'Forecasted Revenue',                   base: 100000 },
+  { id: 'measure-sa-qty',        name: 'Sales Agreement Quantity (No.s)',      base: 2_000_000 },
+  { id: 'measure-sa-rev',        name: 'Sales Agreement Revenue',              base: 200_000_000 },
+  { id: 'measure-opp-qty',       name: 'Opportunity Quantity (No.s)',          base: 3_000_000 },
+  { id: 'measure-opp-rev',       name: 'Opportunity Revenue',                  base: 300_000_000 },
+  { id: 'measure-order-qty',     name: 'Order Quantity (No.s)',                base: 2_400_000 },
+  { id: 'measure-order-rev',     name: 'Order Revenue',                        base: 240_000_000 },
+  { id: 'measure-ly-order-qty',  name: 'Last Year Order Quantity (No.s)',      base: 1_900_000 },
+  { id: 'measure-ly-order-rev',  name: 'Last Years Order Revenue',             base: 190_000_000 },
+  { id: 'measure-forecast-qty',  name: 'Forecasted Quantity (No.s)',           base: 2_500_000 },
+  { id: 'measure-forecast-rev',  name: 'Forecasted Revenue',                   base: 250_000_000 },
 ];
 
 export const deepHierarchyData: MeasureData[] = withForecastAsSum(
