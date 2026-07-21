@@ -10,6 +10,7 @@ import { useIndustry } from '../contexts/IndustryContext';
 import type { IndustryType } from '../contexts/IndustryContext';
 import { getDimensionScheme } from '../data/dimensionSchemes';
 import { isConfigIndustry, getConfigMeasureCategories } from '../data/planConfigGridData';
+import { DEEP_LEVEL_OPTIONS } from '../data/deepHierarchyData';
 import '../styles/components/FiltersPanel.css';
 
 // A dimension "filter field" for the current grid scheme. `type` is the Filter.type stored
@@ -1317,8 +1318,15 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
   }, [data, dimFields, filters]);
 
   const optionsForDimField = useCallback(
-    (field: DimensionFilterField): string[] =>
-      cascadedOptionsByType[field.rowType] ?? optionsByType[field.rowType] ?? [],
+    (field: DimensionFilterField): string[] => {
+      // Deep hierarchy grid: rows are generated lazily, so the live tree (and thus the
+      // cascaded/materialized option scans) misses members in branches the user hasn't
+      // expanded — which showed "No options". Use the static per-level pool instead so every
+      // dimension dropdown is always fully populated.
+      const deepPool = DEEP_LEVEL_OPTIONS[field.rowType];
+      if (deepPool) return deepPool;
+      return cascadedOptionsByType[field.rowType] ?? optionsByType[field.rowType] ?? [];
+    },
     [cascadedOptionsByType, optionsByType],
   );
 

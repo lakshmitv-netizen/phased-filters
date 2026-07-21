@@ -126,6 +126,17 @@ function childCountFor(parentId: string, childIdx: number): number {
   return min + Math.floor(seededRandom(`${parentId}-count`) * span);
 }
 
+// Static per-level option pools (rowType -> member names) for the Filters panel. The deep grid
+// materializes rows lazily (only expanded branches exist), so scanning the live tree misses
+// members that were never expanded and dropdowns show "No options". These pools list every
+// name that can appear at each level (bounded by that level's max child count), so the filter
+// dropdowns are always fully populated regardless of what the user has expanded.
+export const DEEP_LEVEL_OPTIONS: Record<string, string[]> = LEVELS.reduce((acc, def, idx) => {
+  const max = LEVEL_CHILD_COUNTS[idx]?.[1] ?? def.names.length;
+  acc[def.type] = def.names.slice(0, Math.min(max, def.names.length));
+  return acc;
+}, {} as Record<string, string[]>);
+
 /**
  * Split a parent value bag into `n` child bags whose month values sum exactly to the
  * parent's (integer-safe, with the remainder folded into the last child). Quarter/year
