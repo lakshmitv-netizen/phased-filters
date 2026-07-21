@@ -6,8 +6,6 @@ import UnifiedFilterPopover from './UnifiedFilterPopover';
 import ReorderMeasuresModal from './ReorderMeasuresModal';
 import ScopedNotification from './ScopedNotification';
 import { measureSubgroupOptions } from './SettingsPanel';
-import { getMockData } from '../data/mockData';
-import { adjustmentMeasuresData } from '../data/adjustmentMeasuresData';
 import { useIndustry } from '../contexts/IndustryContext';
 import type { IndustryType } from '../contexts/IndustryContext';
 import { getDimensionScheme } from '../data/dimensionSchemes';
@@ -559,13 +557,6 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
     else newSet.add(subgroupValue);
     onMeasureSubgroupChange?.(newSet);
   };
-
-  // Model A: every measure is always loaded, so the "of N" total counts ALL measures
-  // (both categories) regardless of which categories are currently selected.
-  const totalMeasuresAvailable = useMemo(() => {
-    const currentIndustry = industry || 'manufacturing';
-    return getMockData(currentIndustry).length + adjustmentMeasuresData.length;
-  }, [industry]);
 
   useEffect(() => {
     if (!isMeasureSubgroupDropdownOpen) return;
@@ -2010,11 +2001,6 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
                   </div>
                 )}
               </div>
-              {measures.length > 0 && (
-                <p className="settings-field-helper-text">
-                  Showing {visibleMeasureIds.size === 0 ? measures.length : measures.filter(m => visibleMeasureIds.has(m.id)).length} of {totalMeasuresAvailable} measures
-                </p>
-              )}
             </div>
 
             {/* Measures */}
